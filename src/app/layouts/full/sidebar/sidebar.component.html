@@ -1,0 +1,59 @@
+<div class="flex-layout">
+  <!-- Branding dugme (isto mesto, ista veličina) -->
+  <button
+    mat-button
+    routerLink="/"
+    class="branding d-flex align-items-center p-16"
+    style="text-transform: none; height: 56px;"
+  >
+    <!-- Logo: 40×40px centrirano -->
+    <img
+      src="assets/images/logos/favicon.png"
+      alt="Telenor Banka logo"
+      width="40"
+      height="40"
+      style="object-fit: contain; margin-right: 8px;"
+    />
+    <!-- Isti stil naslova kao mat-toolbar naslov -->
+    <span
+      class="mat-title"
+      style="font-family: inherit; font-size: 1.25rem; font-weight: 600;"
+    >
+      Telenor Banka
+    </span>
+  </button>
+
+  <!-- Glavni meni -->
+  <mat-nav-list class="sidebar-list">
+    <app-nav-item
+      *ngFor="let item of navItems"
+      [item]="item"
+    ></app-nav-item>
+  </mat-nav-list>
+
+  <!-- Footer ili dodatni widget -->
+  <div class="p-24">
+    <div class="bg-light-primary d-flex align-items-center rounded p-20 m-t-20">
+      <div>
+        <h5 class="mat-subtitle-1 f-s-16 f-w-600 m-b-8">
+          Unlimied <br />Access
+        </h5>
+        <a
+          mat-flat-button
+          color="primary"
+          href="https://adminmart.com/product/modernize-angular-material-dashboard/?ref=5"
+          target="_blank"
+          class="d-flex justify-content-center"
+        >
+          Upgrade
+        </a>
+      </div>
+      <img
+        src="/assets/images/backgrounds/rocket.png"
+        alt="rocket"
+        class="side-img"
+      />
+    </div>
+  </div>
+</div>
+
