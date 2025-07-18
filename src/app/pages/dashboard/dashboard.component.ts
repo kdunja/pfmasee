@@ -95,6 +95,30 @@ const ELEMENT_DATA: productsData[] = [
     budget: 2.4,
     direction: 'credit'  
   },
+   {
+    id: 5,
+    imagePath: 'assets/images/profile/user-5.jpg',
+    uname: 'Ivana Marković',
+    date: new Date('2024-05-01'),
+    budget: 15.2,
+    direction: 'credit'
+  },
+  {
+    id: 6,
+    imagePath: 'assets/images/profile/user-6.jpg',
+    uname: 'Milan Petrović',
+    date: new Date('2024-05-03'),
+    budget: 8.7,
+    direction: 'debit'
+  },
+  {
+    id: 7,
+    imagePath: 'assets/images/profile/user-7.jpg',
+    uname: 'Dunja Kostić',
+    date: new Date('2024-05-05'),
+    budget: 20.0,
+    direction: 'credit'
+  }
 ];
 
 @Component({
@@ -113,6 +137,11 @@ export class AppDashboardComponent {
   kinds: string[] = ['EXECUTED', 'REJECTED', 'FUTURE', 'DRAFT', 'PENDING'];
 selectedKind: string = 'EXECUTED';
 
+onSplitTransaction(element: any) {
+  console.log('Split transaction clicked for:', element);
+  // Ovde ide tvoj kod za dalju akciju
+}
+
 //funkcionalnost za tabove s desne
 
 selectedTab: string = 'overview';
@@ -120,81 +149,6 @@ selectedTab: string = 'overview';
 setSelectedTab(tab: string): void {
   this.selectedTab = tab;
 }
-
-  // recent transaction
-  stats: stats[] = [
-    {
-      id: 1,
-      time: '09.30 am',
-      color: 'primary',
-      subtext: 'Payment received from John Doe of $385.90',
-    },
-    {
-      id: 2,
-      time: '10.30 am',
-      color: 'accent',
-      title: 'New sale recorded',
-      link: '#ML-3467',
-    },
-    {
-      id: 3,
-      time: '12.30 pm',
-      color: 'success',
-      subtext: 'Payment was made of $64.95 to Michael',
-    },
-    {
-      id: 4,
-      time: '12.30 pm',
-      color: 'warning',
-      title: 'New sale recorded',
-      link: '#ML-3467',
-    },
-    {
-      id: 5,
-      time: '12.30 pm',
-      color: 'error',
-      title: 'New arrival recorded',
-      link: '#ML-3467',
-    },
-    {
-      id: 6,
-      time: '12.30 pm',
-      color: 'success',
-      subtext: 'Payment Done',
-    },
-  ];
-
-  // ecommerce card
-  productcards: productcards[] = [
-    {
-      id: 1,
-      imgSrc: '/assets/images/products/s4.jpg',
-      title: 'Boat Headphone',
-      price: '285',
-      rprice: '375',
-    },
-    {
-      id: 2,
-      imgSrc: '/assets/images/products/s5.jpg',
-      title: 'MacBook Air Pro',
-      price: '285',
-      rprice: '375',
-    },
-    {
-      id: 3,
-      imgSrc: '/assets/images/products/s7.jpg',
-      title: 'Red Valvet Dress',
-      price: '285',
-      rprice: '375',
-    },
-    {
-      id: 4,
-      imgSrc: '/assets/images/products/s11.jpg',
-      title: 'Cute Soft Teddybear',
-      price: '285',
-      rprice: '375',
-    },
-  ];
 
   constructor() {
 
