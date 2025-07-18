@@ -1,47 +1,5 @@
 import { Component, ViewEncapsulation, ViewChild } from '@angular/core';
-import { TransactionService } from '../../services/transaction.service';
-
-import {
-  ApexChart,
-  ChartComponent,
-  ApexDataLabels,
-  ApexLegend,
-  ApexStroke,
-  ApexTooltip,
-  ApexAxisChartSeries,
-  ApexXAxis,
-  ApexYAxis,
-  ApexGrid,
-  ApexPlotOptions,
-  ApexFill,
-  ApexMarkers,
-  ApexResponsive,
-} from 'ng-apexcharts';
-
-interface month {
-  value: string;
-  viewValue: string;
-}
-
-export interface yearlyChart {
-  series: ApexAxisChartSeries;
-  chart: ApexChart;
-  dataLabels: ApexDataLabels;
-  plotOptions: ApexPlotOptions;
-  tooltip: ApexTooltip;
-  stroke: ApexStroke;
-  legend: ApexLegend;
-  responsive: ApexResponsive;
-}
-
-interface stats {
-  id: number;
-  time: string;
-  color: string;
-  title?: string;
-  subtext?: string;
-  link?: string;
-}
+import { ChartComponent } from 'ng-apexcharts';
 
 export interface productsData {
   id: number;
@@ -50,16 +8,10 @@ export interface productsData {
   date: Date;
   budget: number;
   direction: 'credit' | 'debit';
- 
-}
-
-// ecommerce card
-interface productcards {
-  id: number;
-  imgSrc: string;
-  title: string;
-  price: string;
-  rprice: string;
+  currency?: string;
+  kind?: string;
+  isSplit?: boolean;
+  category?: string;
 }
 
 const ELEMENT_DATA: productsData[] = [
@@ -69,7 +21,11 @@ const ELEMENT_DATA: productsData[] = [
     uname: 'Ognjen Ognjenović',
     date: new Date('2024-04-17'),
     budget: 3.9,
-    direction: 'credit'  
+    currency: 'RSD',
+    direction: 'credit',
+    kind: 'EXECUTED',
+    isSplit: false,
+    category: 'Salary'
   },
   {
     id: 2,
@@ -77,7 +33,11 @@ const ELEMENT_DATA: productsData[] = [
     uname: 'Paja Jovanović',
     date: new Date('2024-04-17'),
     budget: 24.5,
-    direction: 'debit'  
+    currency: 'RSD',
+    direction: 'debit',
+    kind: 'REJECTED',
+    isSplit: false,
+    category: 'Groceries'
   },
   {
     id: 3,
@@ -85,7 +45,11 @@ const ELEMENT_DATA: productsData[] = [
     uname: 'Wolt',
     date: new Date('2024-04-17'),
     budget: 12.8,
-    direction: 'debit'  
+    currency: 'RSD',
+    direction: 'debit',
+    kind: 'EXECUTED',
+    isSplit: true,
+    category: 'Food Delivery'
   },
   {
     id: 4,
@@ -93,15 +57,23 @@ const ELEMENT_DATA: productsData[] = [
     uname: 'Cineplex',
     date: new Date('2024-04-17'),
     budget: 2.4,
-    direction: 'credit'  
+    currency: 'RSD',
+    direction: 'credit',
+    kind: 'EXECUTED',
+    isSplit: false,
+    category: 'Refund'
   },
-   {
+  {
     id: 5,
     imagePath: 'assets/images/profile/user-5.jpg',
     uname: 'Ivana Marković',
     date: new Date('2024-05-01'),
     budget: 15.2,
-    direction: 'credit'
+    currency: 'RSD',
+    direction: 'credit',
+    kind: 'PENDING',
+    isSplit: false,
+    category: 'Bonus'
   },
   {
     id: 6,
@@ -109,15 +81,23 @@ const ELEMENT_DATA: productsData[] = [
     uname: 'Milan Petrović',
     date: new Date('2024-05-03'),
     budget: 8.7,
-    direction: 'debit'
+    currency: 'RSD',
+    direction: 'debit',
+    kind: 'EXECUTED',
+    isSplit: false,
+    category: 'Transport'
   },
   {
     id: 7,
     imagePath: 'assets/images/profile/user-7.jpg',
-    uname: 'Dunja Kostić',
+    uname: 'Luka Cvjetić',
     date: new Date('2024-05-05'),
     budget: 20.0,
-    direction: 'credit'
+    currency: 'RSD',
+    direction: 'credit',
+    kind: 'EXECUTED',
+    isSplit: false,
+    category: 'Freelance'
   }
 ];
 
@@ -129,75 +109,38 @@ const ELEMENT_DATA: productsData[] = [
 export class AppDashboardComponent {
   @ViewChild('chart') chart: ChartComponent = Object.create(null);
 
-  public yearlyChart!: Partial<yearlyChart> | any;
-
-  displayedColumns: string[] = ['assigned', 'name','budget', 'direction'];
+  displayedColumns: string[] = ['assigned', 'name', 'budget', 'direction'];
   dataSource = ELEMENT_DATA;
 
   kinds: string[] = ['EXECUTED', 'REJECTED', 'FUTURE', 'DRAFT', 'PENDING'];
-selectedKind: string = 'EXECUTED';
+  selectedKind: string = 'EXECUTED';
 
-onSplitTransaction(element: any) {
-  console.log('Split transaction clicked for:', element);
-  // Ovde ide tvoj kod za dalju akciju
-}
+  selectedTab: string = 'overview';
 
-//funkcionalnost za tabove s desne
+  setSelectedTab(tab: string): void {
+    this.selectedTab = tab;
+  }
 
-selectedTab: string = 'overview';
+  get filteredData(): productsData[] {
+    return ELEMENT_DATA
+      .filter(t => t.kind === this.selectedKind)
+      .sort((a, b) => {
+        const dateDiff = b.date.getTime() - a.date.getTime();
+        if (dateDiff !== 0) return dateDiff;
 
-setSelectedTab(tab: string): void {
-  this.selectedTab = tab;
-}
+        // Ako su datumi isti, sortiraj po kategoriji rastuće
+        if (!a.category) return 1;
+        if (!b.category) return -1;
+        return a.category.localeCompare(b.category);
+      });
+  }
+
+  onSplitTransaction(element: productsData) {
+    console.log('Split transaction clicked for:', element);
+    // Ovde ide dalja logika za split
+  }
 
   constructor() {
-
-    // yearly breakup chart
-    this.yearlyChart = {
-      series: [38, 40, 25],
-
-      chart: {
-        type: 'donut',
-        fontFamily: "'Plus Jakarta Sans', sans-serif;",
-        foreColor: '#adb0bb',
-        toolbar: {
-          show: false,
-        },
-        height: 130,
-      },
-      colors: ['#5D87FF', '#ECF2FF', '#F9F9FD'],
-      plotOptions: {
-        pie: {
-          startAngle: 0,
-          endAngle: 360,
-          donut: {
-            size: '75%',
-            background: 'transparent',
-          },
-        },
-      },
-      stroke: {
-        show: false,
-      },
-      dataLabels: {
-        enabled: false,
-      },
-      legend: {
-        show: false,
-      },
-      responsive: [
-        {
-          breakpoint: 991,
-          options: {
-            chart: {
-              width: 120,
-            },
-          },
-        },
-      ],
-      tooltip: {
-        enabled: false,
-      },
-    };
+    // ovde možeš imati chart i druge stvari
   }
 }

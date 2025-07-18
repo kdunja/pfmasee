@@ -10,13 +10,13 @@
           <div style="display: flex; justify-content: space-between; align-items: center;">
 
             <!-- Leva strana sa ikonom i brojem računa -->
-<div style="display: flex; align-items: center; gap: 12px;">
-  <mat-icon style="font-size: 25px; color: rgba(255, 255, 255);">account_balance_wallet</mat-icon>
-  <div>
-    <div style="font-size: 18px; font-weight: 600;">Current account</div>
-    <div style="font-size: 14px; opacity: 0.8;">1234 56678 89056</div>
-  </div>
-</div>
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <mat-icon style="font-size: 25px; color: rgba(255, 255, 255);">account_balance_wallet</mat-icon>
+              <div>
+                <div style="font-size: 18px; font-weight: 600;">Current account</div>
+                <div style="font-size: 14px; opacity: 0.8;">1234 56678 89056</div>
+              </div>
+            </div>
 
             <!-- Desna strana sa saldo i oznakom -->
             <div style="text-align: right;">
@@ -42,7 +42,7 @@
 
         <!-- Transactions tabela -->
         <div class="table-responsive m-t-16">
-          <table mat-table [dataSource]="dataSource" class="w-100">
+          <table mat-table [dataSource]="filteredData" class="w-100">
             
             <!-- Beneficiary Column -->
             <ng-container matColumnDef="assigned">
@@ -202,14 +202,14 @@
 
             <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 12px;">
               <mat-label>From</mat-label>
-              <input matInput [matDatepicker]="picker1">
+              <input matInput [matDatepicker]="picker1" />
               <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
               <mat-datepicker #picker1></mat-datepicker>
             </mat-form-field>
 
             <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 12px;">
               <mat-label>To</mat-label>
-              <input matInput [matDatepicker]="picker2">
+              <input matInput [matDatepicker]="picker2" />
               <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
               <mat-datepicker #picker2></mat-datepicker>
             </mat-form-field>
@@ -231,7 +231,7 @@
 
             <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 12px;">
               <mat-label>Beneficiary</mat-label>
-              <input matInput>
+              <input matInput />
               <button mat-icon-button matSuffix>
                 <mat-icon>search</mat-icon>
               </button>
@@ -250,4 +250,3 @@
   </div>
 
 </div>
-
