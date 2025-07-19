@@ -23,7 +23,7 @@ import { SidebarComponent } from './layouts/full/sidebar/sidebar.component';
 import { HeaderComponent } from './layouts/full/header/header.component';
 import { BrandingComponent } from './layouts/full/sidebar/branding.component';
 import { AppNavItemComponent } from './layouts/full/sidebar/nav-item/nav-item.component';
-import { TransactionListComponent } from './pages/transaction-list/transaction-list.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -34,7 +34,6 @@ import { TransactionListComponent } from './pages/transaction-list/transaction-l
     HeaderComponent,
     BrandingComponent,
     AppNavItemComponent,
-    TransactionListComponent,
   ],
   imports: [
     BrowserModule,
@@ -45,6 +44,7 @@ import { TransactionListComponent } from './pages/transaction-list/transaction-l
     ReactiveFormsModule,
     MaterialModule,
     TablerIconsModule.pick(TablerIcons),
+    MatCheckboxModule,
   ],
   exports: [TablerIconsModule],
   bootstrap: [AppComponent],

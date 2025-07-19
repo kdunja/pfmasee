@@ -27,9 +27,8 @@ import * as TablerIcons           from 'angular-tabler-icons/icons';
 
 // Your components
 import { AppDashboardComponent }  from './dashboard/dashboard.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
-// **DON’T** declare standalone components here — import them instead:
-import { TransactionListComponent } from './transaction-list/transaction-list.component';
 
 @NgModule({
   declarations: [
@@ -57,6 +56,7 @@ import { TransactionListComponent } from './transaction-list/transaction-list.co
     MatInputModule,
     MatDatepickerModule,
     MatNativeDateModule,
+     MatCheckboxModule,
 
 
     // Tabler icons

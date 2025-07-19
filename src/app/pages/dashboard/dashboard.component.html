@@ -51,16 +51,24 @@
                 <div style="display: flex; align-items: center; gap: 16px;">
                   <img [src]="element.imagePath" alt="users" width="40" class="rounded-circle" />
                   <div style="display: flex; flex-direction: column;">
-                    <h6 class="mat-subtitle-1 f-s-14 f-w-600">{{ element.uname }}</h6>
-                    <button
-                      mat-button
-                      color="primary"
-                      class="mat-body-1 f-s-12 bg-light-primary text-primary rounded-pill px-3 py-1"
-                      matTooltip="{{ element.category || 'Click to enter' }}"
-                      aria-label="Category tooltip"
-                    >
-                      {{ element.category || 'Click to enter' }}
-                    </button>
+                   <h6 class="mat-subtitle-1 f-s-14 f-w-600">{{ element.uname }}</h6>
+
+<!-- Novi red sa ID i Kind -->
+<span class="mat-caption" style="font-size: 11px; color: gray;">
+  ID: {{ element.id }} | Kind: {{ element.kind }}
+</span>
+
+<!-- Postojeći category badge ostaje -->
+<button
+  mat-button
+  color="primary"
+  class="mat-body-1 f-s-12 bg-light-primary text-primary rounded-pill px-3 py-1"
+  matTooltip="{{ element.category || 'Click to enter' }}"
+  aria-label="Category tooltip"
+>
+  {{ element.category || 'Click to enter' }}
+</button>
+
                   </div>
                 </div>
               </td>
@@ -91,22 +99,31 @@
 
             <!-- Currency + Split transaction Column -->
             <ng-container matColumnDef="budget">
-              <th mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">Currency</th>
-              <td mat-cell *matCellDef="let element" class="mat-body-1">
-                <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 6px;">
-                  <span>{{ element.budget }}k RSD</span>
-                  <button
-                    mat-stroked-button
-                    color="primary"
-                    class="f-s-10 mt-1"
-                    (click)="onSplitTransaction(element)"
-                    style="align-self: flex-start; padding: 2px 8px; font-weight: 500;"
-                  >
-                    Split transaction
-                  </button>
-                </div>
-              </td>
-            </ng-container>
+  <th mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">Currency</th>
+  <td mat-cell *matCellDef="let element" class="mat-body-1">
+    <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 6px;">
+      
+      <!-- Red sa iznosom i strelicom -->
+      <div style="display: flex; align-items: center; gap: 6px;">
+        <span>{{ element.budget * 1000 | number:'1.0-0' }} RSD</span>
+        <mat-icon *ngIf="element.direction === 'up'" style="color: green;">arrow_upward</mat-icon>
+        <mat-icon *ngIf="element.direction === 'down'" style="color: red;">arrow_downward</mat-icon>
+      </div>
+      
+      <!-- Dugme ispod -->
+      <button
+        mat-stroked-button
+        color="primary"
+        class="f-s-10 mt-1"
+        (click)="onSplitTransaction(element)"
+        style="padding: 2px 8px; font-weight: 500;"
+      >
+        Split transaction
+      </button>
+    </div>
+  </td>
+</ng-container>
+
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
@@ -247,6 +264,41 @@
         </div>
       </mat-card-content>
     </mat-card>
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-top: 32px; gap: 16px;">
+  <!-- Export sekcija -->
+  <div>
+    <p style="font-size: 14px; color: #666; font-weight: 500; margin-bottom: 8px;">EXPORT LIST OF TRANSACTIONS AS:</p>
+    <div style="display: flex; gap: 10px;">
+      <button mat-icon-button color="primary" aria-label="Export PDF">
+        <mat-icon>picture_as_pdf</mat-icon>
+      </button>
+      <button mat-icon-button color="primary" aria-label="Export XLS">
+        <mat-icon>grid_on</mat-icon>
+      </button>
+      <button mat-icon-button color="primary" aria-label="Export CSV">
+        <mat-icon>table_chart</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- Pagination sekcija -->
+  <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+    <button mat-button>PREV</button>
+    <button mat-raised-button color="primary">1</button>
+    <button mat-button>2</button>
+    <button mat-button>3</button>
+    <span style="padding: 0 6px;">...</span>
+    <button mat-button>98</button>
+    <button mat-button>99</button>
+    <button mat-button>100</button>
+    <button mat-button>NEXT</button>
+    <span style="margin-left: 10px; font-size: 13px; color: #888;">Page 2 of 100</span>
+  </div>
+</div>
+
   </div>
 
 </div>
+
+
+
