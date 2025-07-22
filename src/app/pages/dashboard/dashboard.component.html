@@ -1,3 +1,4 @@
+
 <div style="display: flex; flex-direction: row; gap: 20px; align-items: flex-start; flex-wrap: wrap; width: 100%;">
 
   <!-- Leva kolona -->
@@ -14,19 +15,23 @@
 
     <div style="margin-bottom: 20px;">
       <app-transaction-table
-        [dataSource]="filteredData"
-        [displayedColumns]="displayedColumns"
-        (splitTransaction)="onSplitTransaction($event)">
-      </app-transaction-table>
+  [dataSource]="paginatedData"
+  [displayedColumns]="displayedColumns"
+  (splitTransaction)="onSplitTransaction($event)">
+</app-transaction-table>
     </div>
 
     <div style="margin-bottom: 20px;">
-      <app-export-pagination></app-export-pagination>
+      <app-export-pagination
+  [currentPage]="currentPage"
+  [totalPages]="totalPages"
+  (pageChange)="onPageChange($event)">
+</app-export-pagination>
     </div>
   </div>
 
   <!-- Desna kolona -->
-  <div style="flex: 1 1 25%; min-width: 250px;">
+  <div style="flex: 1 1 15%; min-width: 250px;">
     <div style="margin-bottom: 20px;">
       <app-sidebar-tabs
         [selectedTab]="selectedTab"
@@ -40,7 +45,6 @@
   </div>
 
 </div>
-
 
 
 

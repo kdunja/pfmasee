@@ -18,16 +18,22 @@
 
   <!-- Pagination sekcija -->
   <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
-    <button mat-button>PREV</button>
-    <button mat-raised-button color="primary">1</button>
-    <button mat-button>2</button>
-    <button mat-button>3</button>
-    <span style="padding: 0 6px;">...</span>
-    <button mat-button>98</button>
-    <button mat-button>99</button>
-    <button mat-button>100</button>
-    <button mat-button>NEXT</button>
-    <span style="margin-left: 10px; font-size: 13px; color: #888;">Page 2 of 100</span>
-  </div>
+    <button mat-button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">PREV</button>
 
+    <ng-container *ngFor="let page of pageButtons">
+      <span *ngIf="page === -1" style="padding: 0 6px;">...</span>
+      <button *ngIf="page !== -1"
+              mat-raised-button
+              [color]="page === currentPage ? 'primary' : ''"
+              (click)="goToPage(page)">
+        {{ page }}
+      </button>
+    </ng-container>
+
+    <button mat-button (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">NEXT</button>
+    <span style="margin-left: 10px; font-size: 13px; color: #888;">
+      Page {{ currentPage }} of {{ totalPages }}
+    </span>
+  </div>
 </div>
+

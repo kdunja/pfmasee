@@ -8,6 +8,7 @@ import { TransactionTableComponent } from './dashboard/transaction-table/transac
 import { SidebarTabsComponent } from './dashboard/sidebar-tabs/sidebar-tabs.component';
 import { TransactionFiltersComponent } from './dashboard/transaction-filters/transaction-filters.component';
 import { ExportPaginationComponent } from './dashboard/export-pagination/export-pagination.component';
+import { HttpClientModule } from '@angular/common/http';
 
 
 
@@ -52,6 +53,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     FormsModule,
     PagesRoutingModule,
     NgApexchartsModule,
+    HttpClientModule,
 
     // Material
     MatCardModule,
