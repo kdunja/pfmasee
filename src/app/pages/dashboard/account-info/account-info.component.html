@@ -1,0 +1,28 @@
+<div style="background: linear-gradient(90deg, #00a0e4, #0077b6); color: white; border-radius: 8px; padding: 20px; margin-bottom: 16px;">
+  <div style="display: flex; justify-content: space-between; align-items: center;">
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <mat-icon style="font-size: 25px; color: rgba(255, 255, 255);">account_balance_wallet</mat-icon>
+      <div>
+        <div style="font-size: 18px; font-weight: 600;">Current account</div>
+        <div style="font-size: 14px; opacity: 0.8;">{{ accountNumber }}</div>
+      </div>
+    </div>
+
+    <div style="text-align: right;">
+      <div style="font-size: 24px; font-weight: 700;">{{ accountBalance }}</div>
+      <div style="font-size: 12px; opacity: 0.7;">AVAILABLE BALANCE</div>
+    </div>
+  </div>
+
+  <div style="margin-top: 16px; display: flex; gap: 12px; border-top: 1px solid rgba(255,255,255,0.3); padding-top: 10px;">
+    <button
+      *ngFor="let kind of kinds"
+      (click)="onKindSelected(kind)"
+      [style.backgroundColor]="selectedKind === kind ? '#004f7c' : 'transparent'"
+      [style.color]="selectedKind === kind ? 'white' : '#aaddff'"
+      style="border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-size: 14px; font-weight: 600;"
+    >
+      {{ kind }}
+    </button>
+  </div>
+</div>

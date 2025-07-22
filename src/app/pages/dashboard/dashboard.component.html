@@ -1,0 +1,48 @@
+<div style="display: flex; flex-direction: row; gap: 20px; align-items: flex-start; flex-wrap: wrap; width: 100%;">
+
+  <!-- Leva kolona -->
+  <div style="flex: 1 1 60%; min-width: 300px;">
+    <div style="margin-bottom: 20px;">
+      <app-account-info
+        [kinds]="kinds"
+        [selectedKind]="selectedKind"
+        [accountBalance]="'12,340,000.00 RSD'"
+        [accountNumber]="'1234 56678 89056'"
+        [onKindSelected]="onKindSelected">
+      </app-account-info>
+    </div>
+
+    <div style="margin-bottom: 20px;">
+      <app-transaction-table
+        [dataSource]="filteredData"
+        [displayedColumns]="displayedColumns"
+        (splitTransaction)="onSplitTransaction($event)">
+      </app-transaction-table>
+    </div>
+
+    <div style="margin-bottom: 20px;">
+      <app-export-pagination></app-export-pagination>
+    </div>
+  </div>
+
+  <!-- Desna kolona -->
+  <div style="flex: 1 1 25%; min-width: 250px;">
+    <div style="margin-bottom: 20px;">
+      <app-sidebar-tabs
+        [selectedTab]="selectedTab"
+        (tabChanged)="setSelectedTab($event)">
+      </app-sidebar-tabs>
+    </div>
+
+    <div *ngIf="selectedTab === 'overview'">
+      <app-transaction-filters></app-transaction-filters>
+    </div>
+  </div>
+
+</div>
+
+
+
+
+
+

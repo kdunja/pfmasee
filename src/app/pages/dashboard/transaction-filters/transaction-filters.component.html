@@ -1,0 +1,41 @@
+<mat-form-field appearance="outline" style="width: 100%; margin-bottom: 12px;">
+  <mat-label>From</mat-label>
+  <input matInput [matDatepicker]="picker1" />
+  <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+  <mat-datepicker #picker1></mat-datepicker>
+</mat-form-field>
+
+<mat-form-field appearance="outline" style="width: 100%; margin-bottom: 12px;">
+  <mat-label>To</mat-label>
+  <input matInput [matDatepicker]="picker2" />
+  <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+  <mat-datepicker #picker2></mat-datepicker>
+</mat-form-field>
+
+<mat-form-field appearance="outline" style="width: 100%; margin-bottom: 12px;">
+  <mat-label>Transaction Type</mat-label>
+  <mat-select>
+    <mat-option value="expenses">Expenses</mat-option>
+    <mat-option value="income">Income</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<mat-form-field appearance="outline" style="width: 100%; margin-bottom: 12px;">
+  <mat-label>Account</mat-label>
+  <mat-select>
+    <mat-option value="all">All accounts</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<mat-form-field appearance="outline" style="width: 100%; margin-bottom: 12px;">
+  <mat-label>Beneficiary</mat-label>
+  <input matInput />
+  <button mat-icon-button matSuffix>
+    <mat-icon>search</mat-icon>
+  </button>
+</mat-form-field>
+
+<div style="display: flex; flex-direction: column; gap: 8px; margin-top: 12px;">
+  <button mat-flat-button style="background-color: #7aa52d; color: white;">Filter Transactions</button>
+  <button mat-flat-button style="background-color: #00a2df; color: white;">Clear Selections</button>
+</div>

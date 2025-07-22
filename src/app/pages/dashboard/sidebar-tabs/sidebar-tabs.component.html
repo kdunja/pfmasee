@@ -1,0 +1,75 @@
+<div style="display: flex; flex-direction: column; gap: 12px; margin-top: 12px;">
+
+  <button mat-flat-button
+    (click)="setTab('overview')"
+    [ngStyle]="{
+      'background-color': selectedTab === 'overview' ? '#0078b6' : '#00a2df',
+      'color': 'white',
+      'justify-content': 'flex-start',
+      'border-radius': '8px',
+      'font-weight': '600',
+      'font-size': '14px',
+      'padding': '12px 16px',
+      'text-transform': 'none',
+      'display': 'flex',
+      'align-items': 'center'
+    }">
+    <mat-icon style="margin-right: 12px; font-size: 20px;">insights</mat-icon>
+    Financial Overview
+  </button>
+
+  <button mat-flat-button
+    (click)="setTab('budgets')"
+    [ngStyle]="{
+      'background-color': selectedTab === 'budgets' ? '#0078b6' : '#00a2df',
+      'color': 'white',
+      'justify-content': 'flex-start',
+      'border-radius': '8px',
+      'font-weight': '600',
+      'font-size': '14px',
+      'padding': '12px 16px',
+      'text-transform': 'none',
+      'display': 'flex',
+      'align-items': 'center'
+    }">
+    <mat-icon style="margin-right: 12px; font-size: 20px;">insert_chart</mat-icon>
+    Budgets
+  </button>
+
+  <button mat-flat-button
+    (click)="setTab('savings')"
+    [ngStyle]="{
+      'background-color': selectedTab === 'savings' ? '#0078b6' : '#00a2df',
+      'color': 'white',
+      'justify-content': 'flex-start',
+      'border-radius': '8px',
+      'font-weight': '600',
+      'font-size': '14px',
+      'padding': '12px 16px',
+      'text-transform': 'none',
+      'display': 'flex',
+      'align-items': 'center'
+    }">
+    <mat-icon style="margin-right: 12px; font-size: 20px;">savings</mat-icon>
+    Saving Goals
+  </button>
+
+  <button mat-flat-button
+    (click)="setTab('rules')"
+    [ngStyle]="{
+      'background-color': selectedTab === 'rules' ? '#0078b6' : '#00a2df',
+      'color': 'white',
+      'justify-content': 'flex-start',
+      'border-radius': '8px',
+      'font-weight': '600',
+      'font-size': '14px',
+      'padding': '12px 16px',
+      'text-transform': 'none',
+      'display': 'flex',
+      'align-items': 'center'
+    }">
+    <mat-icon style="margin-right: 12px; font-size: 20px;">rule</mat-icon>
+    Categorization Rules
+  </button>
+
+</div>
