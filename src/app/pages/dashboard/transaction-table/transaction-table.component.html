@@ -1,30 +1,72 @@
-<!-- TABELA SA DARK/TURQUOISE TEMOM I MODALIMA -->
+<style>
+  /* Primeni na sve tabele, redove i ćelije unutar ove stranice */
+  ::ng-deep .mat-table, 
+  ::ng-deep .mat-row, 
+  ::ng-deep .mat-header-row, 
+  ::ng-deep .mat-cell, 
+  ::ng-deep .mat-header-cell,
+  ::ng-deep tr, 
+  ::ng-deep td, 
+  ::ng-deep th {
+    border: none !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+  }
+</style>
 
-<div style="width:100%;max-width:950px;margin-top:32px;margin-left:20px;background:#253f36;border-radius:5px;overflow-x:auto;">
-  <table mat-table [dataSource]="dataSource" style="width:100%;font-size:13.5px;font-family:'Inter','Montserrat',Arial,sans-serif;color:#e5fff6;background:#253f36;border-radius:15px;">
+<div style="width:100%;max-width:950px;margin-top:32px;margin-left:20px;background:#001d51;border-radius:5px;overflow-x:auto;">
+  <div style="margin-bottom: 18px; text-align: right;">
+  <button
+    mat-flat-button
+    color="accent"
+    (click)="startMultiSelect()"
+    *ngIf="!multiSelectMode"
+    style="background:#001d51; color:#FBF9E4; border-radius:8px; min-width:140px; height:33px; font-size:13px; font-weight:600;">
+    Categorize multiple
+  </button>
+  <ng-container *ngIf="multiSelectMode">
+    <button
+      mat-flat-button
+      color="primary"
+      (click)="proceedMultiCategorization()"
+      [disabled]="selectedTransactionIds.length === 0"
+      style="background:#22e3a1; color:#103e33; border-radius:8px; min-width:140px; height:33px; font-size:13px; font-weight:600; margin-right:7px;">
+      Proceed with categorization
+    </button>
+    <button
+      mat-flat-button
+      color="warn"
+      (click)="cancelMultiSelect()"
+      style="background:#c77d6b; color:#fff; border-radius:8px; min-width:110px; height:33px; font-size:13px; font-weight:600;">
+      Cancel selection
+    </button>
+  </ng-container>
+</div>
+  
+  <table mat-table [dataSource]="dataSource" style="width:100%;font-size:13.5px;font-family:'Inter','Montserrat',Arial,sans-serif;color:#e5fff6;background:#373d64;border-radius:15px;">
     <!-- NAME + ID -->
     <ng-container matColumnDef="beneficiary">
-      <th mat-header-cell *matHeaderCellDef style="padding:14px 8px;background:#1c2c27;color:#aef7cf;font-weight:700;font-size:14px;">Name</th>
+      <th mat-header-cell *matHeaderCellDef style="padding:14px 8px;background:#5B88B2;color:#FBF9E4;font-weight:700;font-size:14px;">Name</th>
       <td mat-cell *matCellDef="let element" style="padding:10px 8px;">
         <div style="display:flex;flex-direction:column;">
-          <span style="font-weight:600;color:#aef7cf;">{{element['beneficiary-name']}}</span>
-          <span style="font-size:11px;color:#77cfa7;">ID: {{element.id}}</span>
+          <span style="font-weight:600;color:#FBF9E4;">{{element['beneficiary-name']}}</span>
+          <span style="font-size:11px;color:#C4BCB0;">ID: {{element.id}}</span>
         </div>
       </td>
     </ng-container>
 
     <!-- DATE -->
     <ng-container matColumnDef="date">
-      <th mat-header-cell *matHeaderCellDef style="padding:14px 8px;background:#1c2c27;color:#aef7cf;font-weight:700;font-size:14px;">Date</th>
-      <td mat-cell *matCellDef="let element" style="padding:10px 8px;color:#b9e4d2;">
+      <th mat-header-cell *matHeaderCellDef style="padding:14px 8px;background:#5B88B2;color:#FBF9E4;font-weight:700;font-size:14px;">Date</th>
+      <td mat-cell *matCellDef="let element" style="padding:10px 8px; font-size: 14px; color:#FBF9E4;">
         {{element.date | date:'dd.MM.yyyy'}}
       </td>
     </ng-container>
 
     <!-- AMOUNT + ARROW -->
     <ng-container matColumnDef="amount">
-      <th mat-header-cell *matHeaderCellDef style="padding:14px 8px;background:#1c2c27;color:#aef7cf;font-weight:700;font-size:14px;">Amount</th>
-      <td mat-cell *matCellDef="let element" style="font-size:15px; font-weight:400; padding:10px 8px; color:#fdfdfd;">
+      <th mat-header-cell *matHeaderCellDef style="padding:14px 8px;background:#5B88B2;color:#FBF9E4;font-weight:700;font-size:14px;">Amount</th>
+      <td mat-cell *matCellDef="let element" style="font-size:15px; font-weight:400; padding:10px 8px; color:#FBF9E4;">
         <mat-icon
     style="vertical-align:middle; margin-right:3px; font-size:17px;"
     [style.color]="element.direction === 'd' ? '#f04d5e' : '#43cb8e'">
@@ -36,7 +78,7 @@
 
     <!-- DESCRIPTION + CATEGORY + SPLIT + CHECKBOX -->
     <ng-container matColumnDef="description">
-      <th mat-header-cell *matHeaderCellDef style="padding:14px 8px;background:#1c2c27;color:#aef7cf;font-weight:700;font-size:14px;position:relative;">
+      <th mat-header-cell *matHeaderCellDef style="padding:14px 8px;background:#5B88B2;color:#FBF9E4;font-weight:700;font-size:14px;position:relative;">
         Description
         <button
           mat-flat-button
@@ -45,8 +87,8 @@
           *ngIf="!multiSelectMode"
           style="
             position:absolute;right:8px;top:50%;transform:translateY(-50%);
-            background:linear-gradient(90deg,#22e3a1 80%,#18e1b6 100%);
-            color:#103e33;border-radius:8px;min-width:140px;height:33px;
+            background:#001d51;
+            color:#FBF9E4;border-radius:8px;min-width:140px;height:33px;
             font-size:13px;font-weight:600;box-shadow:0 1px 6px #133c2a23;
             border:none;outline:none;">
           Categorize multiple
@@ -63,8 +105,8 @@
             style="margin-right:10px;width:18px;height:18px;accent-color:#22e3a1;background:#1c2c27;"
           />
           <div style="display:flex;flex-direction:column;min-width:120px;">
-            <span style="color:#aef7cf;">{{element.description}}</span>
-            <span style="font-size:11px;color:#77cfa7;">Kind: {{element.kind}}</span>
+            <span style="color:#FBF9E4;">{{element.description}}</span>
+            <span style="font-size:11px;color:#C4BCB0;">Kind: {{element.kind}}</span>
           </div>
           <!-- Dugme za kategoriju -->
           <button mat-flat-button color="primary"
@@ -91,10 +133,12 @@
     </ng-container>
 
     <!-- HEADER RED -->
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <!-- DATA REDOVI -->
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"
-        style="background:#253f36;border-bottom:1px solid #245746;"></tr>
+<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+<!-- DATA REDOVI -->
+<tr mat-row *matRowDef="let row; columns: displayedColumns"
+    style="background:#131936;">
+</tr>
+
   </table>
 </div>
 
