@@ -1,203 +1,187 @@
-<!-- Dugmad za multi-categorization iznad tabele -->
-<div style="margin: 16px 0; text-align: right;">
-  <button mat-flat-button color="accent" (click)="startMultiSelect()" *ngIf="!multiSelectMode">
-    Categorize multiple
-  </button>
-  <ng-container *ngIf="multiSelectMode">
-    <button mat-flat-button color="primary" (click)="proceedMultiCategorization()" [disabled]="selectedTransactionIds.length === 0">
-      Proceed with categorization
-    </button>
-    <button mat-flat-button color="warn" (click)="cancelMultiSelect()">
-      Cancel selection
-    </button>
-  </ng-container>
-</div>
+<!-- TABELA SA DARK/TURQUOISE TEMOM I MODALIMA -->
 
-<div style="width: 100%; max-width: 950px; margin: 0 auto; background: #fff; border-radius: 18px; box-shadow: 0 2px 24px rgba(44, 72, 124, 0.06); overflow-x: auto;">
-  <table mat-table [dataSource]="dataSource" style="font-size:13.5px;">
+<div style="width:100%;max-width:950px;margin:0 auto;background:#253f36;border-radius:5px;overflow-x:auto;">
 
-    <!-- Beneficiary: Name + ID -->
+  <table mat-table [dataSource]="dataSource" style="width:100%;font-size:13.5px;font-family:'Inter','Montserrat',Arial,sans-serif;color:#e5fff6;background:#253f36;border-radius:15px;">
+    <!-- NAME + ID -->
     <ng-container matColumnDef="beneficiary">
-      <th mat-header-cell *matHeaderCellDef style="font-size:14px; font-weight:600;">Beneficiary</th>
-      <td mat-cell *matCellDef="let element" style="padding:7px 8px;">
-        <div style="display: flex; flex-direction: column;">
-          <span style="font-weight: 600; color: #223368; font-size:13.5px;">{{ element['beneficiary-name'] }}</span>
-          <span style="font-size: 11px; color: #8893ad; margin-top: 1px;">
-            ID: {{ element.id }}
-          </span>
+      <th mat-header-cell *matHeaderCellDef style="padding:14px 8px;background:#1c2c27;color:#aef7cf;font-weight:700;font-size:14px;">Name</th>
+      <td mat-cell *matCellDef="let element" style="padding:10px 8px;">
+        <div style="display:flex;flex-direction:column;">
+          <span style="font-weight:600;color:#aef7cf;">{{element['beneficiary-name']}}</span>
+          <span style="font-size:11px;color:#77cfa7;">ID: {{element.id}}</span>
         </div>
       </td>
     </ng-container>
 
-    <!-- Date -->
+    <!-- DATE -->
     <ng-container matColumnDef="date">
-      <th mat-header-cell *matHeaderCellDef style="font-size:14px; font-weight:600;">Date</th>
-      <td mat-cell *matCellDef="let element" style="font-size:13.5px; padding:7px 8px;">
-        {{ element.date | date: 'dd.MM.yyyy' }}
+      <th mat-header-cell *matHeaderCellDef style="padding:14px 8px;background:#1c2c27;color:#aef7cf;font-weight:700;font-size:14px;">Date</th>
+      <td mat-cell *matCellDef="let element" style="padding:10px 8px;color:#b9e4d2;">
+        {{element.date | date:'dd.MM.yyyy'}}
       </td>
     </ng-container>
 
-    <!-- Amount + Arrow -->
+    <!-- AMOUNT + ARROW -->
     <ng-container matColumnDef="amount">
-      <th mat-header-cell *matHeaderCellDef style="font-size:14px; font-weight:600;">Amount</th>
-      <td mat-cell *matCellDef="let element" style="font-size:13.5px; font-weight:600; padding:7px 8px;">
+      <th mat-header-cell *matHeaderCellDef style="padding:14px 8px;background:#1c2c27;color:#aef7cf;font-weight:700;font-size:14px;">Amount</th>
+      <td mat-cell *matCellDef="let element" style="font-size:15px; font-weight:400; padding:10px 8px; color:#fdfdfd;">
         <mat-icon
-          style="vertical-align: middle; margin-right: 3px; font-size: 17px;"
-          [style.color]="element.direction === 'd' ? '#f04d5e' : '#43cb8e'">
-          {{ element.direction === 'd' ? 'arrow_downward' : element.direction === 'c' ? 'arrow_upward' : '' }}
-        </mat-icon>
-        {{ element.amount | number: '1.2-2' }} {{ element.currency }}
+    style="vertical-align:middle; margin-right:3px; font-size:17px;"
+    [style.color]="element.direction === 'd' ? '#f04d5e' : '#43cb8e'">
+    {{element.direction === 'd' ? 'arrow_downward' : (element.direction === 'c' ? 'arrow_upward' : '')}}
+  </mat-icon>
+       $ {{element.amount | number:'1.2-2'}} 
       </td>
     </ng-container>
 
-    <!-- Description + Kind + Split button/ikona + Category + Checkbox -->
+    <!-- DESCRIPTION + CATEGORY + SPLIT + CHECKBOX -->
     <ng-container matColumnDef="description">
-      <th mat-header-cell *matHeaderCellDef style="font-size:14px; font-weight:600;">Description</th>
-      <td mat-cell *matCellDef="let element" style="padding:7px 8px;">
-        <div style="display: flex; align-items: center; min-height: 38px; gap: 8px;">
-
+      <th mat-header-cell *matHeaderCellDef style="padding:14px 8px;background:#1c2c27;color:#aef7cf;font-weight:700;font-size:14px;position:relative;">
+        Description
+        <button
+          mat-flat-button
+          color="accent"
+          (click)="startMultiSelect()"
+          *ngIf="!multiSelectMode"
+          style="
+            position:absolute;right:8px;top:50%;transform:translateY(-50%);
+            background:linear-gradient(90deg,#22e3a1 80%,#18e1b6 100%);
+            color:#103e33;border-radius:8px;min-width:140px;height:33px;
+            font-size:13px;font-weight:600;box-shadow:0 1px 6px #133c2a23;
+            border:none;outline:none;">
+          Categorize multiple
+        </button>
+      </th>
+      <td mat-cell *matCellDef="let element" style="padding:10px 8px;">
+        <div style="display:flex;align-items:center;min-height:38px;gap:8px;">
           <!-- Checkbox za multi-select -->
-          <input 
+          <input
             *ngIf="multiSelectMode"
             type="checkbox"
             [checked]="selectedTransactionIds.includes(element.id)"
             (change)="toggleTransactionSelection(element.id)"
-            style="margin-right: 12px; width: 18px; height: 18px;"
+            style="margin-right:10px;width:18px;height:18px;accent-color:#22e3a1;background:#1c2c27;"
           />
-
-          <div style="display: flex; flex-direction: column; min-width: 120px;">
-            <span style="color: #223368; font-size:13.5px;">{{ element.description }}</span>
-            <span style="font-size: 11px; color: #8893ad; margin-top: 1px;">
-              Kind: {{ element.kind }}
-            </span>
+          <div style="display:flex;flex-direction:column;min-width:120px;">
+            <span style="color:#aef7cf;">{{element.description}}</span>
+            <span style="font-size:11px;color:#77cfa7;">Kind: {{element.kind}}</span>
           </div>
-
-          <!-- Dugme za kategoriju - PRVO ide ovo! -->
+          <!-- Dugme za kategoriju -->
           <button mat-flat-button color="primary"
-            style="font-size:12px; padding:2px 14px; min-width: 88px; height:22px; margin-left:16px; margin-right: 4px;"
-            (click)="openCategoryModal(element)"
-            [disabled]="multiSelectMode">
-            {{ getCategoryName(element.categoryId) || 'Add category' }}
+            style="font-size:12px;padding:2px 14px;min-width:88px;height:23px;margin-left:16px;margin-right:4px;
+              background:linear-gradient(90deg,#22e3a1 80%,#18e1b6 100%);
+              color:#103e33;border-radius:8px;font-weight:600;border:none;"
+            (click)="openCategoryModal(element)" [disabled]="multiSelectMode">
+            {{getCategoryName(element.categoryId) || 'Add category'}}
           </button>
-
-          <!-- Dugme za Split odmah POSLE kategorije -->
+          <!-- Dugme za Split -->
           <button *ngIf="!element.isSplit"
                   mat-stroked-button
-                  style="font-size:12px; padding:2px 14px; vertical-align:middle; height:22px; line-height:1.0; min-width: 56px;"
+                  style="font-size:12px;padding:2px 14px;height:23px;min-width:56px;border:1.5px solid #22e3a1;color:#22e3a1;border-radius:8px;background:#22372c;"
                   (click)="onSplitTransaction(element)"
                   [disabled]="multiSelectMode">
             Split
           </button>
           <mat-icon *ngIf="element.isSplit"
-                    style="font-size:17px; color:#0076d7; vertical-align:middle;">
+                    style="font-size:17px;color:#22e3a1;vertical-align:middle;">
             call_split
           </mat-icon>
         </div>
       </td>
     </ng-container>
 
+    <!-- HEADER RED -->
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    <!-- DATA REDOVI -->
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"
+        style="background:#253f36;border-bottom:1px solid #245746;"></tr>
   </table>
+</div>
 
-  <!-- MODAL ZA KATEGORIJU (SINGLE/MULTI) -->
-  <div *ngIf="showCategoryModal"
-      style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(30,40,60, 0.20); display: flex; align-items: center; justify-content: center; z-index: 2000;">
-    <div style="background: #fff; padding: 30px 28px 22px 28px; border-radius: 18px; min-width: 330px; min-height: 90px; box-shadow: 0 4px 32px rgba(44, 72, 124, 0.15); display: flex; flex-direction: column;">
-      <h3 style="margin-bottom: 18px; color: #223368;">
-        <!-- Prikazuj tekst u zavisnosti da li je multi-select -->
-        {{ multiSelectMode ? ('You have selected ' + selectedTransactionIds.length + ' transactions for categorization') : 'Choose category' }}
-      </h3>
-
-      <!-- Dropdown za kategoriju -->
-      <div style="margin-bottom: 18px;">
-        <label for="categorySelect" style="font-size:14px; color:#223368;">Category:</label><br>
-        <select id="categorySelect" name="categorySelect"
-                [(ngModel)]="selectedCategoryId"
-                style="padding: 6px 10px; border-radius: 7px; border: 1px solid #d3d9ed; font-size:13.5px; min-width: 160px;">
-          <option [ngValue]="null" disabled>Choose category</option>
-          <option *ngFor="let cat of categories" [ngValue]="cat.id">{{ cat.name }}</option>
-        </select>
-      </div>
-
-      <!-- Dropdown za podkategoriju -->
-      <div>
-        <label for="subcategorySelect" style="font-size:14px; color:#223368;">Subcategory:</label><br>
-        <select id="subcategorySelect" name="subcategorySelect"
-                [(ngModel)]="selectedSubcategoryId"
-                [disabled]="!selectedCategoryId"
-                style="padding: 6px 10px; border-radius: 7px; border: 1px solid #d3d9ed; font-size:13.5px; min-width: 160px;">
-          <option [ngValue]="null" disabled>Choose subcategory (optional)</option>
-          <option *ngFor="let sub of filteredSubcategories" [ngValue]="sub.id">
-            {{ sub.name }}
-          </option>
-        </select>
-      </div>
-
-      <div style="display: flex; justify-content: flex-end; margin-top: 24px; gap: 10px;">
-        <button (click)="closeCategoryModal()">Cancel</button>
-        <button (click)="applyCategory()">Apply</button>
-      </div>
+<!-- MODAL ZA KATEGORIJU (SINGLE/MULTI) -->
+<div *ngIf="showCategoryModal"
+  style="position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(30,40,60,0.20);display:flex;align-items:center;justify-content:center;z-index:2000;">
+  <div style="background:#1c2c27;padding:30px 28px 22px 28px;border-radius:18px;min-width:330px;min-height:90px;box-shadow:0 4px 32px #1c2c2788;display:flex;flex-direction:column;">
+    <h3 style="margin-bottom:18px;color:#aef7cf;">
+      {{multiSelectMode ? ('You have selected ' + selectedTransactionIds.length + ' transactions for categorization') : 'Choose category'}}
+    </h3>
+    <!-- Dropdown za kategoriju -->
+    <div style="margin-bottom:18px;">
+      <label for="categorySelect" style="font-size:14px;color:#aef7cf;">Category:</label><br>
+      <select id="categorySelect" name="categorySelect"
+              [(ngModel)]="selectedCategoryId"
+              style="padding:6px 10px;border-radius:7px;border:1px solid #22e3a1;font-size:13.5px;min-width:160px;background:#253f36;color:#aef7cf;">
+        <option [ngValue]="null" disabled>Choose category</option>
+        <option *ngFor="let cat of categories" [ngValue]="cat.id">{{cat.name}}</option>
+      </select>
+    </div>
+    <!-- Dropdown za podkategoriju -->
+    <div>
+      <label for="subcategorySelect" style="font-size:14px;color:#aef7cf;">Subcategory:</label><br>
+      <select id="subcategorySelect" name="subcategorySelect"
+              [(ngModel)]="selectedSubcategoryId"
+              [disabled]="!selectedCategoryId"
+              style="padding:6px 10px;border-radius:7px;border:1px solid #22e3a1;font-size:13.5px;min-width:160px;background:#253f36;color:#aef7cf;">
+        <option [ngValue]="null" disabled>Choose subcategory (optional)</option>
+        <option *ngFor="let sub of filteredSubcategories" [ngValue]="sub.id">{{sub.name}}</option>
+      </select>
+    </div>
+    <div style="display:flex;justify-content:flex-end;margin-top:24px;gap:10px;">
+      <button (click)="closeCategoryModal()" style="background:none;color:#ffb5b5;border:1px solid #444;padding:6px 16px;border-radius:8px;">Cancel</button>
+      <button (click)="applyCategory()" style="background:linear-gradient(90deg,#22e3a1,#18e1b6);color:#103e33;border:none;padding:6px 16px;border-radius:8px;font-weight:600;">Apply</button>
     </div>
   </div>
+</div>
 
-  <!-- MODAL ZA SPLIT TRANSACTION -->
-  <div *ngIf="splitModalOpen"
-       style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(30,40,60, 0.20); display: flex; align-items: center; justify-content: center; z-index: 2100;">
-    <div style="background: #fff; padding: 30px 28px 22px 28px; border-radius: 18px; min-width: 390px; min-height: 90px; box-shadow: 0 4px 32px rgba(44, 72, 124, 0.15); display: flex; flex-direction: column;">
-      <h3 style="margin-bottom: 8px; color: #223368;">Split transaction</h3>
-      <div style="color: #888; font-size: 14px; margin-bottom: 14px;">
-        Please split the transaction to categories:
-      </div>
-
-      <ng-container *ngFor="let part of splitParts; let i = index;">
-        <div style="border:1px solid #e3e8f4; border-radius: 9px; margin-bottom: 14px; padding: 12px 12px 8px 12px; position:relative;">
-          <!-- Kategorija -->
-          <select [(ngModel)]="splitParts[i].categoryId"
-                  style="padding: 6px 10px; border-radius: 7px; border: 1px solid #d3d9ed; font-size:13.5px; min-width: 180px;">
-            <option [ngValue]="null" disabled>Choose category</option>
-            <option *ngFor="let cat of categories" [ngValue]="cat.id">{{ cat.name }}</option>
-          </select>
-          <!-- Podkategorija -->
-          <select [(ngModel)]="splitParts[i].subcategoryId"
-                  [disabled]="!splitParts[i].categoryId"
-                  style="padding: 6px 10px; border-radius: 7px; border: 1px solid #d3d9ed; font-size:13.5px; min-width: 180px; margin-left:8px;">
-            <option [ngValue]="null" disabled>Choose subcategory (optional)</option>
-           <option *ngFor="let sub of getFilteredSplitSubcategories(splitParts[i].categoryId)" [ngValue]="sub.id">
-  {{ sub.name }}
-</option>
-          </select>
-          <!-- Amount -->
-          <input type="number" min="0.01" step="0.01"
-                 placeholder="Enter amount for this category"
-                 [(ngModel)]="splitParts[i].amount"
-                 style="margin-left:8px; font-size:13.5px; padding: 6px 10px; border-radius: 7px; border: 1px solid #d3d9ed; width: 120px;">
-          <!-- Remove split -->
-          <button *ngIf="splitParts.length > 2"
-                  (click)="removeSplitPart(i)"
-                  style="background:none; border:none; color:#f04d5e; margin-left:8px; font-size:15px; cursor:pointer;">
-            ✕
-          </button>
-        </div>
-      </ng-container>
-
-      <div style="margin-bottom: 18px;">
-        <button (click)="addSplitPart()" style="background:none; color:#0076d7; border:none; font-size:13px; cursor:pointer;">
-          + Add new category
+<!-- MODAL ZA SPLIT TRANSACTION -->
+<div *ngIf="splitModalOpen"
+   style="position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(30,40,60,0.20);display:flex;align-items:center;justify-content:center;z-index:2100;">
+  <div style="background:#1c2c27;padding:30px 28px 22px 28px;border-radius:18px;min-width:390px;min-height:90px;box-shadow:0 4px 32px #1c2c2788;display:flex;flex-direction:column;">
+    <h3 style="margin-bottom:8px;color:#aef7cf;">Split transaction</h3>
+    <div style="color:#aef7cf;font-size:14px;margin-bottom:14px;">Please split the transaction to categories:</div>
+    <ng-container *ngFor="let part of splitParts; let i = index;">
+      <div style="border:1px solid #22e3a1;border-radius:9px;margin-bottom:14px;padding:12px 12px 8px 12px;position:relative;display:flex;align-items:center;gap:8px;">
+        <!-- Kategorija -->
+        <select [(ngModel)]="splitParts[i].categoryId"
+                style="padding:6px 10px;border-radius:7px;border:1px solid #22e3a1;font-size:13.5px;min-width:180px;background:#253f36;color:#aef7cf;">
+          <option [ngValue]="null" disabled>Choose category</option>
+          <option *ngFor="let cat of categories" [ngValue]="cat.id">{{cat.name}}</option>
+        </select>
+        <!-- Podkategorija -->
+        <select [(ngModel)]="splitParts[i].subcategoryId"
+                [disabled]="!splitParts[i].categoryId"
+                style="padding:6px 10px;border-radius:7px;border:1px solid #22e3a1;font-size:13.5px;min-width:180px;background:#253f36;color:#aef7cf;">
+          <option [ngValue]="null" disabled>Choose subcategory (optional)</option>
+          <option *ngFor="let sub of getFilteredSplitSubcategories(splitParts[i].categoryId)" [ngValue]="sub.id">{{sub.name}}</option>
+        </select>
+        <!-- Amount -->
+        <input type="number" min="0.01" step="0.01"
+               placeholder="Amount"
+               [(ngModel)]="splitParts[i].amount"
+               style="font-size:13.5px;padding:6px 10px;border-radius:7px;border:1px solid #22e3a1;width:110px;background:#253f36;color:#aef7cf;">
+        <!-- Remove split -->
+        <button *ngIf="splitParts.length > 2"
+                (click)="removeSplitPart(i)"
+                style="background:none;border:none;color:#f04d5e;margin-left:8px;font-size:18px;cursor:pointer;">
+          ✕
         </button>
       </div>
-
-      <div style="color: #d7263d; font-size:13px; min-height: 18px;">
-        <!-- Prikaz validacije ako suma nije tačna -->
-        <span *ngIf="splitOriginal && splitSum() !== splitOriginal.amount">
-          Total must be {{ splitOriginal.amount }} (current: {{ splitSum() || 0 }})
-        </span>
-      </div>
-
-      <div style="display: flex; justify-content: flex-end; margin-top: 8px; gap: 10px;">
-        <button (click)="closeSplitModal()">Cancel</button>
-        <button (click)="applySplit()" [disabled]="splitSum() !== splitOriginal.amount">Apply</button>
-      </div>
+    </ng-container>
+    <div style="margin-bottom:18px;">
+      <button (click)="addSplitPart()" style="background:none;color:#22e3a1;border:none;font-size:13px;cursor:pointer;">+ Add new category</button>
+    </div>
+    <div style="color:#f04d5e;font-size:13px;min-height:18px;">
+      <span *ngIf="splitOriginal && splitSum() !== splitOriginal.amount">
+        Total must be {{splitOriginal.amount}} (current: {{splitSum() || 0}})
+      </span>
+    </div>
+    <div style="display:flex;justify-content:flex-end;margin-top:8px;gap:10px;">
+      <button (click)="closeSplitModal()" style="background:none;color:#ffb5b5;border:1px solid #444;padding:6px 16px;border-radius:8px;">Cancel</button>
+      <button (click)="applySplit()" [disabled]="splitSum() !== splitOriginal.amount"
+              style="background:linear-gradient(90deg,#22e3a1,#18e1b6);color:#103e33;border:none;padding:6px 16px;border-radius:8px;font-weight:600;">
+        Apply
+      </button>
     </div>
   </div>
 </div>

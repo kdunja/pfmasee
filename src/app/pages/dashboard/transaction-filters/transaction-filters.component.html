@@ -1,41 +1,63 @@
-<mat-form-field appearance="outline" style="width: 100%; margin-bottom: 12px;">
-  <mat-label>From</mat-label>
-  <input matInput [matDatepicker]="picker1" />
-  <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-  <mat-datepicker #picker1></mat-datepicker>
-</mat-form-field>
+<div style="width: 100%; max-width: 210px; margin: 0 auto; display: flex; flex-direction: column; gap: 2px;">
 
-<mat-form-field appearance="outline" style="width: 100%; margin-bottom: 12px;">
-  <mat-label>To</mat-label>
-  <input matInput [matDatepicker]="picker2" />
-  <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-  <mat-datepicker #picker2></mat-datepicker>
-</mat-form-field>
+  <!-- FROM -->
+  <mat-form-field appearance="outline"
+    style="width: 100%;">
+    <mat-label style="color: #aef7cf;">From</mat-label>
+    <input matInput [matDatepicker]="picker1" style="color:#aef7cf; font-weight:600;" />
+    <mat-datepicker-toggle matSuffix [for]="picker1">
+      <mat-icon matDatepickerToggleIcon style="color:#00eeb6;">calendar_today</mat-icon>
+    </mat-datepicker-toggle>
+    <mat-datepicker #picker1></mat-datepicker>
+  </mat-form-field>
 
-<mat-form-field appearance="outline" style="width: 100%; margin-bottom: 12px;">
-  <mat-label>Transaction Type</mat-label>
-  <mat-select>
-    <mat-option value="expenses">Expenses</mat-option>
-    <mat-option value="income">Income</mat-option>
-  </mat-select>
-</mat-form-field>
+  <!-- TO -->
+  <mat-form-field appearance="outline"
+    style="width: 100%;">
+    <mat-label style="color: #aef7cf;">To</mat-label>
+    <input matInput [matDatepicker]="picker2" style="color:#aef7cf; font-weight:600;" />
+    <mat-datepicker-toggle matSuffix [for]="picker2">
+      <mat-icon matDatepickerToggleIcon style="color:#00eeb6;">calendar_today</mat-icon>
+    </mat-datepicker-toggle>
+    <mat-datepicker #picker2></mat-datepicker>
+  </mat-form-field>
 
-<mat-form-field appearance="outline" style="width: 100%; margin-bottom: 12px;">
-  <mat-label>Account</mat-label>
-  <mat-select>
-    <mat-option value="all">All accounts</mat-option>
-  </mat-select>
-</mat-form-field>
+  <!-- TRANSACTION TYPE -->
+  <mat-form-field appearance="outline"
+    style="width: 100%;">
+    <mat-label style="color: #aef7cf;">Transaction Type</mat-label>
+    <mat-select style="color:#aef7cf; font-weight:600; background:#132925; border-radius: 8px;">
+      <mat-option value="expenses" style="color:#00eeb6; background:#132925;">Expenses</mat-option>
+      <mat-option value="income" style="color:#00eeb6; background:#132925;">Income</mat-option>
+    </mat-select>
+  </mat-form-field>
 
-<mat-form-field appearance="outline" style="width: 100%; margin-bottom: 12px;">
-  <mat-label>Beneficiary</mat-label>
-  <input matInput />
-  <button mat-icon-button matSuffix>
-    <mat-icon>search</mat-icon>
+  <!-- ACCOUNT -->
+  <mat-form-field appearance="outline"
+    style="width: 100%;">
+    <mat-label style="color: #aef7cf;">Account</mat-label>
+    <mat-select style="color:#aef7cf; font-weight:600; background:#132925; border-radius: 8px;">
+      <mat-option value="all" style="color:#00eeb6; background:#132925;">All accounts</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!-- BENEFICIARY -->
+  <mat-form-field appearance="outline"
+    style="width: 100%;">
+    <mat-label style="color: #aef7cf;">Beneficiary</mat-label>
+    <input matInput style="color:#aef7cf; font-weight:600;" />
+    <button mat-icon-button matSuffix>
+      <mat-icon style="color:#00eeb6;">search</mat-icon>
+    </button>
+  </mat-form-field>
+
+  <!-- BUTTONS -->
+  <button mat-flat-button
+    style="background-color: #00eeb6; color: #101f1c; border-radius: 10px; font-weight: 700; font-size: 15px; margin-top: 2px;">
+    Filter Transactions
   </button>
-</mat-form-field>
-
-<div style="display: flex; flex-direction: column; gap: 8px; margin-top: 12px;">
-  <button mat-flat-button style="background-color: #7aa52d; color: white;">Filter Transactions</button>
-  <button mat-flat-button style="background-color: #00a2df; color: white;">Clear Selections</button>
+  <button mat-flat-button
+    style="background-color: #132925; color: #aef7cf; border-radius: 10px; font-weight: 700; font-size: 15px;">
+    Clear Selections
+  </button>
 </div>

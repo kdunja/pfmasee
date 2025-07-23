@@ -1,39 +1,48 @@
-<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-top: 32px; gap: 16px;">
+<div style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap; margin-top: 32px; gap: 12px;">
+  <!-- PREV dugme -->
+  <button 
+    mat-button 
+    (click)="goToPage(currentPage - 1)" 
+    [disabled]="currentPage === 1"
+    style="background: none; color: #6c8781; border: none; font-size: 15px; padding: 7px 18px; border-radius: 7px;"
+    [style.opacity]="currentPage === 1 ? 0.5 : 1">
+    PREV
+  </button>
 
-  <!-- Export sekcija -->
-  <div>
-    <p style="font-size: 14px; color: #666; font-weight: 500; margin-bottom: 8px;">EXPORT LIST OF TRANSACTIONS AS:</p>
-    <div style="display: flex; gap: 10px;">
-      <button mat-icon-button color="primary" aria-label="Export PDF">
-        <mat-icon>picture_as_pdf</mat-icon>
-      </button>
-      <button mat-icon-button color="primary" aria-label="Export XLS">
-        <mat-icon>grid_on</mat-icon>
-      </button>
-      <button mat-icon-button color="primary" aria-label="Export CSV">
-        <mat-icon>table_chart</mat-icon>
-      </button>
-    </div>
-  </div>
+  <!-- Brojevi stranica i tri tačke -->
+  <ng-container *ngFor="let page of pageButtons">
+    <span *ngIf="page === -1" style="padding: 0 7px; color: #7de9be; font-size: 18px;">...</span>
+    <button *ngIf="page !== -1"
+            mat-raised-button
+            (click)="goToPage(page)"
+            [disabled]="page === currentPage"
+            [ngStyle]="{
+                'min-width': '36px',
+                'padding': '7px 0',
+                'margin': '0 2px',
+                'border-radius': '11px',
+                'background': page === currentPage ? 'linear-gradient(90deg,#22e3a1,#18e1b6)' : '#233e36',
+                'color': page === currentPage ? '#18332e' : '#7de9be',
+                'font-weight': 600,
+                'box-shadow': 'none',
+                'border': 'none',
+                'font-size': '15px'
+            }">
+      {{ page }}
+    </button>
+  </ng-container>
 
-  <!-- Pagination sekcija -->
-  <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
-    <button mat-button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">PREV</button>
+  <!-- NEXT dugme -->
+  <button 
+    mat-button 
+    (click)="goToPage(currentPage + 1)" 
+    [disabled]="currentPage === totalPages"
+    style="background: none; color: #6c8781; border: none; font-size: 15px; padding: 7px 18px; border-radius: 7px;"
+    [style.opacity]="currentPage === totalPages ? 0.5 : 1">
+    NEXT
+  </button>
 
-    <ng-container *ngFor="let page of pageButtons">
-      <span *ngIf="page === -1" style="padding: 0 6px;">...</span>
-      <button *ngIf="page !== -1"
-              mat-raised-button
-              [color]="page === currentPage ? 'primary' : ''"
-              (click)="goToPage(page)">
-        {{ page }}
-      </button>
-    </ng-container>
-
-    <button mat-button (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">NEXT</button>
-    <span style="margin-left: 10px; font-size: 13px; color: #888;">
-      Page {{ currentPage }} of {{ totalPages }}
-    </span>
-  </div>
+  <span style="margin-left: 15px; font-size: 14px; color: #7de9be;">
+    Page {{ currentPage }} of {{ totalPages }}
+  </span>
 </div>
-

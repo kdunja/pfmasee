@@ -1,75 +1,90 @@
-<div style="display: flex; flex-direction: column; gap: 12px; margin-top: 12px;">
+<div style="display: flex; flex-direction: column; gap: 16px; margin-top: 18px;">
 
   <button mat-flat-button
     (click)="setTab('overview')"
     [ngStyle]="{
-      'background-color': selectedTab === 'overview' ? '#0078b6' : '#00a2df',
-      'color': 'white',
+      'background': selectedTab === 'overview' ? '#132925' : '#101f1c',
+      'color': selectedTab === 'overview' ? '#00eeb6' : '#00eeb6',
+      'font-weight': selectedTab === 'overview' ? '600' : '400',
       'justify-content': 'flex-start',
-      'border-radius': '8px',
-      'font-weight': '600',
-      'font-size': '14px',
-      'padding': '12px 16px',
+      'border-radius': '10px',
+      'font-size': '16px',
+      'font-family': 'Montserrat, Inter, Arial, sans-serif',
+      'padding': '14px 22px',
       'text-transform': 'none',
       'display': 'flex',
-      'align-items': 'center'
+      'align-items': 'center',
+      'box-shadow': 'none',
+      'letter-spacing': '0.1px',
+      'border': selectedTab === 'overview' ? '1.5px solid #00eeb6' : '1.5px solid transparent'
     }">
-    <mat-icon style="margin-right: 12px; font-size: 20px;">insights</mat-icon>
+    <mat-icon style="margin-right: 16px; font-size: 20px; color:#00eeb6;">insights</mat-icon>
     Financial Overview
   </button>
 
   <button mat-flat-button
     (click)="setTab('budgets')"
     [ngStyle]="{
-      'background-color': selectedTab === 'budgets' ? '#0078b6' : '#00a2df',
-      'color': 'white',
+      'background': selectedTab === 'budgets' ? '#132925' : '#101f1c',
+      'color': selectedTab === 'budgets' ? '#00eeb6' : '#00eeb6',
+      'font-weight': selectedTab === 'budgets' ? '600' : '400',
       'justify-content': 'flex-start',
-      'border-radius': '8px',
-      'font-weight': '600',
-      'font-size': '14px',
-      'padding': '12px 16px',
+      'border-radius': '10px',
+      'font-size': '16px',
+      'font-family': 'Montserrat, Inter, Arial, sans-serif',
+      'padding': '14px 22px',
       'text-transform': 'none',
       'display': 'flex',
-      'align-items': 'center'
+      'align-items': 'center',
+      'box-shadow': 'none',
+      'letter-spacing': '0.1px',
+      'border': selectedTab === 'budgets' ? '1.5px solid #00eeb6' : '1.5px solid transparent'
     }">
-    <mat-icon style="margin-right: 12px; font-size: 20px;">insert_chart</mat-icon>
+    <mat-icon style="margin-right: 16px; font-size: 20px; color:#00eeb6;">insert_chart</mat-icon>
     Budgets
   </button>
 
   <button mat-flat-button
     (click)="setTab('savings')"
     [ngStyle]="{
-      'background-color': selectedTab === 'savings' ? '#0078b6' : '#00a2df',
-      'color': 'white',
+      'background': selectedTab === 'savings' ? '#132925' : '#101f1c',
+      'color': selectedTab === 'savings' ? '#00eeb6' : '#00eeb6',
+      'font-weight': selectedTab === 'savings' ? '600' : '400',
       'justify-content': 'flex-start',
-      'border-radius': '8px',
-      'font-weight': '600',
-      'font-size': '14px',
-      'padding': '12px 16px',
+      'border-radius': '10px',
+      'font-size': '16px',
+      'font-family': 'Montserrat, Inter, Arial, sans-serif',
+      'padding': '14px 22px',
       'text-transform': 'none',
       'display': 'flex',
-      'align-items': 'center'
+      'align-items': 'center',
+      'box-shadow': 'none',
+      'letter-spacing': '0.1px',
+      'border': selectedTab === 'savings' ? '1.5px solid #00eeb6' : '1.5px solid transparent'
     }">
-    <mat-icon style="margin-right: 12px; font-size: 20px;">savings</mat-icon>
+    <mat-icon style="margin-right: 16px; font-size: 20px; color:#00eeb6;">savings</mat-icon>
     Saving Goals
   </button>
 
   <button mat-flat-button
     (click)="setTab('rules')"
     [ngStyle]="{
-      'background-color': selectedTab === 'rules' ? '#0078b6' : '#00a2df',
-      'color': 'white',
+      'background': selectedTab === 'rules' ? '#132925' : '#101f1c',
+      'color': selectedTab === 'rules' ? '#00eeb6' : '#00eeb6',
+      'font-weight': selectedTab === 'rules' ? '600' : '400',
       'justify-content': 'flex-start',
-      'border-radius': '8px',
-      'font-weight': '600',
-      'font-size': '14px',
-      'padding': '12px 16px',
+      'border-radius': '10px',
+      'font-size': '16px',
+      'font-family': 'Montserrat, Inter, Arial, sans-serif',
+      'padding': '14px 22px',
       'text-transform': 'none',
       'display': 'flex',
-      'align-items': 'center'
+      'align-items': 'center',
+      'box-shadow': 'none',
+      'letter-spacing': '0.1px',
+      'border': selectedTab === 'rules' ? '1.5px solid #00eeb6' : '1.5px solid transparent'
     }">
-    <mat-icon style="margin-right: 12px; font-size: 20px;">rule</mat-icon>
+    <mat-icon style="margin-right: 16px; font-size: 20px; color:#00eeb6;">rule</mat-icon>
     Categorization Rules
   </button>
-
 </div>
