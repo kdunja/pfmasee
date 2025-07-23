@@ -36,32 +36,79 @@
     </ng-container>
 
     <!-- Description + Kind + Split button/ikona -->
-<ng-container matColumnDef="description">
-  <th mat-header-cell *matHeaderCellDef style="font-size:14px; font-weight:600;">Description</th>
-  <td mat-cell *matCellDef="let element" style="padding:7px 8px;">
-    <div style="display: flex; align-items: center; min-height: 38px;">
-      <div style="display: flex; flex-direction: column; min-width: 120px;">
-        <span style="color: #223368; font-size:13.5px;">{{ element.description }}</span>
-        <span style="font-size: 11px; color: #8893ad; margin-top: 1px;">
-          Kind: {{ element.kind }}
-        </span>
-      </div>
-      <button *ngIf="!element.isSplit"
-              mat-stroked-button
-              style="font-size:12px; padding:2px 18px; margin-left: auto; vertical-align:middle; height:22px; line-height:1.0; min-width: 56px;"
-              (click)="onSplitTransaction(element)">
-        Split
-      </button>
-      <mat-icon *ngIf="element.isSplit"
-                style="font-size:17px; color:#0076d7; margin-left:auto; vertical-align:middle;">
-        call_split
-      </mat-icon>
-    </div>
-  </td>
-</ng-container>
+    <ng-container matColumnDef="description">
+      <th mat-header-cell *matHeaderCellDef style="font-size:14px; font-weight:600;">Description</th>
+      <td mat-cell *matCellDef="let element" style="padding:7px 8px;">
+        <div style="display: flex; align-items: center; min-height: 38px; gap: 8px;">
+          <div style="display: flex; flex-direction: column; min-width: 120px;">
+            <span style="color: #223368; font-size:13.5px;">{{ element.description }}</span>
+            <span style="font-size: 11px; color: #8893ad; margin-top: 1px;">
+              Kind: {{ element.kind }}
+            </span>
+          </div>
 
+          <!-- Dugme za kategoriju - PRVO ide ovo! -->
+          <button mat-flat-button color="primary"
+  style="font-size:12px; padding:2px 14px; min-width: 88px; height:22px; margin-left:16px; margin-right: 4px;"
+  (click)="openCategoryModal(element)">
+  {{ getCategoryName(element.categoryId) || 'Add category' }}
+</button>
+
+
+          <!-- Dugme za Split odmah POSLE kategorije -->
+          <button *ngIf="!element.isSplit"
+                  mat-stroked-button
+                  style="font-size:12px; padding:2px 14px; vertical-align:middle; height:22px; line-height:1.0; min-width: 56px;"
+                  (click)="onSplitTransaction(element)">
+            Split
+          </button>
+          <mat-icon *ngIf="element.isSplit"
+                    style="font-size:17px; color:#0076d7; vertical-align:middle;">
+            call_split
+          </mat-icon>
+        </div>
+      </td>
+    </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
+
+  <!-- MODAL ZA KATEGORIJU -->
+  <div *ngIf="showCategoryModal"
+      style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(30,40,60, 0.20); display: flex; align-items: center; justify-content: center; z-index: 2000;">
+    <div style="background: #fff; padding: 30px 28px 22px 28px; border-radius: 18px; min-width: 330px; min-height: 90px; box-shadow: 0 4px 32px rgba(44, 72, 124, 0.15); display: flex; flex-direction: column;">
+      <h3 style="margin-bottom: 18px; color: #223368;">Choose category</h3>
+
+      <!-- Dropdown za kategoriju -->
+      <div style="margin-bottom: 18px;">
+        <label for="categorySelect" style="font-size:14px; color:#223368;">Category:</label><br>
+        <select id="categorySelect" name="categorySelect"
+                [(ngModel)]="selectedCategoryId"
+                style="padding: 6px 10px; border-radius: 7px; border: 1px solid #d3d9ed; font-size:13.5px; min-width: 160px;">
+          <option [ngValue]="null" disabled>Choose category</option>
+          <option *ngFor="let cat of categories" [ngValue]="cat.id">{{ cat.name }}</option>
+        </select>
+      </div>
+
+      <!-- Dropdown za podkategoriju -->
+      <div>
+        <label for="subcategorySelect" style="font-size:14px; color:#223368;">Subcategory:</label><br>
+        <select id="subcategorySelect" name="subcategorySelect"
+                [(ngModel)]="selectedSubcategoryId"
+                [disabled]="!selectedCategoryId"
+                style="padding: 6px 10px; border-radius: 7px; border: 1px solid #d3d9ed; font-size:13.5px; min-width: 160px;">
+          <option [ngValue]="null" disabled>Choose subcategory (optional)</option>
+          <option *ngFor="let sub of filteredSubcategories" [ngValue]="sub.id">
+            {{ sub.name }}
+          </option>
+        </select>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; margin-top: 24px; gap: 10px;">
+        <button (click)="closeCategoryModal()">Cancel</button>
+        <button (click)="applyCategory()">Apply</button>
+      </div>
+    </div>
+  </div>
 </div>
