@@ -1,8 +1,7 @@
-
 <div style="display: flex; flex-direction: row; gap: 20px; align-items: flex-start; flex-wrap: wrap; width: 100%;">
 
   <!-- Leva kolona -->
-  <div style="flex: 1 1 60%; min-width: 300px;">
+  <div style="flex: 1 1 60%; min-width: 300px; padding-left: 32px; padding-top: 32px;">
     <div style="margin-bottom: 20px;">
       <app-account-info
         [kinds]="kinds"
@@ -15,18 +14,18 @@
 
     <div style="margin-bottom: 20px;">
       <app-transaction-table
-  [dataSource]="paginatedData"
-  [displayedColumns]="displayedColumns"
-  (splitTransaction)="onSplitTransaction($event)">
-</app-transaction-table>
+        [dataSource]="paginatedData"
+        [displayedColumns]="displayedColumns"
+        (splitTransaction)="onSplitTransaction($event)">
+      </app-transaction-table>
     </div>
 
     <div style="margin-bottom: 20px;">
       <app-export-pagination
-  [currentPage]="currentPage"
-  [totalPages]="totalPages"
-  (pageChange)="onPageChange($event)">
-</app-export-pagination>
+        [currentPage]="currentPage"
+        [totalPages]="totalPages"
+        (pageChange)="onPageChange($event)">
+      </app-export-pagination>
     </div>
   </div>
 
@@ -45,6 +44,7 @@
   </div>
 
 </div>
+
 
 
 

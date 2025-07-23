@@ -1,13 +1,11 @@
 <mat-sidenav-container
-  class="mainWrapper blue_theme  light-theme"
+  class="mainWrapper blue_theme light-theme"
   autosize
   autoFocus
   dir="ltr"
+  style="background: #132925; min-height: 100vh; box-shadow: none; border: none;"
 >
-  <!-- ============================================================== -->
-  <!-- Vertical Sidebar -->
-  <!-- ============================================================== -->
-
+  <!-- Sidebar  -->
   <mat-sidenav
     #leftsidenav
     [mode]="isOver ? 'over' : 'side'"
@@ -15,28 +13,38 @@
     (openedChange)="onSidenavOpenedChange($event)"
     (closedStart)="onSidenavClosedStart()"
     class="sidebarNav"
+    style="
+      background: #132925; 
+      box-shadow: none; 
+      border: none; 
+      width: 174px;         
+      min-width: 0;
+      max-width: 210px;
+      padding: 0;
+      overflow-x: hidden;
+    "
   >
     <app-sidebar></app-sidebar>
   </mat-sidenav>
-  <!-- ============================================================== -->
-  <!-- Main Content -->
-  <!-- ============================================================== -->
-  <mat-sidenav-content class="contentWrapper">
-    <!-- ============================================================== -->
-    <!-- VerticalHeader -->
-    <!-- ============================================================== -->
 
+  <!-- Main Content -->
+  <mat-sidenav-content
+    class="contentWrapper"
+    style="background: #132925; min-height: 100vh; box-shadow: none; border: none;"
+  >
+    <!-- Header -->
     <app-header
       [showToggle]="!isOver"
       (toggleCollapsed)="toggleCollapsed()"
       (toggleMobileNav)="sidenav.toggle()"
     ></app-header>
 
-    <main class="pageWrapper">
-      <!-- ============================================================== -->
-      <!-- Outlet -->
-      <!-- ============================================================== -->
+    <main
+      class="pageWrapper"
+      style="background: #132925; min-height: 100vh; padding: 0; box-shadow: none; border: none;"
+    >
       <router-outlet></router-outlet>
     </main>
   </mat-sidenav-content>
 </mat-sidenav-container>
+
