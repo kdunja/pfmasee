@@ -1,6 +1,6 @@
 <!-- Fontovi su već dodati u <head> -->
 <div style="
-  background: linear-gradient(120deg, #5B88B2 60%, #FBF9E4 90%);
+  background: linear-gradient(135deg, rgba(91,136,178,0.72) 60%, rgba(251,249,228,0.75) 100%);
   border-radius: 18px;
   box-shadow: 0 3px 16px rgba(14, 48, 44, 0.13);
   padding: 21px 23px 18px 23px;
@@ -27,7 +27,7 @@
 </div>
 
 <div style="
-  background: linear-gradient(120deg, #113d39 70%, #164944 100%);
+  background: #2C365A;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(10,36,34,0.10);
   padding: 11px 18px 11px 18px;
@@ -40,8 +40,8 @@
 ">
   <button *ngFor="let kind of kinds"
     (click)="onKindSelected(kind)"
-    [style.backgroundColor]="selectedKind === kind ? '#195d55' : 'transparent'"
-    [style.color]="selectedKind === kind ? '#fff' : '#a9d2c6'"
+    [style.backgroundColor]="selectedKind === kind ? '#5B88B2' : 'transparent'"
+    [style.color]="selectedKind === kind ? '#EEE8DF' : '#EEE8DF'"
     style="
       border:none;
       border-radius: 4px;

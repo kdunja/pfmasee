@@ -4,14 +4,14 @@
     mat-button 
     (click)="goToPage(currentPage - 1)" 
     [disabled]="currentPage === 1"
-    style="background: none; color: #6c8781; border: none; font-size: 15px; padding: 7px 18px; border-radius: 7px;"
+    style="background: none; color: #FBF9E4; border: none; font-size: 15px; padding: 7px 18px; border-radius: 7px;"
     [style.opacity]="currentPage === 1 ? 0.5 : 1">
     PREV
   </button>
 
   <!-- Brojevi stranica i tri tačke -->
   <ng-container *ngFor="let page of pageButtons">
-    <span *ngIf="page === -1" style="padding: 0 7px; color: #7de9be; font-size: 18px;">...</span>
+    <span *ngIf="page === -1" style="padding: 0 7px; color: #FBF9E4; font-size: 18px;">...</span>
     <button *ngIf="page !== -1"
             mat-raised-button
             (click)="goToPage(page)"
@@ -21,8 +21,8 @@
                 'padding': '7px 0',
                 'margin': '0 2px',
                 'border-radius': '11px',
-                'background': page === currentPage ? 'linear-gradient(90deg,#22e3a1,#18e1b6)' : '#233e36',
-                'color': page === currentPage ? '#18332e' : '#7de9be',
+                'background': page === currentPage ? '5B88B2' : '#2C365A',
+                'color': page === currentPage ? '#FBF9E4' : '#FBF9E4',
                 'font-weight': 600,
                 'box-shadow': 'none',
                 'border': 'none',
@@ -37,12 +37,12 @@
     mat-button 
     (click)="goToPage(currentPage + 1)" 
     [disabled]="currentPage === totalPages"
-    style="background: none; color: #6c8781; border: none; font-size: 15px; padding: 7px 18px; border-radius: 7px;"
+    style="background: none; color: #FBF9E4; border: none; font-size: 15px; padding: 7px 18px; border-radius: 7px;"
     [style.opacity]="currentPage === totalPages ? 0.5 : 1">
     NEXT
   </button>
 
-  <span style="margin-left: 15px; font-size: 14px; color: #7de9be;">
+  <span style="margin-left: 15px; font-size: 14px; color: #FBF9E4;">
     Page {{ currentPage }} of {{ totalPages }}
   </span>
 </div>
