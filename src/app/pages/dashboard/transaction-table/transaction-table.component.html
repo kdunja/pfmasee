@@ -140,4 +140,64 @@
       </div>
     </div>
   </div>
+
+  <!-- MODAL ZA SPLIT TRANSACTION -->
+  <div *ngIf="splitModalOpen"
+       style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(30,40,60, 0.20); display: flex; align-items: center; justify-content: center; z-index: 2100;">
+    <div style="background: #fff; padding: 30px 28px 22px 28px; border-radius: 18px; min-width: 390px; min-height: 90px; box-shadow: 0 4px 32px rgba(44, 72, 124, 0.15); display: flex; flex-direction: column;">
+      <h3 style="margin-bottom: 8px; color: #223368;">Split transaction</h3>
+      <div style="color: #888; font-size: 14px; margin-bottom: 14px;">
+        Please split the transaction to categories:
+      </div>
+
+      <ng-container *ngFor="let part of splitParts; let i = index;">
+        <div style="border:1px solid #e3e8f4; border-radius: 9px; margin-bottom: 14px; padding: 12px 12px 8px 12px; position:relative;">
+          <!-- Kategorija -->
+          <select [(ngModel)]="splitParts[i].categoryId"
+                  style="padding: 6px 10px; border-radius: 7px; border: 1px solid #d3d9ed; font-size:13.5px; min-width: 180px;">
+            <option [ngValue]="null" disabled>Choose category</option>
+            <option *ngFor="let cat of categories" [ngValue]="cat.id">{{ cat.name }}</option>
+          </select>
+          <!-- Podkategorija -->
+          <select [(ngModel)]="splitParts[i].subcategoryId"
+                  [disabled]="!splitParts[i].categoryId"
+                  style="padding: 6px 10px; border-radius: 7px; border: 1px solid #d3d9ed; font-size:13.5px; min-width: 180px; margin-left:8px;">
+            <option [ngValue]="null" disabled>Choose subcategory (optional)</option>
+           <option *ngFor="let sub of getFilteredSplitSubcategories(splitParts[i].categoryId)" [ngValue]="sub.id">
+  {{ sub.name }}
+</option>
+          </select>
+          <!-- Amount -->
+          <input type="number" min="0.01" step="0.01"
+                 placeholder="Enter amount for this category"
+                 [(ngModel)]="splitParts[i].amount"
+                 style="margin-left:8px; font-size:13.5px; padding: 6px 10px; border-radius: 7px; border: 1px solid #d3d9ed; width: 120px;">
+          <!-- Remove split -->
+          <button *ngIf="splitParts.length > 2"
+                  (click)="removeSplitPart(i)"
+                  style="background:none; border:none; color:#f04d5e; margin-left:8px; font-size:15px; cursor:pointer;">
+            ✕
+          </button>
+        </div>
+      </ng-container>
+
+      <div style="margin-bottom: 18px;">
+        <button (click)="addSplitPart()" style="background:none; color:#0076d7; border:none; font-size:13px; cursor:pointer;">
+          + Add new category
+        </button>
+      </div>
+
+      <div style="color: #d7263d; font-size:13px; min-height: 18px;">
+        <!-- Prikaz validacije ako suma nije tačna -->
+        <span *ngIf="splitOriginal && splitSum() !== splitOriginal.amount">
+          Total must be {{ splitOriginal.amount }} (current: {{ splitSum() || 0 }})
+        </span>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; margin-top: 8px; gap: 10px;">
+        <button (click)="closeSplitModal()">Cancel</button>
+        <button (click)="applySplit()" [disabled]="splitSum() !== splitOriginal.amount">Apply</button>
+      </div>
+    </div>
+  </div>
 </div>

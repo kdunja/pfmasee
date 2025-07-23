@@ -48,14 +48,76 @@ export class TransactionTableComponent {
     return cat ? cat.name : null;
   }
 
-  // --- SPLIT ---
+  // --- SPLIT TRANSACTION MODAL ---
+  splitModalOpen = false;
+  splitOriginal: any = null;
+  splitParts: {
+    categoryId: number | null,
+    subcategoryId: number | null,
+    amount: number | null
+  }[] = [];
+
+  openSplitModal(transaction: any) {
+    this.splitModalOpen = true;
+    this.splitOriginal = transaction;
+    // Inicijalizuj 2 splita sa praznim vrednostima
+    this.splitParts = [
+      { categoryId: null, subcategoryId: null, amount: null },
+      { categoryId: null, subcategoryId: null, amount: null }
+    ];
+  }
+
+  closeSplitModal() {
+    this.splitModalOpen = false;
+    this.splitOriginal = null;
+    this.splitParts = [];
+  }
+
+  addSplitPart() {
+    this.splitParts.push({ categoryId: null, subcategoryId: null, amount: null });
+  }
+
+  getFilteredSplitSubcategories(categoryId: number | null) {
+  if (!categoryId) return [];
+  return this.subcategories.filter(s => s.categoryId === categoryId);
+}
+
+
+  removeSplitPart(index: number) {
+    if (this.splitParts.length > 2) {
+      this.splitParts.splice(index, 1);
+    }
+  }
+
+  splitSum(): number {
+    return this.splitParts.reduce((sum, part) => sum + (Number(part.amount) || 0), 0);
+  }
+
+  applySplit() {
+    if (!this.splitOriginal) return;
+    // Kreiraj novu transakciju za svaki split
+    for (const part of this.splitParts) {
+      const newTx = {
+        ...this.splitOriginal,
+        categoryId: part.categoryId,
+        subcategoryId: part.subcategoryId,
+        amount: part.amount,
+        isSplit: false,
+        id: Math.floor(Math.random() * 10000000) // (dummy id)
+      };
+      this.dataSource.push(newTx);
+    }
+    this.splitOriginal.isSplit = true;
+    this.closeSplitModal();
+  }
+
+  // --- SPLIT (staro, sad se koristi openSplitModal umesto onSplitTransaction) ---
   onSplitTransaction(item: any) {
-    this.splitTransaction.emit(item);
+    this.openSplitModal(item);
   }
 
   // --- SINGLE kategorisanje ---
   openCategoryModal(element: any): void {
-    // Onemogući otvaranje ako je multi-select aktivan!
     if (this.multiSelectMode) return;
     this.selectedTransaction = element;
     this.showCategoryModal = true;
@@ -87,7 +149,6 @@ export class TransactionTableComponent {
   proceedMultiCategorization() {
     this.selectedTransaction = null; // neće se koristiti u multi
     this.showCategoryModal = true;
-    // Nema smisla preselektovati jednu vrednost, možeš ostaviti prazno ili izabrati prvu
     this.selectedCategoryId = null;
     this.selectedSubcategoryId = null;
   }
@@ -111,13 +172,10 @@ export class TransactionTableComponent {
           tx.subcategoryId = this.selectedSubcategoryId;
         }
       }
-      // Opcionalno: neki feedback (npr. alert)
-      // alert('Kategorija primenjena na selektovane transakcije!');
-      this.cancelMultiSelect(); // Zatvori modal i resetuj multi
+      this.cancelMultiSelect();
     } else if (this.selectedTransaction) {
       this.selectedTransaction.categoryId = this.selectedCategoryId;
       this.selectedTransaction.subcategoryId = this.selectedSubcategoryId;
-      // alert('Kategorija primenjena!');
       this.closeCategoryModal();
     } else {
       this.closeCategoryModal();
