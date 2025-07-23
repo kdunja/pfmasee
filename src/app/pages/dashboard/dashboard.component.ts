@@ -11,35 +11,44 @@ export class AppDashboardComponent implements OnInit {
   @ViewChild('chart') chart: ChartComponent = Object.create(null);
 
   displayedColumns: string[] = [
-    'beneficiary', 'date', 'direction', 'amount', 'description'
+    'beneficiary', 'date', 'amount', 'description'
   ];
-  
 
-  kinds: string[] = ['EXECUTED', 'REJECTED', 'FUTURE', 'DRAFT', 'PENDING']; 
- selectedKind: string = 'pmt'; // ili neka vrednost iz JSON-a
+  // TABOVI za filtriranje
+  kinds: string[] = ['EXECUTED', 'REJECTED', 'FUTURE', 'DRAFT', 'PENDING'];
+  selectedKind: string = 'EXECUTED'; // sada odgovara grupi, ne JSON vrednosti!
 
   selectedTab: string = 'overview';
 
-  // PAGINACIJA
+  // Paginacija
   currentPage: number = 1;
-  pageSize: number = 5;
+  pageSize: number = 10;
   totalPages: number = 1;
 
   allTransactions: any[] = [];
   paginatedData: any[] = [];
 
+  // *** OVO je tvoj MAPIRANJE kind → grupa/tab ***
+  readonly kindGroupMap: { [key: string]: string } = {
+     pmt: 'EXECUTED',
+  fee: 'FUTURE',
+  wdw: 'EXECUTED',
+  sal: 'EXECUTED',
+  dep: 'FUTURE',
+  trf: 'PENDING'
+  };
+
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-  this.http.get<any[]>('assets/transactions.json')
-    .subscribe(data => {
-      console.log('Loaded transactions:', data); // vidi u konzoli
-      this.allTransactions = data.map(t => ({
-        ...t,
-        date: new Date(t.date)
-      }));
-      this.updatePagination();
-    });
+    this.http.get<any[]>('assets/transactions.json')
+      .subscribe(data => {
+        this.allTransactions = data.map(t => ({
+          ...t,
+          date: new Date(t.date)
+        }));
+        this.updatePagination();
+      });
   }
 
   setSelectedTab(tab: string): void {
@@ -52,31 +61,37 @@ export class AppDashboardComponent implements OnInit {
     this.updatePagination();
   };
 
+  // FILTER i SORT
   get filteredData(): any[] {
-  return this.allTransactions; // privremeno bez filtera!
-}
+    let data = this.allTransactions;
+    if (this.selectedKind) {
+      // PRAVI FILTER
+      data = data.filter(t => this.kindGroupMap[t.kind] === this.selectedKind);
+    }
+    // SORT: datum opadajuće, category rastuće
+    return data.sort((a, b) => {
+      const dateDiff = b.date.getTime() - a.date.getTime();
+      if (dateDiff !== 0) return dateDiff;
+      if (!a.category) return 1;
+      if (!b.category) return -1;
+      return a.category.localeCompare(b.category);
+    });
+  }
 
+  // PAGINACIJA
+  updatePagination() {
+    const filtered = this.filteredData;
+    this.totalPages = Math.max(1, Math.ceil(filtered.length / this.pageSize));
+    if (this.currentPage > this.totalPages) this.currentPage = this.totalPages;
+    const start = (this.currentPage - 1) * this.pageSize;
+    const end = start + this.pageSize;
+    this.paginatedData = filtered.slice(start, end);
+  }
 
-updatePagination() {
-  const filtered = this.filteredData;
-  console.log('FILTERED LENGTH:', filtered.length);
-  this.totalPages = Math.max(1, Math.ceil(filtered.length / this.pageSize));
-  if (this.currentPage > this.totalPages) this.currentPage = this.totalPages;
-  const start = (this.currentPage - 1) * this.pageSize;
-  const end = start + this.pageSize;
-  this.paginatedData = filtered.slice(start, end);
-  console.log('PAGINATED DATA IDs:', this.paginatedData.map(x => x.id));
-}
-
-
-
-onPageChange(page: number): void {
-  console.log('onPageChange called! Novi page:', page);
-  this.currentPage = page;
-  this.updatePagination();
-}
-
-
+  onPageChange(page: number): void {
+    this.currentPage = page;
+    this.updatePagination();
+  }
 
   onSplitTransaction(transaction: any): void {
     console.log('Split for transaction:', transaction);
