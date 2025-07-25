@@ -17,8 +17,8 @@
       background: #212842; 
       box-shadow: none; 
       border: none; 
-      width: 65px;
-      max-width: 65px;
+      width: 80px;
+      max-width: 80px;
       padding: 0;
       overflow-x: hidden;
     "
@@ -40,8 +40,16 @@
 
     <main
   class="pageWrapper"
-  style="background: #212842; min-height: 100vh; padding-top: 0; padding-left: 65px; box-shadow: none; border: none;"
+  style="
+    background: #212842;
+    min-height: 100vh;
+    padding-top: 0;
+    padding-left: 80px; /* povećano sa 65px */
+    box-shadow: none;
+    border: none;
+  "
 >
+
       <router-outlet></router-outlet>
     </main>
   </mat-sidenav-content>

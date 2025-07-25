@@ -15,9 +15,9 @@ interface CategoryData {
   templateUrl: './spending-charts.component.html'
 })
 export class SpendingChartsComponent {
-  view: [number, number] = [700, 300];
-  selectedChart: 'pie' | 'tree' = 'tree'; // Početni je tree
-
+  view: [number, number] = [650, 300];
+ 
+  selectedChart: 'pie' | 'tree' = 'tree';
   currentRootCategory: string | null = null;
   showNoDataMessage: boolean = false;
 

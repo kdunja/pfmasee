@@ -1,8 +1,15 @@
-<div style="width: 100%; max-width: 210px; margin: 0 auto; display: flex; flex-direction: column; gap: 2px;">
+<!-- WRAPPER -->
+<div style="
+  width: 100%;
+  max-width: 210px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+">
 
   <!-- FROM -->
-  <mat-form-field appearance="outline"
-    style="width: 100%;">
+  <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 4px;">
     <mat-label style="color: #EEE8DF;">From</mat-label>
     <input matInput [matDatepicker]="picker1" style="color:#aef7cf; font-weight:600;" />
     <mat-datepicker-toggle matSuffix [for]="picker1">
@@ -12,8 +19,7 @@
   </mat-form-field>
 
   <!-- TO -->
-  <mat-form-field appearance="outline"
-    style="width: 100%;">
+  <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 4px;">
     <mat-label style="color: #EEE8DF;">To</mat-label>
     <input matInput [matDatepicker]="picker2" style="color:#aef7cf; font-weight:600;" />
     <mat-datepicker-toggle matSuffix [for]="picker2">
@@ -23,27 +29,24 @@
   </mat-form-field>
 
   <!-- TRANSACTION TYPE -->
-  <mat-form-field appearance="outline"
-    style="width: 100%;">
+  <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 4px;">
     <mat-label style="color: #EEE8DF;">Transaction Type</mat-label>
-    <mat-select style="color:#EEE8DF; font-weight:600; border-radius: 8px;">
+    <mat-select style="color:#EEE8DF; font-weight:600;">
       <mat-option value="expenses" style="color:#EEE8DF;">Expenses</mat-option>
       <mat-option value="income" style="color:#EEE8DF;">Income</mat-option>
     </mat-select>
   </mat-form-field>
 
   <!-- ACCOUNT -->
-  <mat-form-field appearance="outline"
-    style="width: 100%;">
+  <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 4px;">
     <mat-label style="color: #EEE8DF;">Account</mat-label>
-    <mat-select style="color:#EEE8DF; font-weight:600; border-radius: 8px;">
+    <mat-select style="color:#EEE8DF; font-weight:600;">
       <mat-option value="all" style="color:#EEE8DF;">All accounts</mat-option>
     </mat-select>
   </mat-form-field>
 
   <!-- BENEFICIARY -->
-  <mat-form-field appearance="outline"
-    style="width: 100%;">
+  <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 6px;">
     <mat-label style="color: #EEE8DF;">Beneficiary</mat-label>
     <input matInput style="color:#EEE8DF; font-weight:600;" />
     <button mat-icon-button matSuffix>
@@ -53,11 +56,26 @@
 
   <!-- BUTTONS -->
   <button mat-flat-button
-    style="background-color: #5B88B2; color: #EEE8DF; border-radius: 10px; font-weight: 700; font-size: 15px; margin-bottom: 2px;">
+    style="background-color: #5B88B2;
+           color: #EEE8DF;
+           border-radius: 10px;
+           font-weight: 600;
+           font-size: 13px;
+           width: 100%;
+           padding: 4px 0;
+           margin-bottom: 2px;">
     Filter Transactions
   </button>
+
   <button mat-flat-button
-    style="background-color: #2C365A; color: #EEE8DF; border-radius: 10px; font-weight: 700; font-size: 15px; margin-top: 1px">
+    style="background-color: #2C365A;
+           color: #EEE8DF;
+           border-radius: 10px;
+           font-weight: 600;
+           font-size: 13px;
+           width: 100%;
+           padding: 4px 0;
+           margin-top: 0;">
     Clear Selections
   </button>
 </div>

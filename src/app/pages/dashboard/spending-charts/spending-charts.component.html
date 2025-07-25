@@ -1,41 +1,33 @@
 <!-- Glavna kartica -->
-<div style="background: #131936; border-radius: 8px; padding: 6px 16px 16px 16px;">
-  <!-- Naslov sa aktivnim tipom grafa -->
- <h3 style="color: #FBF9E4; margin: 4px 0 8px 0;">
-    Spending by Category ({{ selectedChart === 'tree' ? 'Tree Map' : 'Pie' }})
-  </h3>
+<div style="
+  background: #131936;
+  border-radius: 8px;
+  padding: 6px 16px 16px 16px;
+  width: 690px;
+  margin-left: 0px;
+  margin-right: 16px;
+">
 
-  <!-- Dugmad uvek prikazana u gornjem desnom uglu kartice -->
-  <div style="display: flex; justify-content: flex-end; gap: 12px; margin-bottom: 16px;">
-    <button 
-      (click)="selectedChart = 'pie'" 
-      [style.background-color]="selectedChart === 'pie' ? '#5B88B2' : '#2C365A'"
-      style="
-        color: white;
-        border: none;
-        border-radius: 8px;
-        padding: 8px 18px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-      ">
-      Pie Chart
-    </button>
 
-    <button 
-      (click)="selectedChart = 'tree'" 
-      [style.background-color]="selectedChart === 'tree' ? '#5B88B2' : '#2C365A'"
-      style="
-        color: white;
-        border: none;
-        border-radius: 8px;
-        padding: 8px 18px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-      ">
-      Tree Map
-    </button>
+  <!-- Naslov i dugmad u istom redu -->
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+    <h3 style="color: #FBF9E4; margin: 0; font-size: 14px;">
+      Spending by Category ({{ selectedChart === 'tree' ? 'Tree Map' : 'Pie' }})
+    </h3>
+    <div style="display: flex; gap: 8px;">
+      <button 
+        (click)="selectedChart = 'pie'" 
+        [style.background-color]="selectedChart === 'pie' ? '#5B88B2' : '#2C365A'"
+        style="color: white; border: none; border-radius: 8px; padding: 6px 16px; font-weight: 500; cursor: pointer;">
+        Pie Chart
+      </button>
+      <button 
+        (click)="selectedChart = 'tree'" 
+        [style.background-color]="selectedChart === 'tree' ? '#5B88B2' : '#2C365A'"
+        style="color: white; border: none; border-radius: 8px; padding: 6px 16px; font-weight: 500; cursor: pointer;">
+        Tree Map
+      </button>
+    </div>
   </div>
 
   <!-- PIE CHART -->
@@ -53,19 +45,11 @@
 
   <!-- TREE MAP -->
   <div *ngIf="selectedChart === 'tree'">
-    
     <!-- Dugme za povratak -->
-    <div *ngIf="currentRootCategory" style="margin-bottom: 16px;">
+    <div *ngIf="currentRootCategory" style="margin-bottom: 12px;">
       <button 
         (click)="goBackToMainTree()" 
-        style="
-          background-color: #2C365A;
-          color: white;
-          border: none;
-          border-radius: 6px;
-          padding: 6px 12px;
-          font-weight: 500;
-          cursor: pointer;">
+        style="background-color: #2C365A; color: white; border: none; border-radius: 6px; padding: 6px 12px; font-weight: 500; cursor: pointer;">
         ← Back to main categories
       </button>
     </div>
@@ -78,7 +62,7 @@
       <p style="color: white; font-size: 16px;">Sorry, there is no further data for this category.</p>
     </div>
 
-    <!-- Tree mapa ako ima podataka -->
+    <!-- Tree mapa -->
     <ngx-charts-tree-map
       *ngIf="!showNoDataMessage"
       [results]="treeMapData"
