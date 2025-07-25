@@ -8,7 +8,16 @@ export class SidebarTabsComponent {
   @Input() selectedTab: string = '';
   @Output() tabChanged = new EventEmitter<string>();
 
-  setTab(tab: string) {
+  tabs: string[] = ['overview', 'budgets', 'savings', 'rules'];
+
+  tabIconMap: { [key: string]: string } = {
+    overview: 'show_chart',       // ili 'analytics'
+    budgets: 'account_balance_wallet',
+    savings: 'savings',
+    rules: 'tune'                 // ili 'rule'
+  };
+
+  selectTab(tab: string) {
     this.tabChanged.emit(tab);
   }
 }

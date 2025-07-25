@@ -1,0 +1,86 @@
+<!-- Dugmad za prebacivanje -->
+<div style="display: flex; justify-content: flex-end; gap: 12px; margin-bottom: 16px;">
+  <button 
+    (click)="selectedChart = 'pie'" 
+    [style.background-color]="selectedChart === 'pie' ? '#5B88B2' : '#2C365A'"
+    style="
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 18px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    ">
+    Pie Chart
+  </button>
+
+  <button 
+    (click)="selectedChart = 'tree'" 
+    [style.background-color]="selectedChart === 'tree' ? '#5B88B2' : '#2C365A'"
+    style="
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 18px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    ">
+    Tree Map
+  </button>
+</div>
+
+<!-- PIE CHART -->
+<div *ngIf="selectedChart === 'pie'" style="background: #1E1E2F; border-radius: 8px; padding: 16px;">
+  <h3 style="color: white; margin-bottom: 8px;">Spending by Category (Pie)</h3>
+  <ngx-charts-pie-chart
+    [view]="view"
+    [results]="pieData"
+    [scheme]="colorScheme"
+    [legend]="true"
+    [doughnut]="true"
+    [labels]="true"
+    [animations]="true">
+  </ngx-charts-pie-chart>
+</div>
+
+<!-- TREE MAP -->
+<div *ngIf="selectedChart === 'tree'" style="background: #1E1E2F; border-radius: 8px; padding: 16px;">
+  <h3 style="color: white; margin-bottom: 8px;">Spending by Category (Tree Map)</h3>
+
+  <!-- Dugme za povratak -->
+  <div *ngIf="currentRootCategory" style="margin-bottom: 16px;">
+    <button 
+      (click)="goBackToMainTree()" 
+      style="
+        background-color: #2C365A;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 6px 12px;
+        font-weight: 500;
+        cursor: pointer;">
+      ← Back to main categories
+    </button>
+  </div>
+
+  <!-- Prikaz ako nema podataka (nema children) -->
+  <div *ngIf="showNoDataMessage" style="text-align: center; padding: 24px;">
+    <img src="https://img.freepik.com/free-vector/404-error-with-ufo-concept-illustration_114360-1880.jpg" 
+         alt="No data" 
+         style="width: 200px; margin-bottom: 16px;" />
+    <p style="color: white; font-size: 16px;">Sorry, there is no further data for this category.</p>
+  </div>
+
+  <!-- Prikaz mape samo ako ima podataka -->
+  <ngx-charts-tree-map
+    *ngIf="!showNoDataMessage"
+    [results]="treeMapData"
+    [view]="view"
+    [scheme]="colorScheme"
+    [animations]="true"
+    (select)="onCategorySelected($event)">
+  </ngx-charts-tree-map>
+</div>
+

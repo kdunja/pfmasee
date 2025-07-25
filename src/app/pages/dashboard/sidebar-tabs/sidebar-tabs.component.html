@@ -1,89 +1,22 @@
-<div style="display: flex; flex-direction: column; gap: 16px; margin-top: 18px;">
-
-  <button mat-flat-button
-    (click)="setTab('overview')"
-    [ngStyle]="{
-      'background': selectedTab === 'overview' ? '#5B88B2' : '#2C365A',
-      'color': selectedTab === 'overview' ? '#EEE8DF' : '#EEE8DF',
-      'font-weight': selectedTab === 'overview' ? '600' : '400',
-      'justify-content': 'flex-start',
-      'border-radius': '10px',
-      'font-size': '16px',
-      'font-family': 'Montserrat, Inter, Arial, sans-serif',
-      'padding': '14px 22px',
-      'text-transform': 'none',
-      'display': 'flex',
-      'align-items': 'center',
-      'box-shadow': 'none',
-      'letter-spacing': '0.1px',
-    }">
-    <mat-icon style="margin-right: 16px; font-size: 20px; color:#EEE8DF;">insights</mat-icon>
-    Financial Overview
-  </button>
-
-  <button mat-flat-button
-    (click)="setTab('budgets')"
-    [ngStyle]="{
-      'background': selectedTab === 'budgets' ? '#5B88B2' : '#2C365A',
-      'color': selectedTab === 'budgets' ? '#EEE8DF' : '#EEE8DF',
-      'font-weight': selectedTab === 'budgets' ? '600' : '400',
-      'justify-content': 'flex-start',
-      'border-radius': '10px',
-      'font-size': '16px',
-      'font-family': 'Montserrat, Inter, Arial, sans-serif',
-      'padding': '14px 22px',
-      'text-transform': 'none',
-      'display': 'flex',
-      'align-items': 'center',
-      'box-shadow': 'none',
-      'letter-spacing': '0.1px',
-      'border': selectedTab === 'budgets' ? '1.5px solid #00eeb6' : '1.5px solid transparent'
-    }">
-    <mat-icon style="margin-right: 16px; font-size: 20px; color:#EEE8DF;">insert_chart</mat-icon>
-    Budgets
-  </button>
-
-  <button mat-flat-button
-    (click)="setTab('savings')"
-    [ngStyle]="{
-      'background': selectedTab === 'savings' ? '#5B88B2' : '#2C365A',
-      'color': selectedTab === 'savings' ? '#EEE8DF' : '#EEE8DF',
-      'font-weight': selectedTab === 'savings' ? '600' : '400',
-      'justify-content': 'flex-start',
-      'border-radius': '10px',
-      'font-size': '16px',
-      'font-family': 'Montserrat, Inter, Arial, sans-serif',
-      'padding': '14px 22px',
-      'text-transform': 'none',
-      'display': 'flex',
-      'align-items': 'center',
-      'box-shadow': 'none',
-      'letter-spacing': '0.1px',
-      'border': selectedTab === 'savings' ? '1.5px solid #00eeb6' : '1.5px solid transparent'
-    }">
-    <mat-icon style="margin-right: 16px; font-size: 20px; color:#EEE8DF;">savings</mat-icon>
-    Saving Goals
-  </button>
-
-  <button mat-flat-button
-    (click)="setTab('rules')"
-    [ngStyle]="{
-      'background': selectedTab === 'rules' ? '#5B88B2' : '#2C365A',
-      'color': selectedTab === 'rules' ? '#EEE8DF' : '#EEE8DF',
-      'font-weight': selectedTab === 'rules' ? '600' : '400',
-      'justify-content': 'flex-start',
-      'border-radius': '10px',
-      'font-size': '16px',
-      'font-family': 'Montserrat, Inter, Arial, sans-serif',
-      'padding': '14px 22px',
-      'text-transform': 'none',
-      'display': 'flex',
-      'align-items': 'center',
-      'box-shadow': 'none',
-      'letter-spacing': '0.1px',
-      'border': selectedTab === 'rules' ? '1.5px solid #00eeb6' : '1.5px solid transparent'
-    }">
-    <mat-icon style="margin-right: 16px; font-size: 20px; color:#EEE8DF;">rule</mat-icon>
-    Categorization Rules
+<div style="display: flex; justify-content: space-around; gap: 16px; width: 100%; margin-top: 10px;">
+  <button
+    *ngFor="let tab of tabs"
+    (click)="selectTab(tab)"
+    [style.backgroundColor]="selectedTab === tab ? '#5B88B2' : '#394362'"
+    style="
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      cursor: pointer;
+      transition: 0.2s;
+      font-size: 22px;
+    "
+    matTooltip="{{ tab | titlecase }}">
+    <mat-icon>{{ tabIconMap[tab] }}</mat-icon>
   </button>
 </div>

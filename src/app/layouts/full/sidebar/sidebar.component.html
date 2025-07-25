@@ -1,61 +1,27 @@
-<!-- Sidebar full, spreman za copy-paste -->
-<div style="width: 215px; height: 100vh; background: #212842; display: flex; flex-direction: column; align-items: stretch; font-family: 'Montserrat', Arial, sans-serif; position: fixed; left: 0; top: 0; z-index: 100;">
+<!-- Tooltip stil (nije potreban dodatni CSS ako koristiš Angular Material) -->
 
-  <!-- Logo i ime aplikacije -->
-  <div style="display: flex; align-items: center; gap: 12px; background: #212842; border-radius: 13px; margin: 18px 14px 18px 14px; padding: 12px 14px;">
-    <img src="assets/images/logos/favicon.png" width="70" height="70" style="border-radius: 50%;"/>
-    <span style="color: #FBF9E4; font-size: 1.03rem; font-weight: 700; line-height: 1.12;">Personal Finance<br>Management</span>
+<!-- Sidebar -->
+<div style="width: 85px; background: #212842; padding: 24px 0 30px 0; font-family: 'Montserrat', Arial, sans-serif;">
+
+  <!-- Logo i naziv -->
+  <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 32px;">
+    <img src="assets/images/logos/favicon.png" alt="Logo" style="width: 70px; height: 70px; object-fit: contain;" />
   </div>
 
-  <!-- Sidebar meni (krug + ikonica + tekst, kao tvoja slika) -->
-  <nav style="flex:1 1 0;">
-    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px; margin-left: 14px;">
-      <span style="background: #5B88B2; width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-        <mat-icon style="color: #FBF9E4; font-size: 23px;">home</mat-icon>
-      </span>
-      <span style="color: #FBF9E4; font-weight: 500; font-size: 1rem;">Home</span>
-    </div>
-    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px; margin-left: 14px;">
-      <span style="background: #5B88B2; width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-        <mat-icon style="color: #FBF9E4; font-size: 23px;">credit_card</mat-icon>
-      </span>
-      <span style="color: #FBF9E4; font-weight: 500; font-size: 1rem;">My accounts</span>
-    </div>
-    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px; margin-left: 14px;">
-      <span style="background: #5B88B2; width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-        <mat-icon style="color: #FBF9E4; font-size: 23px;">account_balance</mat-icon>
-      </span>
-      <span style="color: #FBF9E4; font-weight: 500; font-size: 1rem;">Payments</span>
-    </div>
-    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px; margin-left: 14px;">
-      <span style="background: #5B88B2; width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-        <mat-icon style="color: #FBF9E4; font-size: 23px;">style</mat-icon>
-      </span>
-      <span style="color: #FBF9E4; font-weight: 500; font-size: 1rem;">Cards</span>
-    </div>
-    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px; margin-left: 14px;">
-      <span style="background: #5B88B2; width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-        <mat-icon style="color: #FBF9E4; font-size: 23px;">currency_exchange</mat-icon>
-      </span>
-      <span style="color: #FBF9E4; font-weight: 500; font-size: 1rem;">Currency<br>Exchange</span>
-    </div>
-    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px; margin-left: 14px;">
-      <span style="background: #5B88B2; width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-        <mat-icon style="color: #FBF9E4; font-size: 23px;">description</mat-icon>
-      </span>
-      <span style="color: #FBF9E4; font-weight: 500; font-size: 1rem;">Product<br>Catalogue</span>
-    </div>
-    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px; margin-left: 14px;">
-      <span style="background: #5B88B2; width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-        <mat-icon style="color: #FBF9E4; font-size: 23px;">bar_chart</mat-icon>
-      </span>
-      <span style="color: #FBF9E4; font-weight: 500; font-size: 1rem;">PFM</span>
-      
-    </div>
+  <!-- Sidebar ikone sa tooltipovima -->
+  <nav style="display: flex; flex-direction: column; align-items: center; gap: 22px;">
+    <span matTooltip="Home"><span style="background: #5B88B2; width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center;"><mat-icon style="color: #FBF9E4;">home</mat-icon></span></span>
+    <span matTooltip="My Accounts"><span style="background: #5B88B2; width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center;"><mat-icon style="color: #FBF9E4;">credit_card</mat-icon></span></span>
+    <span matTooltip="Payments"><span style="background: #5B88B2; width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center;"><mat-icon style="color: #FBF9E4;">account_balance</mat-icon></span></span>
+    <span matTooltip="Cards"><span style="background: #5B88B2; width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center;"><mat-icon style="color: #FBF9E4;">style</mat-icon></span></span>
+    <span matTooltip="Currency Exchange"><span style="background: #5B88B2; width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center;"><mat-icon style="color: #FBF9E4;">currency_exchange</mat-icon></span></span>
+    <span matTooltip="Product Catalogue"><span style="background: #5B88B2; width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center;"><mat-icon style="color: #FBF9E4;">description</mat-icon></span></span>
+    <span matTooltip="PFM"><span style="background: #5B88B2; width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center;"><mat-icon style="color: #FBF9E4;">bar_chart</mat-icon></span></span>
+    <span matTooltip="Self-care"><span style="background: #5B88B2; width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center;"><mat-icon style="color: #FBF9E4;">spa</mat-icon></span></span>
+    <span matTooltip="Support"><span style="background: #5B88B2; width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center;"><mat-icon style="color: #FBF9E4;">headset_mic</mat-icon></span></span>
   </nav>
 </div>
 
-<!-- Montserrat font link -->
+<!-- Montserrat font -->
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-
 

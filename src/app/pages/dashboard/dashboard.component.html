@@ -2,15 +2,16 @@
 
   <!-- Leva kolona -->
   <div style="flex: 1 1 60%; min-width: 300px; padding-left: 32px; padding-top: 32px;">
+
+    <app-spending-charts></app-spending-charts>
+
     <div style="margin-bottom: 20px;">
-      <app-account-info
-        [kinds]="kinds"
-        [selectedKind]="selectedKind"
-        [accountBalance]="'12,340,000.00 $'"
-        [accountNumber]="'1234 56678 89056'"
-        [onKindSelected]="onKindSelected">
-      </app-account-info>
-    </div>
+    <app-transaction-kind-filter
+      [kinds]="kinds"
+      [selectedKind]="selectedKind"
+      (kindSelected)="onKindSelected($event)">
+    </app-transaction-kind-filter>
+  </div>
 
     <div style="margin-bottom: 20px;">
       <app-transaction-table
@@ -29,16 +30,30 @@
     </div>
   </div>
 
-  <!-- Desna kolona -->
-  <div style="flex: 1 1 15%; min-width: 250px;">
-    <div style="margin-bottom: 20px;">
+  <!-- Desna kolona (kartica + kružni dugmići + filteri) -->
+  <div style="width: 300px; display: flex; flex-direction: column; align-items: center;">
+    
+    <!-- Kartica sa balansom -->
+    <div style="margin-bottom: 20px; width: 100%;">
+      <app-account-info
+        [kinds]="kinds"
+        [selectedKind]="selectedKind"
+        [accountBalance]="'12,340,000.00 $'"
+        [accountNumber]="'1234 56678 89056'"
+        [onKindSelected]="onKindSelected">
+      </app-account-info>
+    </div>
+
+    <!-- Sidebar dugmići kao kružne ikonice -->
+    <div style="margin-bottom: 20px; width: 100%;">
       <app-sidebar-tabs
         [selectedTab]="selectedTab"
         (tabChanged)="setSelectedTab($event)">
       </app-sidebar-tabs>
     </div>
 
-    <div *ngIf="selectedTab === 'overview'">
+    <!-- Filteri koji se prikazuju samo kad je overview selektovan -->
+    <div *ngIf="selectedTab === 'overview'" style="width: 100%;">
       <app-transaction-filters></app-transaction-filters>
     </div>
   </div>

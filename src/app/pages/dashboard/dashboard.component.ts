@@ -2,6 +2,8 @@ import { Component, ViewEncapsulation, ViewChild, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ChartComponent } from 'ng-apexcharts';
 
+
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
