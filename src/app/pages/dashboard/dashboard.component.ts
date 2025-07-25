@@ -22,7 +22,7 @@ export class AppDashboardComponent implements OnInit {
 
   // Paginacija
   currentPage: number = 1;
-  pageSize: number = 10;
+  pageSize: number = 7;
   totalPages: number = 1;
 
   allTransactions: any[] = [];
