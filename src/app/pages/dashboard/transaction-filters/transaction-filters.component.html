@@ -1,81 +1,64 @@
-<!-- WRAPPER -->
-<div style="
-  width: 100%;
-  max-width: 210px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-">
+<div style="display: flex; flex-direction: column; gap: 16px; padding: 10px;" class="filter-container">
 
-  <!-- FROM -->
-  <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 4px;">
-    <mat-label style="color: #EEE8DF;">From</mat-label>
-    <input matInput [matDatepicker]="picker1" style="color:#aef7cf; font-weight:600;" />
-    <mat-datepicker-toggle matSuffix [for]="picker1">
-      <mat-icon matDatepickerToggleIcon style="color:#EEE8DF;">calendar_today</mat-icon>
-    </mat-datepicker-toggle>
-    <mat-datepicker #picker1></mat-datepicker>
-  </mat-form-field>
+ <!-- From -->
+<mat-form-field appearance="outline">
+  <mat-label><span style="color: #F5F5F5;">From</span></mat-label>
+  <input matInput [matDatepicker]="fromPicker" [(ngModel)]="fromDate" style="color: #F5F5F5;">
+  <mat-datepicker-toggle matSuffix [for]="fromPicker">
+    <mat-icon matDatepickerToggleIcon style="color: #F5F5F5;">calendar_today</mat-icon>
+  </mat-datepicker-toggle>
+  <mat-datepicker #fromPicker></mat-datepicker>
+</mat-form-field>
 
-  <!-- TO -->
-  <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 4px;">
-    <mat-label style="color: #EEE8DF;">To</mat-label>
-    <input matInput [matDatepicker]="picker2" style="color:#aef7cf; font-weight:600;" />
-    <mat-datepicker-toggle matSuffix [for]="picker2">
-      <mat-icon matDatepickerToggleIcon style="color:#EEE8DF;">calendar_today</mat-icon>
-    </mat-datepicker-toggle>
-    <mat-datepicker #picker2></mat-datepicker>
-  </mat-form-field>
+<!-- To -->
+<mat-form-field appearance="outline">
+  <mat-label><span style="color: #F5F5F5;">To</span></mat-label>
+  <input matInput [matDatepicker]="toPicker" [(ngModel)]="toDate" style="color: #F5F5F5;">
+  <mat-datepicker-toggle matSuffix [for]="toPicker">
+    <mat-icon matDatepickerToggleIcon style="color: #F5F5F5;">calendar_today</mat-icon>
+  </mat-datepicker-toggle>
+  <mat-datepicker #toPicker></mat-datepicker>
+</mat-form-field>
 
-  <!-- TRANSACTION TYPE -->
-  <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 4px;">
-    <mat-label style="color: #EEE8DF;">Transaction Type</mat-label>
-    <mat-select style="color:#EEE8DF; font-weight:600;">
-      <mat-option value="expenses" style="color:#EEE8DF;">Expenses</mat-option>
-      <mat-option value="income" style="color:#EEE8DF;">Income</mat-option>
+
+  <!-- Transaction Type -->
+  <mat-form-field appearance="outline">
+    <mat-label><span style="color: #F5F5F5;">Transaction Type</span></mat-label>
+    <mat-select style="color: #F5F5F5;">
+      <mat-option value="type1">Type 1</mat-option>
+      <mat-option value="type2">Type 2</mat-option>
     </mat-select>
   </mat-form-field>
 
-  <!-- ACCOUNT -->
-  <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 4px;">
-    <mat-label style="color: #EEE8DF;">Account</mat-label>
-    <mat-select style="color:#EEE8DF; font-weight:600;">
-      <mat-option value="all" style="color:#EEE8DF;">All accounts</mat-option>
+  <!-- Account -->
+  <mat-form-field appearance="outline">
+    <mat-label><span style="color: #F5F5F5;">Account</span></mat-label>
+    <mat-select style="color: #F5F5F5;">
+      <mat-option value="acc1">Account 1</mat-option>
+      <mat-option value="acc2">Account 2</mat-option>
     </mat-select>
   </mat-form-field>
 
-  <!-- BENEFICIARY -->
-  <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 6px;">
-    <mat-label style="color: #EEE8DF;">Beneficiary</mat-label>
-    <input matInput style="color:#EEE8DF; font-weight:600;" />
-    <button mat-icon-button matSuffix>
-      <mat-icon style="color:#EEE8DF;">search</mat-icon>
-    </button>
+  <!-- Beneficiary -->
+  <mat-form-field appearance="outline">
+    <mat-label><span style="color: #F5F5F5;">Beneficiary</span></mat-label>
+    <input matInput style="color: #F5F5F5;">
   </mat-form-field>
 
-  <!-- BUTTONS -->
-  <button mat-flat-button
-    style="background-color: #5B88B2;
-           color: #EEE8DF;
-           border-radius: 10px;
-           font-weight: 600;
-           font-size: 13px;
-           width: 100%;
-           padding: 4px 0;
-           margin-bottom: 2px;">
+<!-- Buttons -->
+<div style="display: flex; gap: 12px; margin-top: 8px;">
+  <button
+    (click)="onFilterClick()"
+    style="background-color: #5B88B2; color: #F5F5F5; border: none; padding: 10px 16px; border-radius: 6px; cursor: pointer;">
     Filter Transactions
   </button>
 
-  <button mat-flat-button
-    style="background-color: #2C365A;
-           color: #EEE8DF;
-           border-radius: 10px;
-           font-weight: 600;
-           font-size: 13px;
-           width: 100%;
-           padding: 4px 0;
-           margin-top: 0;">
+  <button
+    (click)="onClearClick()"
+    style="background-color: transparent; color: #F5F5F5; border: 1px solid #5B88B2; padding: 10px 16px; border-radius: 6px; cursor: pointer;">
     Clear Selections
   </button>
+</div>
+
+
 </div>

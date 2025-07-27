@@ -11,8 +11,7 @@ import { ExportPaginationComponent } from './dashboard/export-pagination/export-
 import { HttpClientModule } from '@angular/common/http';
 import { TransactionKindFilterComponent } from './dashboard/transaction-kind-filter/transaction-kind.component';
 import { SpendingChartsComponent } from './dashboard/spending-charts/spending-charts.component';
-
-
+import { TooltipModule } from '@swimlane/ngx-charts';
 
 
 // Angular Material
@@ -58,6 +57,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     NgApexchartsModule,
     HttpClientModule,
     SpendingChartsComponent,
+    TooltipModule,
 
     // Material
     MatCardModule,

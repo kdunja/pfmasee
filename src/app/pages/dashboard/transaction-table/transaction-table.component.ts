@@ -7,6 +7,8 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 export class TransactionTableComponent {
   @Input() dataSource: any[] = [];
   @Input() displayedColumns: string[] = [];
+  @Input() categories: any[] = [];
+@Input() subcategories: any[] = [];
   @Output() splitTransaction = new EventEmitter<any>();
 
   // --- Single/Multi select kategorisanje ---
@@ -14,20 +16,6 @@ export class TransactionTableComponent {
   selectedTransaction: any = null;   // za single
   multiSelectMode = false;
   selectedTransactionIds: number[] = []; // za multi
-
-  // Kategorije i podkategorije
-  categories = [
-    { id: 1, name: 'Food & Drinks' },
-    { id: 2, name: 'Night-life' },
-    { id: 3, name: 'Mobile phone' }
-  ];
-  subcategories = [
-    { id: 1, categoryId: 1, name: 'Restaurants' },
-    { id: 2, categoryId: 1, name: 'Cafes' },
-    { id: 3, categoryId: 2, name: 'Bars' },
-    { id: 4, categoryId: 2, name: 'Clubs' },
-    { id: 5, categoryId: 3, name: 'Top-up' }
-  ];
 
   // Selekcija iz dropdowna (koristi se i za single i za multi)
   selectedCategoryId: number | null = null;

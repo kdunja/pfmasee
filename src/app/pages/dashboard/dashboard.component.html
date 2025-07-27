@@ -3,7 +3,11 @@
   <!-- Leva kolona -->
 <div style="flex: 1 1 65%; min-width: 300px; padding-left: 0px; padding-top: 32px;">
 
-    <app-spending-charts></app-spending-charts>
+<app-spending-charts
+  [transactions]="filteredData">
+</app-spending-charts>
+
+
 
     <div style="margin-bottom: 20px;">
     <app-transaction-kind-filter
@@ -15,10 +19,13 @@
 
     <div style="margin-bottom: 20px;">
       <app-transaction-table
-        [dataSource]="paginatedData"
-        [displayedColumns]="displayedColumns"
-        (splitTransaction)="onSplitTransaction($event)">
-      </app-transaction-table>
+  [dataSource]="paginatedData"
+  [displayedColumns]="displayedColumns"
+  [categories]="categories"
+  [subcategories]="subcategories"
+  (splitTransaction)="onSplitTransaction($event)">
+</app-transaction-table>
+
     </div>
 
     <div style="margin-bottom: 20px;">
@@ -54,7 +61,11 @@
 
     <!-- Filteri koji se prikazuju samo kad je overview selektovan -->
     <div *ngIf="selectedTab === 'overview'" style="width: 100%;">
-      <app-transaction-filters></app-transaction-filters>
+      <app-transaction-filters
+  (dateRangeSelected)="onDateRangeSelected($event)"
+  (filterTransactions)="updatePagination()"
+  (clearSelections)="onClearFilters()">
+</app-transaction-filters>
     </div>
   </div>
 

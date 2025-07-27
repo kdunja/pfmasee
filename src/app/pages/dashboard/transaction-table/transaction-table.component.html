@@ -14,24 +14,48 @@
 </style>
 
 <div style="width:100%;max-width:950px;margin-top:32px;margin-left:0px;background:#212842;border-radius:5px;overflow-x:auto;">
-  <div style="margin-bottom: 18px; text-align: right;">
-  <button
-    mat-flat-button
-    color="accent"
-    (click)="startMultiSelect()"
-    *ngIf="!multiSelectMode"
-    style="background:#373d64; color:#FBF9E4; border-radius:8px; min-width:140px; height:33px; font-size:13px; font-weight:600;">
-    Categorize multiple
-  </button>
-  <ng-container *ngIf="multiSelectMode">
+  
+<!-- TRANSACTIONS TRAKA SA SVIM DUGMIĆIMA -->
+<div style="
+  padding: 10px 24px;
+  background: #2C365A;
+  color: #FBF9E4;
+  font-weight: 600;
+  font-size: 14px;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+">
+
+  <!-- Leva strana: naslov -->
+  <span>Transactions</span>
+
+  <!-- Desna strana: dugmad -->
+  <ng-container *ngIf="!multiSelectMode">
+    <button
+      mat-flat-button
+      color="accent"
+      (click)="startMultiSelect()"
+      style="background:#373d64; color:#FBF9E4; border-radius:8px; min-width:140px; height:33px; font-size:13px; font-weight:600;">
+      Categorize multiple
+    </button>
+  </ng-container>
+
+<ng-container *ngIf="multiSelectMode">
+  <div style="display: flex; gap: 10px;">
     <button
       mat-flat-button
       color="primary"
       (click)="proceedMultiCategorization()"
       [disabled]="selectedTransactionIds.length === 0"
-      style="background:#5B88B2; color:#EEE8DF; border-radius:8px; min-width:140px; height:33px; font-size:13px; font-weight:600; margin-right:7px;">
+      style="background:#5B88B2; color:#EEE8DF; border-radius:8px; min-width:140px; height:33px; font-size:13px; font-weight:600;">
       Proceed with categorization
     </button>
+
     <button
       mat-flat-button
       color="warn"
@@ -39,19 +63,12 @@
       style="background:#c77d6b; color:#EEE8DF; border-radius:8px; min-width:110px; height:33px; font-size:13px; font-weight:600;">
       Cancel selection
     </button>
-  </ng-container>
+  </div>
+</ng-container>
+
+
 </div>
-  
-<!-- NASLOV IZNAD TABELE -->
-<div style="
-  padding: 8px 24px;
-  background: #2C365A;
-  color: #FBF9E4;
-  font-weight: 600;
-  font-size: 13px;
-  border-top-left-radius: 16px;
-  border-top-right-radius: 16px;">
-  Transactions
+
 </div>
 
   <table mat-table [dataSource]="dataSource" style="border-bottom-left-radius: 16px; border-bottom-right-radius: 16px; border-top-left-radius: 0; border-top-right-radius: 0;overflow: hidden;width:100%;font-size:11px;font-family:'Inter','Montserrat',Arial,sans-serif;color:#e5fff6;background:#373d64;">
@@ -176,7 +193,6 @@
 </tr>
 
   </table>
-</div>
 
 <!-- MODAL ZA KATEGORIJU (SINGLE/MULTI) -->
 <div *ngIf="showCategoryModal"

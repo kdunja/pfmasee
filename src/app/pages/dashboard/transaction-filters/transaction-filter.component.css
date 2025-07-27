@@ -1,0 +1,55 @@
+/* container oko filtera */
+.filter-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 50px;
+  max-width: 340px;
+  margin-left: auto;
+  margin-right: auto;
+  align-items: center;
+}
+
+/* INPUT POLJA */
+::ng-deep .mat-form-field {
+  width: 100% !important;
+}
+
+::ng-deep .mat-form-field-infix {
+  padding: 4px 0 !important;
+  height: 36px !important;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+}
+
+::ng-deep .mat-form-field-wrapper {
+  padding-bottom: 0 !important;
+}
+
+::ng-deep .mat-form-field-flex {
+  height: 36px !important;
+  align-items: center;
+}
+
+/* BUTTONI */
+button {
+  width: 100%;
+  height: 36px;
+  font-weight: bold;
+  font-size: 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.filter-button {
+  background-color: #5B88B2;
+  color: white;
+  margin-top: 12px;
+}
+
+.clear-button {
+  background-color: #2C365A;
+  color: white;
+}

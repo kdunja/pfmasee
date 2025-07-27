@@ -55,22 +55,21 @@
     </div>
 
     <!-- Poruka ako nema children -->
-    <div *ngIf="showNoDataMessage" style="text-align: center; padding: 24px;">
-      <img src="https://img.freepik.com/free-vector/404-error-with-ufo-concept-illustration_114360-1880.jpg" 
-           alt="No data" 
-           style="width: 200px; margin-bottom: 16px;" />
-      <p style="color: white; font-size: 16px;">Sorry, there is no further data for this category.</p>
-    </div>
+   <div *ngIf="showNoDataMessage" style="width: 400px; margin: 0 auto; text-align: center;">
+  <img src="assets/images/logos/eror.png" alt="No data" style="max-width: 120px; margin-bottom: 10px;" />
+  <p style="color: #EAE0C8; font-weight: 500; font-size: 14px; margin-top: 8px;">
+    Sorry, there is no further data for this category.
+  </p>
+</div>
+
 
     <!-- Tree mapa -->
     <ngx-charts-tree-map
       *ngIf="!showNoDataMessage"
-      [results]="treeMapData"
-      [view]="view"
-      [scheme]="colorScheme"
-      [animations]="true"
-      (select)="onCategorySelected($event)">
+  [results]="treeMapData"
+  [view]="view"
+  [scheme]="colorScheme"
+  (select)="onCategorySelected($event)">
     </ngx-charts-tree-map>
   </div>
 </div>
-
