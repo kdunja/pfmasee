@@ -1,42 +1,85 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 
 @Component({
   selector: 'app-transaction-table',
   templateUrl: './transaction-table.component.html'
 })
-export class TransactionTableComponent {
+export class TransactionTableComponent implements OnChanges {
   @Input() dataSource: any[] = [];
   @Input() displayedColumns: string[] = [];
   @Input() categories: any[] = [];
-@Input() subcategories: any[] = [];
+  @Input() subcategories: any[] = [];
   @Output() splitTransaction = new EventEmitter<any>();
 
-  // --- Single/Multi select kategorisanje ---
   showCategoryModal = false;
-  selectedTransaction: any = null;   // za single
+  selectedTransaction: any = null;
   multiSelectMode = false;
-  selectedTransactionIds: number[] = []; // za multi
+  selectedTransactionIds: number[] = [];
 
-  // Selekcija iz dropdowna (koristi se i za single i za multi)
   selectedCategoryId: number | null = null;
   selectedSubcategoryId: number | null = null;
 
-  // --- GETTER za filtrirane podkategorije ---
-  get filteredSubcategories() {
-    if (!this.selectedCategoryId) {
-      return [];
+  categoryKeywordMap: { [key: string]: string } = {
+    'glovo': 'Food & Dining',
+    'wolt': 'Food & Dining',
+    'gift': 'Gifts & Donations',
+    'adobe': 'Shopping',
+    'gym': 'Health & Fitness',
+    'parking': 'Auto & Transport',
+    'fit': 'Health & Fitness',
+    'spa': 'Personal Care'
+  };
+
+  ngOnChanges(): void {
+    this.autoCategorizeAll();
+  }
+
+  autoCategorizeAll(): void {
+    if (!this.dataSource?.length || !this.categories?.length) return;
+
+    for (const tx of this.dataSource) {
+      if (!tx.categoryId) {
+        const categoryName = this.getCategoryFromDescription(tx.description);
+        const matchedCategory = this.categories.find(c => c.name === categoryName);
+        if (matchedCategory) {
+          tx.categoryId = matchedCategory.id;
+        }
+      }
     }
+  }
+
+  getCategoryFromDescription(description: string): string | null {
+    const lowerDesc = description.toLowerCase();
+    for (const keyword in this.categoryKeywordMap) {
+      if (lowerDesc.includes(keyword)) {
+        return this.categoryKeywordMap[keyword];
+      }
+    }
+    return null;
+  }
+
+  assignAutoCategory(transaction: any): void {
+    const categoryName = this.getCategoryFromDescription(transaction.description);
+    const matchedCategory = this.categories.find(c => c.name === categoryName);
+    if (matchedCategory) {
+      transaction.categoryId = matchedCategory.id;
+      transaction.subcategoryId = null;
+    } else {
+      alert(`No matching category for "${transaction.description}"`);
+    }
+  }
+
+  get filteredSubcategories() {
+    if (!this.selectedCategoryId) return [];
     return this.subcategories.filter(sc => sc.categoryId === this.selectedCategoryId);
   }
 
-  // --- Vrati ime kategorije iz id-ja (za prikaz u tabeli) ---
   getCategoryName(categoryId: number | null): string | null {
     if (!categoryId) return null;
     const cat = this.categories.find(c => c.id === categoryId);
     return cat ? cat.name : null;
   }
 
-  // --- SPLIT TRANSACTION MODAL ---
   splitModalOpen = false;
   splitOriginal: any = null;
   splitParts: {
@@ -48,7 +91,6 @@ export class TransactionTableComponent {
   openSplitModal(transaction: any) {
     this.splitModalOpen = true;
     this.splitOriginal = transaction;
-    // Inicijalizuj 2 splita sa praznim vrednostima
     this.splitParts = [
       { categoryId: null, subcategoryId: null, amount: null },
       { categoryId: null, subcategoryId: null, amount: null }
@@ -66,10 +108,9 @@ export class TransactionTableComponent {
   }
 
   getFilteredSplitSubcategories(categoryId: number | null) {
-  if (!categoryId) return [];
-  return this.subcategories.filter(s => s.categoryId === categoryId);
-}
-
+    if (!categoryId) return [];
+    return this.subcategories.filter(s => s.categoryId === categoryId);
+  }
 
   removeSplitPart(index: number) {
     if (this.splitParts.length > 2) {
@@ -83,7 +124,6 @@ export class TransactionTableComponent {
 
   applySplit() {
     if (!this.splitOriginal) return;
-    // Kreiraj novu transakciju za svaki split
     for (const part of this.splitParts) {
       const newTx = {
         ...this.splitOriginal,
@@ -91,7 +131,9 @@ export class TransactionTableComponent {
         subcategoryId: part.subcategoryId,
         amount: part.amount,
         isSplit: false,
-        id: Math.floor(Math.random() * 10000000) // (dummy id)
+        isPartOfSplit: true,              
+        parentId: this.splitOriginal.id,
+        id: Math.floor(Math.random() * 10000000)
       };
       this.dataSource.push(newTx);
     }
@@ -99,21 +141,33 @@ export class TransactionTableComponent {
     this.closeSplitModal();
   }
 
-  // --- SPLIT (staro, sad se koristi openSplitModal umesto onSplitTransaction) ---
+  getSplitCategories(parentId: number): string[] {
+    const children = this.dataSource.filter(t => t.parentId === parentId);
+    const names: string[] = [];
+
+    for (const child of children) {
+      const category = this.categories.find(c => c.id === child.categoryId);
+      if (category && !names.includes(category.name)) {
+        names.push(category.name);
+      }
+    }
+
+    return names;
+  }
+
   onSplitTransaction(item: any) {
     this.openSplitModal(item);
   }
 
-  // --- SINGLE kategorisanje ---
   openCategoryModal(element: any): void {
     if (this.multiSelectMode) return;
+
     this.selectedTransaction = element;
     this.showCategoryModal = true;
     this.selectedCategoryId = element.categoryId || null;
     this.selectedSubcategoryId = element.subcategoryId || null;
   }
 
-  // --- MULTI kategorisanje ---
   startMultiSelect() {
     this.multiSelectMode = true;
     this.selectedTransactionIds = [];
@@ -135,13 +189,12 @@ export class TransactionTableComponent {
   }
 
   proceedMultiCategorization() {
-    this.selectedTransaction = null; // neće se koristiti u multi
+    this.selectedTransaction = null;
     this.showCategoryModal = true;
     this.selectedCategoryId = null;
     this.selectedSubcategoryId = null;
   }
 
-  // --- Modal zatvaranje ---
   closeCategoryModal(): void {
     this.showCategoryModal = false;
     this.selectedTransaction = null;
@@ -149,10 +202,8 @@ export class TransactionTableComponent {
     this.selectedSubcategoryId = null;
   }
 
-  // --- APPLY kategorija (single i multi) ---
   applyCategory(): void {
     if (this.multiSelectMode && this.selectedTransactionIds.length > 0) {
-      // Za svaku selektovanu transakciju dodeli novu kategoriju/podkategoriju
       for (const id of this.selectedTransactionIds) {
         const tx = this.dataSource.find(tr => tr.id === id);
         if (tx) {

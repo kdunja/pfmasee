@@ -142,25 +142,35 @@
 
       <!-- Desna strana: dugmad -->
       <div style="padding:10px 24px 10px 16px;display:flex; align-items:center; gap:8px;">
-        <!-- Dugme za kategoriju -->
-        <button mat-flat-button color="primary"
-          style="font-size:12px;
-                 padding:4px 14px;
-                 min-width:100px;
-                 height:28px;
-                 background:#5B88B2;
-                 color:#FBF9E4;
-                 border-radius:8px;
-                 font-weight:500;
-                 border:none;
-                 white-space:nowrap;
-                 text-align:center;
-                 overflow:hidden;
-                 text-overflow:ellipsis;"
-          (click)="openCategoryModal(element)"
-          [disabled]="multiSelectMode">
-          {{getCategoryName(element.categoryId) || 'Add category'}}
-        </button>
+       <!-- Dugme za kategoriju -->
+<button mat-flat-button color="primary"
+        style="font-size:12px;
+               padding:4px 14px;
+               min-width:100px;
+               height:28px;
+               background:#5B88B2;
+               color:#FBF9E4;
+               border-radius:8px;
+               font-weight:500;
+               border:none;
+               white-space:nowrap;
+               text-align:center;
+               overflow:hidden;
+               text-overflow:ellipsis;"
+        (click)="openCategoryModal(element)"
+        [disabled]="multiSelectMode">
+
+  <!-- Ako ima kategoriju, prikaži naziv -->
+  <ng-container *ngIf="element.categoryId; else addText">
+    {{ getCategoryName(element.categoryId) }}
+  </ng-container>
+
+  <!-- Inače prikaži 'Add category' -->
+  <ng-template #addText>
+    Add category
+  </ng-template>
+
+</button>
 
         <!-- Dugme za Split -->
         <button *ngIf="!element.isSplit"
@@ -179,10 +189,11 @@
         </button>
 
         <!-- Ikonica ako je već split -->
-        <mat-icon *ngIf="element.isSplit"
-          style="font-size:18px; color:#e5fff6;">
-          call_split
-        </mat-icon>
+        <span *ngIf="element.isSplit"
+      style="font-size:11px; color:#8cb6ff;">
+  Split: {{ getSplitCategories(element.id).join(', ') }}
+</span>
+
       </div>
     </div>
   </td>
