@@ -1,0 +1,437 @@
+[
+  {
+    "code": "A",
+    "parent-code": "",
+    "name": "Misc Expenses"
+  },
+  {
+    "code": "B",
+    "parent-code": "",
+    "name": "Auto & Transport"
+  },
+  {
+    "code": "C",
+    "parent-code": "",
+    "name": "Bills & Utilities"
+  },
+  {
+    "code": "D",
+    "parent-code": "",
+    "name": "Education"
+  },
+  {
+    "code": "E",
+    "parent-code": "",
+    "name": "Entertainment"
+  },
+  {
+    "code": "F",
+    "parent-code": "",
+    "name": "Fees & Charges"
+  },
+  {
+    "code": "G",
+    "parent-code": "",
+    "name": "Financial"
+  },
+  {
+    "code": "H",
+    "parent-code": "",
+    "name": "Gifts & Donations"
+  },
+  {
+    "code": "I",
+    "parent-code": "",
+    "name": "Health & Fitness"
+  },
+  {
+    "code": "J",
+    "parent-code": "",
+    "name": "Home"
+  },
+  {
+    "code": "K",
+    "parent-code": "",
+    "name": "Income"
+  },
+  {
+    "code": "L",
+    "parent-code": "",
+    "name": "Kids"
+  },
+  {
+    "code": "M",
+    "parent-code": "",
+    "name": "Loans"
+  },
+  {
+    "code": "N",
+    "parent-code": "",
+    "name": "Personal Care"
+  },
+  {
+    "code": "O",
+    "parent-code": "",
+    "name": "Pets"
+  },
+  {
+    "code": "P",
+    "parent-code": "",
+    "name": "Shopping"
+  },
+  {
+    "code": "R",
+    "parent-code": "",
+    "name": "Taxes"
+  },
+  {
+    "code": "S",
+    "parent-code": "",
+    "name": "Transfer"
+  },
+  {
+    "code": "T",
+    "parent-code": "",
+    "name": "Travel"
+  },
+  {
+    "code": "U",
+    "parent-code": "",
+    "name": "Food & Dining"
+  },
+  {
+    "code": "Z",
+    "parent-code": "",
+    "name": "Split"
+  },
+  {
+    "code": 0,
+    "parent-code": "A",
+    "name": "Other"
+  },
+  {
+    "code": 1,
+    "parent-code": "B",
+    "name": "Other"
+  },
+  {
+    "code": 2,
+    "parent-code": "B",
+    "name": "Auto Insurance"
+  },
+  {
+    "code": 3,
+    "parent-code": "B",
+    "name": "Auto Leasing"
+  },
+  {
+    "code": 4,
+    "parent-code": "B",
+    "name": "Gas & Fuel"
+  },
+  {
+    "code": 5,
+    "parent-code": "B",
+    "name": "Parking"
+  },
+  {
+    "code": 7,
+    "parent-code": "B",
+    "name": "Service & Parts"
+  },
+  {
+    "code": 9,
+    "parent-code": "C",
+    "name": "Home Phone"
+  },
+  {
+    "code": 10,
+    "parent-code": "C",
+    "name": "Internet"
+  },
+  {
+    "code": 11,
+    "parent-code": "C",
+    "name": "Mobile Phone"
+  },
+  {
+    "code": 12,
+    "parent-code": "C",
+    "name": "Television"
+  },
+  {
+    "code": 13,
+    "parent-code": "C",
+    "name": "Utilities"
+  },
+  {
+    "code": 15,
+    "parent-code": "D",
+    "name": "Books & Supplies"
+  },
+  {
+    "code": 17,
+    "parent-code": "D",
+    "name": "Tuition"
+  },
+  {
+    "code": 20,
+    "parent-code": "E",
+    "name": "Arts"
+  },
+  {
+    "code": 21,
+    "parent-code": "E",
+    "name": "Movies & DVDs"
+  },
+  {
+    "code": 22,
+    "parent-code": "E",
+    "name": "Music"
+  },
+  {
+    "code": 23,
+    "parent-code": "E",
+    "name": "Newspapers & Magazines"
+  },
+  {
+    "code": 25,
+    "parent-code": "F",
+    "name": "ATM Fee"
+  },
+  {
+    "code": 26,
+    "parent-code": "F",
+    "name": "Bank Fee"
+  },
+  {
+    "code": 28,
+    "parent-code": "F",
+    "name": "Late Fee"
+  },
+  {
+    "code": 33,
+    "parent-code": "G",
+    "name": "Life Insurance"
+  },
+  {
+    "code": 38,
+    "parent-code": "U",
+    "name": "Groceries"
+  },
+  {
+    "code": 39,
+    "parent-code": "U",
+    "name": "Restaurants"
+  },
+  {
+    "code": 41,
+    "parent-code": "H",
+    "name": "Charity"
+  },
+  {
+    "code": 42,
+    "parent-code": "H",
+    "name": "Gift"
+  },
+  {
+    "code": 44,
+    "parent-code": "I",
+    "name": "Dentist"
+  },
+  {
+    "code": 45,
+    "parent-code": "I",
+    "name": "Doctor"
+  },
+  {
+    "code": 46,
+    "parent-code": "I",
+    "name": "Eyecare"
+  },
+  {
+    "code": 47,
+    "parent-code": "I",
+    "name": "Gym"
+  },
+  {
+    "code": 48,
+    "parent-code": "I",
+    "name": "Health Insurance"
+  },
+  {
+    "code": 49,
+    "parent-code": "I",
+    "name": "Pharmacy"
+  },
+  {
+    "code": 50,
+    "parent-code": "I",
+    "name": "Sports"
+  },
+  {
+    "code": 53,
+    "parent-code": "J",
+    "name": "Home Improvement"
+  },
+  {
+    "code": 54,
+    "parent-code": "J",
+    "name": "Home Insurance"
+  },
+  {
+    "code": 55,
+    "parent-code": "J",
+    "name": "Home Services"
+  },
+  {
+    "code": 56,
+    "parent-code": "J",
+    "name": "Home Supplies"
+  },
+  {
+    "code": 58,
+    "parent-code": "J",
+    "name": "Mortgage & Rent"
+  },
+  {
+    "code": 59,
+    "parent-code": "K",
+    "name": "Other"
+  },
+  {
+    "code": 60,
+    "parent-code": "K",
+    "name": "Bonus"
+  },
+  {
+    "code": 61,
+    "parent-code": "K",
+    "name": "Interest Income"
+  },
+  {
+    "code": 62,
+    "parent-code": "K",
+    "name": "Paycheck"
+  },
+  {
+    "code": 64,
+    "parent-code": "K",
+    "name": "Rental Income"
+  },
+  {
+    "code": 67,
+    "parent-code": "L",
+    "name": "Allowance"
+  },
+  {
+    "code": 68,
+    "parent-code": "L",
+    "name": "Baby Supplies"
+  },
+  {
+    "code": 71,
+    "parent-code": "L",
+    "name": "Kids Activities"
+  },
+  {
+    "code": 72,
+    "parent-code": "L",
+    "name": "Toys"
+  },
+  {
+    "code": 74,
+    "parent-code": "M",
+    "name": "Loan Fees and Charges"
+  },
+  {
+    "code": 77,
+    "parent-code": "M",
+    "name": "Loan Payment"
+  },
+  {
+    "code": 80,
+    "parent-code": "N",
+    "name": "Hair"
+  },
+  {
+    "code": 82,
+    "parent-code": "N",
+    "name": "Spa & Massage"
+  },
+  {
+    "code": 83,
+    "parent-code": "O",
+    "name": "Other"
+  },
+  {
+    "code": 84,
+    "parent-code": "O",
+    "name": "Pet Food & Supplies"
+  },
+  {
+    "code": 85,
+    "parent-code": "O",
+    "name": "Pet Grooming"
+  },
+  {
+    "code": 86,
+    "parent-code": "O",
+    "name": "Veterinary"
+  },
+  {
+    "code": 88,
+    "parent-code": "P",
+    "name": "Books"
+  },
+  {
+    "code": 89,
+    "parent-code": "P",
+    "name": "Clothing"
+  },
+  {
+    "code": 90,
+    "parent-code": "P",
+    "name": "Electronics & Software"
+  },
+  {
+    "code": 92,
+    "parent-code": "P",
+    "name": "Sporting Goods"
+  },
+  {
+    "code": 96,
+    "parent-code": "R",
+    "name": "Property Tax"
+  },
+  {
+    "code": 98,
+    "parent-code": "R",
+    "name": "Income Tax"
+  },
+  {
+    "code": 100,
+    "parent-code": "S",
+    "name": "Credit Card Payment"
+  },
+  {
+    "code": 103,
+    "parent-code": "T",
+    "name": "Air Travel"
+  },
+  {
+    "code": 104,
+    "parent-code": "T",
+    "name": "Hotel"
+  },
+  {
+    "code": 105,
+    "parent-code": "T",
+    "name": "Rental Car & Taxi"
+  },
+  {
+    "code": 106,
+    "parent-code": "T",
+    "name": "Vacation"
+  }
+]

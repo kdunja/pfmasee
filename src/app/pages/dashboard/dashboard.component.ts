@@ -1,6 +1,7 @@
 import { Component, ViewEncapsulation, ViewChild, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ChartComponent } from 'ng-apexcharts';
+import { CategoryService, Category } from 'src/app/services/category.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,6 +17,9 @@ export class AppDashboardComponent implements OnInit {
   selectedKind: string = 'EXECUTED';
   selectedTab: string = 'overview';
 
+  selectedFromDate: Date | null = null;
+  selectedToDate: Date | null = null;
+
   currentPage: number = 1;
   pageSize: number = 7;
   totalPages: number = 1;
@@ -23,11 +27,9 @@ export class AppDashboardComponent implements OnInit {
   allTransactions: any[] = [];
   paginatedData: any[] = [];
 
-  // ✅ Dodato zbog greške
-  categories: string[] = [];
-  subcategories: string[] = [];
+  categories: { id: number; name: string }[] = [];
+  subcategories: { id: number; name: string; categoryId: number }[] = [];
 
-  // Mapiranje kind → tab
   readonly kindGroupMap: { [key: string]: string } = {
     pmt: 'EXECUTED',
     fee: 'FUTURE',
@@ -37,18 +39,45 @@ export class AppDashboardComponent implements OnInit {
     trf: 'PENDING',
   };
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private categoryService: CategoryService) {}
 
   ngOnInit() {
+    console.log('Loaded categories:', this.categories);
+console.log('Loaded subcategories:', this.subcategories);
     this.http.get<any[]>('assets/transactions.json').subscribe((data) => {
       this.allTransactions = data.map((t) => ({
         ...t,
         date: new Date(t.date),
       }));
 
-      this.extractCategoriesAndSubcategories();
+      this.loadCategoriesFromJson();
       this.updatePagination();
     });
+  }
+
+  loadCategoriesFromJson(): void {
+    this.categoryService.getCategories().subscribe((data: Category[]) => {
+      const main = data.filter(c => c.parentCode === '');
+      const sub = data
+        .filter(c => c.parentCode !== '')
+        .map((c, index) => ({
+          id: index + 100, // možeš koristiti c.code ako su brojevi
+          name: c.name,
+          categoryId: this.getCategoryIdFromCode(main, c.parentCode)
+        }));
+
+      this.categories = main.map((cat, i) => ({
+        id: i + 1, // možeš koristiti cat.code ako su brojevi
+        name: cat.name
+      }));
+
+      this.subcategories = sub;
+    });
+  }
+
+  getCategoryIdFromCode(mainCategories: Category[], parentCode: string): number {
+    const index = mainCategories.findIndex(c => c.code === parentCode);
+    return index !== -1 ? index + 1 : -1;
   }
 
   setSelectedTab(tab: string): void {
@@ -65,7 +94,15 @@ export class AppDashboardComponent implements OnInit {
     let data = this.allTransactions;
 
     if (this.selectedKind) {
-      data = data.filter((t) => this.kindGroupMap[t.kind] === this.selectedKind);
+      data = data.filter(t => this.kindGroupMap[t.kind] === this.selectedKind);
+    }
+
+    if (this.selectedFromDate) {
+      data = data.filter(t => new Date(t.date) >= this.selectedFromDate!);
+    }
+
+    if (this.selectedToDate) {
+      data = data.filter(t => new Date(t.date) <= this.selectedToDate!);
     }
 
     return data.sort((a, b) => {
@@ -134,35 +171,15 @@ export class AppDashboardComponent implements OnInit {
     document.body.removeChild(link);
   }
 
-  // ✅ Dodato da build prođe
-  onDateRangeSelected(event: any) {
-    console.log('Date range selected:', event);
-    // možeš ovde filtrirati po datumu ako budeš dodavala tu funkciju
-  }
-
-  // ✅ Dodato da build prođe
-  onClearFilters() {
-    console.log('Filters cleared');
-    this.selectedKind = 'EXECUTED';
-    this.currentPage = 1;
+  onDateRangeSelected(event: { from: Date | null; to: Date | null }) {
+    this.selectedFromDate = event.from;
+    this.selectedToDate = event.to;
     this.updatePagination();
   }
 
-  // ✅ Dodato da izvuče kategorije i podkategorije iz podataka
-  extractCategoriesAndSubcategories(): void {
-    const categorySet = new Set<string>();
-    const subcategorySet = new Set<string>();
-
-    for (const transaction of this.allTransactions) {
-      if (transaction.category) {
-        categorySet.add(transaction.category);
-      }
-      if (transaction.subcategory) {
-        subcategorySet.add(transaction.subcategory);
-      }
-    }
-
-    this.categories = Array.from(categorySet).sort();
-    this.subcategories = Array.from(subcategorySet).sort();
+  onClearFilters() {
+    this.selectedFromDate = null;
+    this.selectedToDate = null;
+    this.updatePagination();
   }
 }

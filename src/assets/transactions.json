@@ -8,7 +8,8 @@
     "description": "Tuition",
     "currency": "USD",
     "mcc": 8299,
-    "kind": "pmt"
+    "kind": "pmt",
+    "cat-code":"A"
   },
   {
     "id": 15122088,
