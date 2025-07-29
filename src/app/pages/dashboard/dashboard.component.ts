@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, ViewChild, OnInit } from '@angular/core';
+import { Component, ViewEncapsulation, ViewChild, OnInit, HostListener } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ChartComponent } from 'ng-apexcharts';
 import { CategoryService } from 'src/app/services/category.service';
@@ -17,6 +17,7 @@ export class AppDashboardComponent implements OnInit {
   selectedFromDate: Date | null = null;
   selectedToDate: Date | null = null;
   selectedKindFromFilter: string | null = null;
+  dateFilterManuallySet: boolean = false;
 
   currentPage: number = 1;
   pageSize: number = 7;
@@ -30,67 +31,84 @@ export class AppDashboardComponent implements OnInit {
 
   availableKinds: string[] = [];
 
+  // Responsive dodatak
+  showMobileOverlay: boolean = false;
+  isMobileView: boolean = false;
+
   constructor(private http: HttpClient, private categoryService: CategoryService) {}
 
-  ngOnInit() {
-  const savedCats = localStorage.getItem('categories');
-  const savedSubcats = localStorage.getItem('subcategories');
-  const savedTx = localStorage.getItem('transactions');
-
-  if (savedCats && savedCats !== '[]' && savedSubcats && savedTx) {
-    this.categories = JSON.parse(savedCats);
-    this.subcategories = JSON.parse(savedSubcats);
-    this.allTransactions = JSON.parse(savedTx).map((t: any) => ({
-      ...t,
-      date: new Date(t.date),
-      amount: parseFloat((t.amount || '0').toString()),
-      subcategoryId: t.subcategoryId?.toString() ?? null,
-      categoryId: t.categoryId ?? null,
-    }));
-
-    this.extractKinds();
-    this.updatePagination();
-    return;
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.isMobileView = event.target.innerWidth <= 768;
   }
 
-  // ✔️ Učitavanje kategorija direktno iz assets
-  this.http.get<any[]>('assets/categories.json').subscribe((data) => {
-    const main = data.filter(c => c["parent-code"] === '');
-    const sub = data.filter(c => c["parent-code"] !== '');
+  ngOnInit() {
+    this.isMobileView = window.innerWidth <= 768;
 
-    this.categories = main.map((cat) => ({
-      id: cat.code.toString(),
-      name: cat.name
-    }));
+    const savedCats = localStorage.getItem('categories');
+    const savedSubcats = localStorage.getItem('subcategories');
+    const savedTx = localStorage.getItem('transactions');
 
-    this.subcategories = sub.map((subcat) => ({
-      id: subcat.code.toString(),
-      name: subcat.name,
-      categoryId: subcat["parent-code"]
-    }));
+    if (savedCats && savedCats !== '[]' && savedSubcats && savedTx) {
+      this.categories = JSON.parse(savedCats);
+      this.subcategories = JSON.parse(savedSubcats);
+      this.allTransactions = JSON.parse(savedTx).map((t: any) => ({
+        ...t,
+        date: new Date(t.date),
+        amount: parseFloat((t.amount || '0').toString()),
+        subcategoryId: t.subcategoryId?.toString() ?? null,
+        categoryId: t.categoryId ?? null,
+      }));
 
-    // ✔️ Učitavanje transakcija
-    this.http.get<any[]>('assets/transactions.json').subscribe((data) => {
-      this.allTransactions = data.map((t) => {
-        const sub = this.subcategories.find(s => s.id === t.subcategoryId?.toString());
-        return {
-          ...t,
-          date: new Date(t.date),
-          amount: parseFloat((t.amount || '0').toString().replace(/,/g, '')),
-          categoryId: sub ? sub.categoryId : t.categoryId ?? null,
-          subcategoryId: t.subcategoryId?.toString() ?? null
-        };
-      });
-
-      localStorage.setItem('categories', JSON.stringify(this.categories));
-      localStorage.setItem('subcategories', JSON.stringify(this.subcategories));
-      localStorage.setItem('transactions', JSON.stringify(this.allTransactions));
+      // Default za CHART — jul 2025
+      this.selectedFromDate = new Date('2025-07-01');
+      this.selectedToDate = new Date('2025-07-31');
 
       this.extractKinds();
       this.updatePagination();
+      return;
+    }
+
+    this.http.get<any[]>('assets/categories.json').subscribe((data) => {
+      const main = data.filter(c => c["parent-code"] === '');
+      const sub = data.filter(c => c["parent-code"] !== '');
+
+      this.categories = main.map((cat) => ({
+        id: cat.code.toString(),
+        name: cat.name
+      }));
+
+      this.subcategories = sub.map((subcat) => ({
+        id: subcat.code.toString(),
+        name: subcat.name,
+        categoryId: subcat["parent-code"]
+      }));
+
+      this.http.get<any[]>('assets/transactions.json').subscribe((data) => {
+        this.allTransactions = data.map((t) => {
+          const sub = this.subcategories.find(s => s.id === t.subcategoryId?.toString());
+          return {
+            ...t,
+            date: new Date(t.date),
+            amount: parseFloat((t.amount || '0').toString().replace(/,/g, '')),
+            categoryId: sub ? sub.categoryId : t.categoryId ?? null,
+            subcategoryId: t.subcategoryId?.toString() ?? null
+          };
+        });
+
+        localStorage.setItem('categories', JSON.stringify(this.categories));
+        localStorage.setItem('subcategories', JSON.stringify(this.subcategories));
+        localStorage.setItem('transactions', JSON.stringify(this.allTransactions));
+
+        // Default za CHART — jul 2025
+        this.selectedFromDate = new Date('2025-07-01');
+        this.selectedToDate = new Date('2025-07-31');
+
+        this.extractKinds();
+        this.updatePagination();
+      });
     });
-  });
-}
+  }
 
   resetLocalStorage() {
     localStorage.removeItem('categories');
@@ -113,15 +131,18 @@ export class AppDashboardComponent implements OnInit {
     this.selectedTab = tab;
   }
 
+  // ✅ TABELA: samo ako je korisnik aktivirao datumski filter
   get filteredData(): any[] {
     let data = this.allTransactions;
 
-    if (this.selectedFromDate) {
-      data = data.filter(t => new Date(t.date) >= this.selectedFromDate!);
-    }
+    if (this.dateFilterManuallySet) {
+      if (this.selectedFromDate) {
+        data = data.filter(t => new Date(t.date) >= this.selectedFromDate!);
+      }
 
-    if (this.selectedToDate) {
-      data = data.filter(t => new Date(t.date) <= this.selectedToDate!);
+      if (this.selectedToDate) {
+        data = data.filter(t => new Date(t.date) <= this.selectedToDate!);
+      }
     }
 
     if (this.selectedKindFromFilter) {
@@ -135,6 +156,21 @@ export class AppDashboardComponent implements OnInit {
       if (!b.categoryId) return -1;
       return a.categoryId.localeCompare(b.categoryId);
     });
+  }
+
+  // ✅ CHART: uvek koristi datume
+  get chartFilteredData(): any[] {
+    let data = this.allTransactions;
+
+    if (this.selectedFromDate) {
+      data = data.filter(t => new Date(t.date) >= this.selectedFromDate!);
+    }
+
+    if (this.selectedToDate) {
+      data = data.filter(t => new Date(t.date) <= this.selectedToDate!);
+    }
+
+    return data;
   }
 
   onKindFilterChanged(kind: string | null) {
@@ -194,6 +230,7 @@ export class AppDashboardComponent implements OnInit {
   onDateRangeSelected(event: { from: Date | null; to: Date | null }) {
     this.selectedFromDate = event.from;
     this.selectedToDate = event.to;
+    this.dateFilterManuallySet = true;
     this.updatePagination();
   }
 
@@ -201,6 +238,7 @@ export class AppDashboardComponent implements OnInit {
     this.selectedFromDate = null;
     this.selectedToDate = null;
     this.selectedKindFromFilter = null;
+    this.dateFilterManuallySet = false;
     this.updatePagination();
   }
 
@@ -208,5 +246,12 @@ export class AppDashboardComponent implements OnInit {
     const kindsSet = new Set(this.allTransactions.map(t => t.kind));
     this.availableKinds = Array.from(kindsSet);
   }
-}
 
+  toggleMobileOverlay() {
+    this.showMobileOverlay = !this.showMobileOverlay;
+  }
+
+  closeMobileOverlay() {
+    this.showMobileOverlay = false;
+  }
+}

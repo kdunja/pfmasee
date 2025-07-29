@@ -28,6 +28,9 @@ export class SpendingChartsComponent implements OnChanges {
   treeMapData: CategoryData[] = [];
   fullTreeData: CategoryData[] = [];
 
+  private changesTimeout: any;
+  debug = false; // ako želiš da vidiš logove za sve subkategorije
+
   colorScheme = {
     name: 'myScheme',
     selectable: true,
@@ -36,41 +39,52 @@ export class SpendingChartsComponent implements OnChanges {
   };
 
   ngOnChanges(): void {
-    this.buildChartData();
+    clearTimeout(this.changesTimeout);
+    this.changesTimeout = setTimeout(() => {
+      this.buildChartData();
+    }, 200);
   }
 
-  buildChartData(): void {
-    const filteredTx = this.filterByDate(this.transactions)
-      .filter(t => t.type === 'expense' || !t.type); // Prikazuje samo troškove ako postoji `type`
+ buildChartData(): void {
+  const filteredTx = this.filterByDate(this.transactions)
+    .filter(t => t.type === 'expense' || !t.type);
 
-    const data: CategoryData[] = [];
+  const data: CategoryData[] = [];
 
-    for (const cat of this.categories) {
-      const txInCat = filteredTx.filter(t => {
-        const sub = this.subcategories.find(s => s.id === t.subcategoryId);
-        return sub?.categoryId === cat.id;
-      });
+  for (const cat of this.categories) {
+    const txInCat = filteredTx.filter(t => {
+      const sub = this.subcategories.find(s => s.id === t.subcategoryId);
+      return sub?.categoryId === cat.id;
+    });
 
-      const subcats = this.subcategories.filter(s => s.categoryId === cat.id);
+    const subcats = this.subcategories.filter(s => s.categoryId === cat.id);
 
-      const children: CategoryData[] = subcats.map(sub => {
-        const value = filteredTx
-          .filter(t => t.subcategoryId === sub.id)
-          .reduce((sum, t) => sum + t.amount, 0);
-        return { name: sub.name, value };
-      }).filter(c => c.value > 0);
+    const children: CategoryData[] = subcats.map(sub => {
+      const value = filteredTx
+        .filter(t => t.subcategoryId === sub.id)
+        .reduce((sum, t) => sum + t.amount, 0);
 
-      const value = txInCat.reduce((sum, t) => sum + t.amount, 0);
-      if (value > 0) {
-        data.push({ name: cat.name, value, children });
+      if (this.debug) {
+        console.log('Subcategory:', sub.name, 'Value:', value);
       }
-    }
 
-    this.fullTreeData = data;
+      return { name: sub.name, value };
+    }).filter(c => c.value > 0);
+
+    const value = txInCat.reduce((sum, t) => sum + t.amount, 0);
+    if (value > 0) {
+      data.push({ name: cat.name, value, children });
+    }
+  }
+
+  this.fullTreeData = data;
+
+  if (this.currentRootCategory === null) {
     this.treeMapData = data;
-    this.currentRootCategory = null;
     this.showNoDataMessage = data.length === 0;
   }
+}
+
 
   filterByDate(transactions: any[]): any[] {
     if (!this.dateRange?.from && !this.dateRange?.to) return transactions;
@@ -84,13 +98,23 @@ export class SpendingChartsComponent implements OnChanges {
 
   onCategorySelected(event: any): void {
     const clicked = this.fullTreeData.find(cat => cat.name === event.name);
-    if (clicked?.children?.length) {
-      this.treeMapData = clicked.children;
+
+    console.log('KLIK registrovan za kategoriju:', event.name);
+
+    if (!clicked) return;
+
+    if (clicked.children && clicked.children.length > 0) {
+      console.log('Otvaram subkategorije za:', clicked.name);
+      this.treeMapData = clicked.children.map(child => ({
+        name: child.name,
+        value: child.value
+      }));
       this.currentRootCategory = clicked.name;
       this.showNoDataMessage = false;
     } else {
+      console.log('Nema subkategorija za:', clicked.name);
       this.treeMapData = [];
-      this.currentRootCategory = clicked?.name ?? null;
+      this.currentRootCategory = clicked.name;
       this.showNoDataMessage = true;
     }
   }

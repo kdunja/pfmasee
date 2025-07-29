@@ -1,12 +1,56 @@
-<div style="display: flex; flex-direction: row; gap: 20px; align-items: flex-start; flex-wrap: wrap; width: 100%;">
+<!-- Dugme za otvaranje mobilnog menija -->
+<div style="display: none; position: fixed; top: 10px; left: 10px; z-index: 999;"
+     [style.display]="isMobileView ? 'block' : 'none'">
+  <button (click)="toggleMobileOverlay()" style="padding: 8px 12px; font-size: 18px;">☰ Menu</button>
+</div>
 
+<!-- Mobilni overlay meni -->
+<div *ngIf="showMobileOverlay"
+     style="position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #1a1e3a; color: white; z-index: 1000; overflow-y: auto; padding: 20px;">
+
+  <!-- Dugme za zatvaranje -->
+  <div style="text-align: right; margin-bottom: 10px;">
+    <button (click)="closeMobileOverlay()" style="padding: 6px 12px; font-size: 18px;">✖ Close</button>
+  </div>
+
+  <!-- KARTICA -->
+  <div style="margin-bottom: 20px; width: 100%;">
+    <app-account-info
+      [accountBalance]="'12,340,000.00 $'"
+      [accountNumber]="'1234 56678 89056'">
+    </app-account-info>
+  </div>
+
+  <!-- DUGMIĆI -->
+  <div style="margin-bottom: 20px; width: 100%;">
+    <app-sidebar-tabs
+      [selectedTab]="selectedTab"
+      (tabChanged)="setSelectedTab($event)">
+    </app-sidebar-tabs>
+  </div>
+
+  <!-- FILTERI -->
+  <div *ngIf="selectedTab === 'overview'" style="width: 100%;">
+    <app-transaction-filters
+      [kinds]="availableKinds"
+      (dateRangeSelected)="onDateRangeSelected($event)"
+      (filterTransactions)="updatePagination()"
+      (clearSelections)="onClearFilters()"
+      (kindFilterChanged)="onKindFilterChanged($event)">
+    </app-transaction-filters>
+  </div>
+</div>
+
+<!-- Glavni sadržaj -->
+<div style="display: flex; flex-direction: row; gap: 20px; align-items: flex-start; flex-wrap: wrap; width: 100%;">
+  
   <!-- Leva kolona -->
   <div style="flex: 1 1 65%; min-width: 300px; padding-left: 0px; padding-top: 32px;">
 
     <!-- CHART -->
     <div style="margin-bottom: 24px;">
       <app-spending-charts 
-        [transactions]="filteredData"
+  [transactions]="chartFilteredData"
         [categories]="categories"
         [subcategories]="subcategories"
         [dateRange]="{ from: selectedFromDate, to: selectedToDate }">
@@ -34,8 +78,9 @@
     </div>
   </div>
 
-  <!-- Desna kolona -->
-  <div style="width: 300px; display: flex; flex-direction: column; align-items: center;">
+  <!-- Desna kolona samo za desktop -->
+  <div *ngIf="!isMobileView"
+       style="width: 300px; display: flex; flex-direction: column; align-items: center;">
 
     <!-- KARTICA -->
     <div style="margin-bottom: 20px; width: 100%;">
@@ -45,7 +90,7 @@
       </app-account-info>
     </div>
 
-    <!-- SIDEBAR DUGMIĆI -->
+    <!-- DUGMIĆI -->
     <div style="margin-bottom: 20px; width: 100%;">
       <app-sidebar-tabs
         [selectedTab]="selectedTab"
@@ -64,12 +109,4 @@
       </app-transaction-filters>
     </div>
   </div>
-
 </div>
-
-
-
-
-
-
-
