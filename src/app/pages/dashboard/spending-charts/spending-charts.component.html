@@ -24,16 +24,48 @@
 
   <!-- PIE CHART -->
   <div *ngIf="selectedChart === 'pie'">
-    <ngx-charts-pie-chart
-      [view]="view"
-      [results]="pieData"
-      [scheme]="colorScheme"
-      [legend]="true"
-      [doughnut]="true"
-      [labels]="true"
-      [animations]="false">
-    </ngx-charts-pie-chart>
+  <style>
+    ::ng-deep .ngx-charts text {
+      fill: #EAE0C8 !important;
+    }
+
+    ::ng-deep .legend-label {
+      fill: #EAE0C8 !important;
+      color: #EAE0C8 !important;
+    }
+  </style>
+
+  <!-- Back dugme -->
+  <div *ngIf="currentRootCategory" style="margin-bottom: 12px;">
+    <button 
+      (click)="goBackToMainPie()"
+      style="background-color: #2C365A; color: white; border: none; border-radius: 6px; padding: 6px 12px; font-weight: 500; cursor: pointer;">
+      ← Back to main categories
+    </button>
   </div>
+
+  <!-- Poruka ako nema subkategorija -->
+  <div *ngIf="showNoDataMessage" style="width: 400px; margin: 0 auto; text-align: center;">
+    <img src="assets/images/logos/eror.png" alt="No data" style="max-width: 120px; margin-bottom: 10px;" />
+    <p style="color: #EAE0C8; font-weight: 500; font-size: 14px; margin-top: 8px;">
+      Sorry, there is no further data for this category.
+    </p>
+  </div>
+
+  <!-- PIE CHART -->
+  <ngx-charts-pie-chart
+    *ngIf="!showNoDataMessage"
+    [view]="view"
+    [results]="currentRootCategory ? treeMapData : pieData"
+    [scheme]="colorScheme"
+    [legend]="true"
+    [doughnut]="true"
+    [labels]="true"
+    [animations]="false"
+    (select)="onChartSliceSelected($event)">
+  </ngx-charts-pie-chart>
+</div>
+
 
   <!-- TREE MAP -->
   <div *ngIf="selectedChart === 'tree'">

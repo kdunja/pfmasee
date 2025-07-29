@@ -130,4 +130,33 @@ export class SpendingChartsComponent implements OnChanges {
       value: cat.value ?? 0
     }));
   }
+
+  onChartSliceSelected(event: any): void {
+  const clicked = this.fullTreeData.find(cat => cat.name === event.name)
+                  || this.treeMapData.find(cat => cat.name === event.name);
+
+  if (!clicked) return;
+
+  const childrenExist = Array.isArray(clicked.children) && clicked.children.length > 0;
+
+  if (childrenExist) {
+    this.treeMapData = (clicked.children ?? []).map(child => ({
+      name: child.name,
+      value: child.value
+    }));
+    this.currentRootCategory = clicked.name;
+    this.showNoDataMessage = false;
+  } else {
+    this.treeMapData = [];
+    this.currentRootCategory = clicked.name;
+    this.showNoDataMessage = true;
+  }
+}
+
+
+goBackToMainPie(): void {
+  this.currentRootCategory = null;
+  this.showNoDataMessage = false;
+}
+
 }
