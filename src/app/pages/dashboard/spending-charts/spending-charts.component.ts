@@ -97,27 +97,26 @@ export class SpendingChartsComponent implements OnChanges {
   }
 
   onCategorySelected(event: any): void {
-    const clicked = this.fullTreeData.find(cat => cat.name === event.name);
-
-    console.log('KLIK registrovan za kategoriju:', event.name);
+    const clicked = this.fullTreeData.find(cat => cat.name === event.name)
+              || this.treeMapData.find(cat => cat.name === event.name); 
 
     if (!clicked) return;
 
-    if (clicked.children && clicked.children.length > 0) {
-      console.log('Otvaram subkategorije za:', clicked.name);
-      this.treeMapData = clicked.children.map(child => ({
-        name: child.name,
-        value: child.value
-      }));
-      this.currentRootCategory = clicked.name;
-      this.showNoDataMessage = false;
-    } else {
-      console.log('Nema subkategorija za:', clicked.name);
-      this.treeMapData = [];
-      this.currentRootCategory = clicked.name;
-      this.showNoDataMessage = true;
-    }
+     if (clicked.children && clicked.children.length > 0) {
+    console.log('Otvaram subkategorije za:', clicked.name);
+    this.treeMapData = clicked.children.map(child => ({
+      name: child.name,
+      value: child.value
+    }));
+    this.currentRootCategory = clicked.name;
+    this.showNoDataMessage = false;
+  } else {
+    console.log('Nema subkategorija za:', clicked.name);
+    this.treeMapData = [];
+    this.currentRootCategory = clicked.name;
+    this.showNoDataMessage = true;
   }
+}
 
   goBackToMainTree(): void {
     this.treeMapData = this.fullTreeData;
