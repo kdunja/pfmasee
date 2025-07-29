@@ -1,5 +1,19 @@
 <!-- Glavna kartica -->
-<div style="background: #131936; border-radius: 8px; padding: 6px 16px 16px 16px; width: 100%; margin-left: 0px; margin-right: 16px;">
+<div
+  style="
+    background: #131936;
+    border-radius: 8px;
+    padding: 6px 16px 16px 16px;
+    width: 100%;
+    margin-right: 16px;
+  "
+  [ngStyle]="isMobile ? {
+    'max-width': '340px',
+    'margin-left': 'auto',
+    'margin-right': 'auto'
+  } : {}"
+>
+
 
   <!-- Naslov i dugmad -->
   <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
@@ -54,16 +68,19 @@
 
   <!-- PIE CHART -->
   <ngx-charts-pie-chart
-    *ngIf="!showNoDataMessage"
-    [view]="view"
-    [results]="currentRootCategory ? treeMapData : pieData"
-    [scheme]="colorScheme"
-    [legend]="true"
-    [doughnut]="true"
-    [labels]="true"
-    [animations]="false"
-    (select)="onChartSliceSelected($event)">
-  </ngx-charts-pie-chart>
+  *ngIf="!showNoDataMessage"
+  [view]="view"
+  [results]="currentRootCategory ? treeMapData : pieData"
+  [scheme]="colorScheme"
+  [legend]="true"
+  [doughnut]="true"
+  [labels]="true"
+  [animations]="false"
+  (select)="onChartSliceSelected($event)"
+  [style.margin]="isMobile ? '0 auto' : null"
+  [style.max-width.px]="isMobile ? 360 : null"
+>
+</ngx-charts-pie-chart>
 </div>
 
 
@@ -96,7 +113,10 @@
   [scheme]="colorScheme"
   [tooltipDisabled]="true"
   [animations]="false"
-  (select)="onCategorySelected($event)">
+  (select)="onCategorySelected($event)"
+  [style.max-width.px]="isMobile ? 340 : null"
+[style.margin]="isMobile ? '0 auto' : null"
+>
 </ngx-charts-tree-map>
   </div>
 </div>

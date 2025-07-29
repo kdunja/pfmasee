@@ -17,15 +17,14 @@ export class FullComponent implements OnInit {
   @ViewChild('leftsidenav')
   public sidenav: MatSidenav | any;
 
-  //get options from service
   private layoutChangesSubscription = Subscription.EMPTY;
-  private isMobileScreen = false;
-  private isContentWidthFixed = true;
+
+  public isMobile = false; // ⬅️ Dodato za padding u HTML-u
   private isCollapsedWidthFixed = false;
   private htmlElement!: HTMLHtmlElement;
 
   get isOver(): boolean {
-    return this.isMobileScreen;
+    return this.isMobile;
   }
 
   constructor(private breakpointObserver: BreakpointObserver) {
@@ -33,11 +32,7 @@ export class FullComponent implements OnInit {
     this.layoutChangesSubscription = this.breakpointObserver
       .observe([MOBILE_VIEW, TABLET_VIEW, MONITOR_VIEW])
       .subscribe((state) => {
-        // SidenavOpened must be reset true when layout changes
-
-        this.isMobileScreen = state.breakpoints[MOBILE_VIEW];
-
-        this.isContentWidthFixed = state.breakpoints[MONITOR_VIEW];
+        this.isMobile = state.breakpoints[MOBILE_VIEW];
       });
   }
 
@@ -47,12 +42,10 @@ export class FullComponent implements OnInit {
     this.layoutChangesSubscription.unsubscribe();
   }
 
-  toggleCollapsed() {
-    this.isContentWidthFixed = false;
-  }
+  toggleCollapsed() {}
 
   onSidenavClosedStart() {
-    this.isContentWidthFixed = false;
+    this.isCollapsedWidthFixed = false;
   }
 
   onSidenavOpenedChange(isOpened: boolean) {

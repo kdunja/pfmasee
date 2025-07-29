@@ -128,10 +128,11 @@ export class AppDashboardComponent implements OnInit {
   }
 
   setSelectedTab(tab: string): void {
-    this.selectedTab = tab;
-  }
+  this.selectedTab = tab;
+  this.closeMobileOverlay(); 
+}
 
-  // ✅ TABELA: samo ako je korisnik aktivirao datumski filter
+
   get filteredData(): any[] {
     let data = this.allTransactions;
 
@@ -158,7 +159,6 @@ export class AppDashboardComponent implements OnInit {
     });
   }
 
-  // ✅ CHART: uvek koristi datume
   get chartFilteredData(): any[] {
     let data = this.allTransactions;
 
@@ -175,6 +175,7 @@ export class AppDashboardComponent implements OnInit {
 
   onKindFilterChanged(kind: string | null) {
     this.selectedKindFromFilter = kind;
+    this.closeMobileOverlay();
     this.updatePagination();
   }
 
@@ -231,6 +232,7 @@ export class AppDashboardComponent implements OnInit {
     this.selectedFromDate = event.from;
     this.selectedToDate = event.to;
     this.dateFilterManuallySet = true;
+    this.closeMobileOverlay();
     this.updatePagination();
   }
 

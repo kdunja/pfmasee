@@ -5,7 +5,7 @@
   dir="ltr"
   style="background: #212842; min-height: 100vh; box-shadow: none; border: none;"
 >
-  <!-- Sidebar  -->
+  <!-- Sidebar -->
   <mat-sidenav
     #leftsidenav
     [mode]="isOver ? 'over' : 'side'"
@@ -13,12 +13,12 @@
     (openedChange)="onSidenavOpenedChange($event)"
     (closedStart)="onSidenavClosedStart()"
     class="sidebarNav"
+    [style.width.px]="80"
+    [style.maxWidth.px]="80"
     style="
-      background: #212842; 
-      box-shadow: none; 
-      border: none; 
-      width: 80px;
-      max-width: 80px;
+      background: #212842;
+      box-shadow: none;
+      border: none;
       padding: 0;
       overflow-x: hidden;
     "
@@ -26,7 +26,7 @@
     <app-sidebar></app-sidebar>
   </mat-sidenav>
 
-  <!-- Main Content -->
+  <!-- Glavni sadržaj -->
   <mat-sidenav-content
     class="contentWrapper"
     style="background: #212842; min-height: 100vh; box-shadow: none; border: none;"
@@ -38,20 +38,21 @@
       (toggleMobileNav)="sidenav.toggle()"
     ></app-header>
 
+    <!-- Glavna stranica -->
     <main
-  class="pageWrapper"
-  style="
-    background: #212842;
-    min-height: 100vh;
-    padding-top: 0;
-    padding-left: 80px; /* povećano sa 65px */
-    box-shadow: none;
-    border: none;
-  "
->
-
+      class="pageWrapper"
+      [style.padding-left.px]="isMobile ? 0 : 80"
+      style="
+        background: #212842;
+        min-height: 100vh;
+        padding-top: 0;
+        box-shadow: none;
+        border: none;
+      "
+    >
       <router-outlet></router-outlet>
     </main>
   </mat-sidenav-content>
 </mat-sidenav-container>
+
 
