@@ -1,15 +1,7 @@
 <!-- Glavna kartica -->
-<div style="
-  background: #131936;
-  border-radius: 8px;
-  padding: 6px 16px 16px 16px;
-  width: 100%;
-  margin-left: 0px;
-  margin-right: 16px;
-">
+<div style="background: #131936; border-radius: 8px; padding: 6px 16px 16px 16px; width: 100%; margin-left: 0px; margin-right: 16px;">
 
-
-  <!-- Naslov i dugmad u istom redu -->
+  <!-- Naslov i dugmad -->
   <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
     <h3 style="color: #FBF9E4; margin: 0; font-size: 14px;">
       Spending by Category ({{ selectedChart === 'tree' ? 'Tree Map' : 'Pie' }})
@@ -45,6 +37,7 @@
 
   <!-- TREE MAP -->
   <div *ngIf="selectedChart === 'tree'">
+
     <!-- Dugme za povratak -->
     <div *ngIf="currentRootCategory" style="margin-bottom: 12px;">
       <button 
@@ -55,21 +48,20 @@
     </div>
 
     <!-- Poruka ako nema children -->
-   <div *ngIf="showNoDataMessage" style="width: 400px; margin: 0 auto; text-align: center;">
-  <img src="assets/images/logos/eror.png" alt="No data" style="max-width: 120px; margin-bottom: 10px;" />
-  <p style="color: #EAE0C8; font-weight: 500; font-size: 14px; margin-top: 8px;">
-    Sorry, there is no further data for this category.
-  </p>
-</div>
-
+    <div *ngIf="showNoDataMessage" style="width: 400px; margin: 0 auto; text-align: center;">
+      <img src="assets/images/logos/eror.png" alt="No data" style="max-width: 120px; margin-bottom: 10px;" />
+      <p style="color: #EAE0C8; font-weight: 500; font-size: 14px; margin-top: 8px;">
+        Sorry, there is no further data for this category.
+      </p>
+    </div>
 
     <!-- Tree mapa -->
     <ngx-charts-tree-map
       *ngIf="!showNoDataMessage"
-  [results]="treeMapData"
-  [view]="view"
-  [scheme]="colorScheme"
-  (select)="onCategorySelected($event)">
+      [results]="treeMapData"
+      [view]="view"
+      [scheme]="colorScheme"
+      (select)="onCategorySelected($event)">
     </ngx-charts-tree-map>
   </div>
 </div>

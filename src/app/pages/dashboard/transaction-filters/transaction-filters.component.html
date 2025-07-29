@@ -1,64 +1,53 @@
 <div style="display: flex; flex-direction: column; gap: 16px; padding: 10px;" class="filter-container">
 
- <!-- From -->
-<mat-form-field appearance="outline">
-  <mat-label><span style="color: #F5F5F5;">From</span></mat-label>
-  <input matInput [matDatepicker]="fromPicker" [(ngModel)]="fromDate" style="color: #F5F5F5;">
-  <mat-datepicker-toggle matSuffix [for]="fromPicker">
-    <mat-icon matDatepickerToggleIcon style="color: #F5F5F5;">calendar_today</mat-icon>
-  </mat-datepicker-toggle>
-  <mat-datepicker #fromPicker></mat-datepicker>
-</mat-form-field>
+  <!-- From -->
+  <mat-form-field appearance="outline">
+    <mat-label><span style="color: #F5F5F5;">From</span></mat-label>
+    <input matInput [matDatepicker]="fromPicker" [(ngModel)]="fromDate" style="color: #F5F5F5;">
+    <mat-datepicker-toggle matSuffix [for]="fromPicker">
+      <mat-icon matDatepickerToggleIcon style="color: #F5F5F5;">calendar_today</mat-icon>
+    </mat-datepicker-toggle>
+    <mat-datepicker #fromPicker></mat-datepicker>
+  </mat-form-field>
 
-<!-- To -->
-<mat-form-field appearance="outline">
-  <mat-label><span style="color: #F5F5F5;">To</span></mat-label>
-  <input matInput [matDatepicker]="toPicker" [(ngModel)]="toDate" style="color: #F5F5F5;">
-  <mat-datepicker-toggle matSuffix [for]="toPicker">
-    <mat-icon matDatepickerToggleIcon style="color: #F5F5F5;">calendar_today</mat-icon>
-  </mat-datepicker-toggle>
-  <mat-datepicker #toPicker></mat-datepicker>
-</mat-form-field>
-
+  <!-- To -->
+  <mat-form-field appearance="outline">
+    <mat-label><span style="color: #F5F5F5;">To</span></mat-label>
+    <input matInput [matDatepicker]="toPicker" [(ngModel)]="toDate" style="color: #F5F5F5;">
+    <mat-datepicker-toggle matSuffix [for]="toPicker">
+      <mat-icon matDatepickerToggleIcon style="color: #F5F5F5;">calendar_today</mat-icon>
+    </mat-datepicker-toggle>
+    <mat-datepicker #toPicker></mat-datepicker>
+  </mat-form-field>
 
   <!-- Transaction Type -->
   <mat-form-field appearance="outline">
-    <mat-label><span style="color: #F5F5F5;">Transaction Type</span></mat-label>
-    <mat-select style="color: #F5F5F5;">
-      <mat-option value="type1">Type 1</mat-option>
-      <mat-option value="type2">Type 2</mat-option>
-    </mat-select>
-  </mat-form-field>
+  <mat-label><span style="color: #F5F5F5;">Transaction Type</span></mat-label>
+  <mat-select [(ngModel)]="selectedKind" (selectionChange)="onKindChange()" style="color: #F5F5F5;">
+    <mat-option [value]="null">All</mat-option>
+    <mat-option value="pmt">Payment</mat-option>
+    <mat-option value="wdw">Withdrawal</mat-option>
+    <mat-option value="fee">Fee</mat-option>
+    <mat-option value="sal">Salary</mat-option>
+    <mat-option value="dep">Deposit</mat-option>
+    <mat-option value="trf">Transfer</mat-option>
+  </mat-select>
+</mat-form-field>
 
-  <!-- Account -->
-  <mat-form-field appearance="outline">
-    <mat-label><span style="color: #F5F5F5;">Account</span></mat-label>
-    <mat-select style="color: #F5F5F5;">
-      <mat-option value="acc1">Account 1</mat-option>
-      <mat-option value="acc2">Account 2</mat-option>
-    </mat-select>
-  </mat-form-field>
+  <!-- Buttons -->
+  <div style="display: flex; gap: 12px; margin-top: 8px;">
+    <button
+      (click)="onFilterClick()"
+      style="background-color: #5B88B2; color: #F5F5F5; border: none; padding: 10px 16px; border-radius: 6px; cursor: pointer;">
+      Filter Transactions
+    </button>
 
-  <!-- Beneficiary -->
-  <mat-form-field appearance="outline">
-    <mat-label><span style="color: #F5F5F5;">Beneficiary</span></mat-label>
-    <input matInput style="color: #F5F5F5;">
-  </mat-form-field>
-
-<!-- Buttons -->
-<div style="display: flex; gap: 12px; margin-top: 8px;">
-  <button
-    (click)="onFilterClick()"
-    style="background-color: #5B88B2; color: #F5F5F5; border: none; padding: 10px 16px; border-radius: 6px; cursor: pointer;">
-    Filter Transactions
-  </button>
-
-  <button
-    (click)="onClearClick()"
-    style="background-color: transparent; color: #F5F5F5; border: 1px solid #5B88B2; padding: 10px 16px; border-radius: 6px; cursor: pointer;">
-    Clear Selections
-  </button>
-</div>
-
+    <button
+      (click)="onClearClick()"
+      style="background-color: transparent; color: #F5F5F5; border: 1px solid #5B88B2; padding: 10px 16px; border-radius: 6px; cursor: pointer;">
+      Clear Selections
+    </button>
+  </div>
 
 </div>
+

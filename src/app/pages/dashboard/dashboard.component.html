@@ -1,33 +1,30 @@
 <div style="display: flex; flex-direction: row; gap: 20px; align-items: flex-start; flex-wrap: wrap; width: 100%;">
 
   <!-- Leva kolona -->
-<div style="flex: 1 1 65%; min-width: 300px; padding-left: 0px; padding-top: 32px;">
+  <div style="flex: 1 1 65%; min-width: 300px; padding-left: 0px; padding-top: 32px;">
 
-<app-spending-charts
-  [transactions]="filteredData">
-</app-spending-charts>
-
-
-
-    <div style="margin-bottom: 20px;">
-    <app-transaction-kind-filter
-      [kinds]="kinds"
-      [selectedKind]="selectedKind"
-      (kindSelected)="onKindSelected($event)">
-    </app-transaction-kind-filter>
-  </div>
-
-    <div style="margin-bottom: 20px;">
-      <app-transaction-table
-  [dataSource]="paginatedData"
-  [displayedColumns]="displayedColumns"
-  [categories]="categories"
-  [subcategories]="subcategories"
-  (splitTransaction)="onSplitTransaction($event)">
-</app-transaction-table>
-
+    <!-- CHART -->
+    <div style="margin-bottom: 24px;">
+      <app-spending-charts 
+        [transactions]="filteredData"
+        [categories]="categories"
+        [subcategories]="subcategories"
+        [dateRange]="{ from: selectedFromDate, to: selectedToDate }">
+      </app-spending-charts>
     </div>
 
+    <!-- TABELA -->
+    <div style="margin-bottom: 20px;">
+      <app-transaction-table
+        [dataSource]="paginatedData"
+        [displayedColumns]="displayedColumns"
+        [categories]="categories"
+        [subcategories]="subcategories"
+        (splitTransaction)="onSplitTransaction($event)">
+      </app-transaction-table>
+    </div>
+
+    <!-- PAGINACIJA -->
     <div style="margin-bottom: 20px;">
       <app-export-pagination
         [currentPage]="currentPage"
@@ -37,21 +34,18 @@
     </div>
   </div>
 
-  <!-- Desna kolona (kartica + kružni dugmići + filteri) -->
+  <!-- Desna kolona -->
   <div style="width: 300px; display: flex; flex-direction: column; align-items: center;">
-    
-    <!-- Kartica sa balansom -->
+
+    <!-- KARTICA -->
     <div style="margin-bottom: 20px; width: 100%;">
       <app-account-info
-        [kinds]="kinds"
-        [selectedKind]="selectedKind"
         [accountBalance]="'12,340,000.00 $'"
-        [accountNumber]="'1234 56678 89056'"
-        [onKindSelected]="onKindSelected">
+        [accountNumber]="'1234 56678 89056'">
       </app-account-info>
     </div>
 
-    <!-- Sidebar dugmići kao kružne ikonice -->
+    <!-- SIDEBAR DUGMIĆI -->
     <div style="margin-bottom: 20px; width: 100%;">
       <app-sidebar-tabs
         [selectedTab]="selectedTab"
@@ -59,17 +53,20 @@
       </app-sidebar-tabs>
     </div>
 
-    <!-- Filteri koji se prikazuju samo kad je overview selektovan -->
+    <!-- FILTERI -->
     <div *ngIf="selectedTab === 'overview'" style="width: 100%;">
       <app-transaction-filters
-  (dateRangeSelected)="onDateRangeSelected($event)"
-  (filterTransactions)="updatePagination()"
-  (clearSelections)="onClearFilters()">
-</app-transaction-filters>
+        [kinds]="availableKinds"
+        (dateRangeSelected)="onDateRangeSelected($event)"
+        (filterTransactions)="updatePagination()"
+        (clearSelections)="onClearFilters()"
+        (kindFilterChanged)="onKindFilterChanged($event)">
+      </app-transaction-filters>
     </div>
   </div>
 
 </div>
+
 
 
 

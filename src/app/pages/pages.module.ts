@@ -9,7 +9,6 @@ import { SidebarTabsComponent } from './dashboard/sidebar-tabs/sidebar-tabs.comp
 import { TransactionFiltersComponent } from './dashboard/transaction-filters/transaction-filters.component';
 import { ExportPaginationComponent } from './dashboard/export-pagination/export-pagination.component';
 import { HttpClientModule } from '@angular/common/http';
-import { TransactionKindFilterComponent } from './dashboard/transaction-kind-filter/transaction-kind.component';
 import { SpendingChartsComponent } from './dashboard/spending-charts/spending-charts.component';
 import { TooltipModule } from '@swimlane/ngx-charts';
 
@@ -47,7 +46,6 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     SidebarTabsComponent,
      TransactionFiltersComponent,
      ExportPaginationComponent,
-     TransactionKindFilterComponent,
 
   ],
   imports: [

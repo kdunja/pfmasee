@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgxChartsModule, ScaleType } from '@swimlane/ngx-charts';
 
@@ -14,15 +14,19 @@ interface CategoryData {
   imports: [CommonModule, NgxChartsModule],
   templateUrl: './spending-charts.component.html'
 })
-export class SpendingChartsComponent {
+export class SpendingChartsComponent implements OnChanges {
   @Input() transactions: any[] = [];
-  @Input() categories: string[] = [];
-  @Input() subcategories: string[] = [];
+  @Input() categories: { id: string; name: string }[] = [];
+  @Input() subcategories: { id: string; name: string; categoryId: string }[] = [];
+  @Input() dateRange: { from: Date | null, to: Date | null } | null = null;
 
   view: [number, number] = [730, 300];
   selectedChart: 'pie' | 'tree' = 'tree';
   currentRootCategory: string | null = null;
   showNoDataMessage: boolean = false;
+
+  treeMapData: CategoryData[] = [];
+  fullTreeData: CategoryData[] = [];
 
   colorScheme = {
     name: 'myScheme',
@@ -31,194 +35,76 @@ export class SpendingChartsComponent {
     domain: ['#FF6EC7', '#FFA500', '#FFE600', '#00C5CD', '#342F5C', '#7D3C98', '#00C49F']
   };
 
-  allTreeData: CategoryData[] = [
-  {
-    name: 'Housing',
-    value: 2300,
-    children: [
-      {
-        name: 'Rent',
-        value: 1800,
-      },
-      {
-        name: 'Utilities',
-        value: 300,
-      },
-      {
-        name: 'Maintance',
-        value: 200,
-      },
-     
-    ]
-  },
-  {
-    name: 'Transportation',
-    value: 245,
-    children: [
-      {
-        name: 'Fuel',
-        value: 120,
-      },
-      {
-        name: 'Public transport',
-        value: 75,
-      },
-      {
-        name: 'Taxi',
-        value: 50,
-      }
-    ]
-  },
-  {
-    name: 'Food & Drinks',
-    value: 420,
-    children: [
-      {
-        name: 'Groceries',
-        value: 250,
-      },
-      {
-        name: 'Restaurants',
-        value: 120,
-      },
-      {
-        name: 'Coffee',
-        value: 50,
-      }
-    ]
-  },
-  {
-    name: 'Health & Fitness',
-    value: 280,
-    children: [
-      {
-        name: 'Doctor',
-        value: 100,
-      },
-      {
-        name: 'Pharmacy',
-        value: 80,
-      },
-      {
-        name: 'Gym',
-        value: 100,
-      },
-      
-    ]
-  },
-  {
-    name: 'Entertainment',
-    value: 180,
-    children: [
-      {
-        name: 'Movies',
-        value: 60,
-      },
-      {
-        name: 'Games',
-        value: 70,
-      },
-      {
-        name: 'Streaming',
-        value: 50,
-      },
-    ]
-  },
-  {
-    name: 'Shopping',
-    value: 390,
-    children: [
-      {
-        name: 'Clothing',
-        value: 150,
-      },
-      {
-        name: 'Electronics',
-        value: 200,
-      },
-      {
-        name: 'Online',
-        value: 40,
-      },
-    ]
-  },
-   {
-    name: 'Education',
-    value: 1900,
-    children: [
-      { name: 'Tuition', value: 1500 },
-      { name: 'Books', value: 100 },
-      { name: 'Courses', value: 300 }
-    ]
-  },
-  {
-    name: 'Travel',
-    value: 320,
-    children: [
-      { name: 'Hotel', value: 120 },
-      { name: 'Flights', value: 150 },
-      { name: 'Tickets', value: 50 }
-    ]
-  },
-  {
-    name: 'Income',
-    value: 3150,
-    children: [
-      { name: 'Salary', value: 2500 },
-      { name: 'Freelance', value: 300 },
-      { name: 'Investments', value: 350 }
-    ]
-  },
-  {
-    name: 'Other',
-    value: 240,
-    children: [
-      { name: 'Miscellaneous', value: 100 },
-      { name: 'Donations', value: 90 },
-      { name: 'Gifts', value: 50 }
-    ]
-  }
-];
-
-  treeMapData: CategoryData[] = [];
-
-  constructor() {
-    this.computeValues(this.allTreeData);
-    this.treeMapData = this.allTreeData;
+  ngOnChanges(): void {
+    this.buildChartData();
   }
 
-  computeValues(data: CategoryData[]): number {
-    return data.reduce((total, item) => {
-      if (item.children && item.children.length > 0) {
-        item.value = this.computeValues(item.children);
+  buildChartData(): void {
+    const filteredTx = this.filterByDate(this.transactions)
+      .filter(t => t.type === 'expense' || !t.type); // Prikazuje samo troškove ako postoji `type`
+
+    const data: CategoryData[] = [];
+
+    for (const cat of this.categories) {
+      const txInCat = filteredTx.filter(t => {
+        const sub = this.subcategories.find(s => s.id === t.subcategoryId);
+        return sub?.categoryId === cat.id;
+      });
+
+      const subcats = this.subcategories.filter(s => s.categoryId === cat.id);
+
+      const children: CategoryData[] = subcats.map(sub => {
+        const value = filteredTx
+          .filter(t => t.subcategoryId === sub.id)
+          .reduce((sum, t) => sum + t.amount, 0);
+        return { name: sub.name, value };
+      }).filter(c => c.value > 0);
+
+      const value = txInCat.reduce((sum, t) => sum + t.amount, 0);
+      if (value > 0) {
+        data.push({ name: cat.name, value, children });
       }
-      return total + (item.value ?? 0);
-    }, 0);
+    }
+
+    this.fullTreeData = data;
+    this.treeMapData = data;
+    this.currentRootCategory = null;
+    this.showNoDataMessage = data.length === 0;
   }
 
-  get pieData() {
-    return this.allTreeData.map(cat => ({
-      name: cat.name,
-      value: cat.value ?? 0
-    }));
+  filterByDate(transactions: any[]): any[] {
+    if (!this.dateRange?.from && !this.dateRange?.to) return transactions;
+
+    return transactions.filter(t => {
+      const date = new Date(t.date);
+      return (!this.dateRange?.from || date >= this.dateRange.from) &&
+             (!this.dateRange?.to || date <= this.dateRange.to);
+    });
   }
 
   onCategorySelected(event: any): void {
-    const clicked = this.allTreeData.find(cat => cat.name === event.name);
-    if (clicked && clicked.children) {
+    const clicked = this.fullTreeData.find(cat => cat.name === event.name);
+    if (clicked?.children?.length) {
       this.treeMapData = clicked.children;
       this.currentRootCategory = clicked.name;
       this.showNoDataMessage = false;
     } else {
       this.treeMapData = [];
-      this.currentRootCategory = event.name;
+      this.currentRootCategory = clicked?.name ?? null;
       this.showNoDataMessage = true;
     }
   }
 
   goBackToMainTree(): void {
-    this.treeMapData = this.allTreeData;
+    this.treeMapData = this.fullTreeData;
     this.currentRootCategory = null;
-    this.showNoDataMessage = false;
+    this.showNoDataMessage = this.treeMapData.length === 0;
+  }
+
+  get pieData() {
+    return this.fullTreeData.map(cat => ({
+      name: cat.name,
+      value: cat.value ?? 0
+    }));
   }
 }
