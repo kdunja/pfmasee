@@ -1,15 +1,18 @@
-import { Component, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, OnInit } from '@angular/core';
+import { BreakpointObserver } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-transaction-table',
   templateUrl: './transaction-table.component.html'
 })
-export class TransactionTableComponent implements OnChanges {
+export class TransactionTableComponent implements OnInit, OnChanges {
   @Input() dataSource: any[] = [];
   @Input() displayedColumns: string[] = [];
   @Input() categories: any[] = [];
   @Input() subcategories: any[] = [];
   @Output() splitTransaction = new EventEmitter<any>();
+
+  isMobileView: boolean = false;
 
   showCategoryModal = false;
   selectedTransaction: any = null;
@@ -18,6 +21,8 @@ export class TransactionTableComponent implements OnChanges {
 
   selectedCategoryId: number | null = null;
   selectedSubcategoryId: number | null = null;
+
+  activeActionId: string | null = null;
 
   categoryKeywordMap: { [key: string]: string } = {
     'glovo': 'Food & Dining',
@@ -29,6 +34,14 @@ export class TransactionTableComponent implements OnChanges {
     'fit': 'Health & Fitness',
     'spa': 'Personal Care'
   };
+
+  constructor(private breakpointObserver: BreakpointObserver) {}
+
+  ngOnInit(): void {
+    this.breakpointObserver.observe(['(max-width: 768px)']).subscribe(result => {
+      this.isMobileView = result.matches;
+    });
+  }
 
   ngOnChanges(): void {
     this.autoCategorizeAll();
@@ -220,4 +233,12 @@ export class TransactionTableComponent implements OnChanges {
       this.closeCategoryModal();
     }
   }
+  toggleMobileActions(element: any): void {
+  element.showMobileActions = !element.showMobileActions;
+}
+
+toggleActionsFor(id: string): void {
+  this.activeActionId = this.activeActionId === id ? null : id;
+}
+
 }

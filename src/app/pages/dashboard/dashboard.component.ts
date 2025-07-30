@@ -197,37 +197,6 @@ export class AppDashboardComponent implements OnInit {
     console.log('Split for transaction:', transaction);
   }
 
-  exportToCSV(): void {
-    const headers = [
-      'ID', 'Beneficiary', 'Datum', 'Smer', 'Iznos', 'Opis', 'Valuta', 'MCC', 'Kind',
-    ];
-    const rows = this.filteredData.map((item) => [
-      item.id,
-      item['beneficiary-name'],
-      item.date instanceof Date ? item.date.toISOString().split('T')[0] : item.date,
-      item.direction,
-      item.amount,
-      item.description,
-      item.currency,
-      item.mcc,
-      item.kind,
-    ]);
-
-    const csvContent =
-      'data:text/csv;charset=utf-8,' +
-      [headers, ...rows]
-        .map((e) => e.map((v) => `"${String(v).replace(/"/g, '""')}"`).join(','))
-        .join('\n');
-
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement('a');
-    link.setAttribute('href', encodedUri);
-    link.setAttribute('download', 'transactions.csv');
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }
-
   onDateRangeSelected(event: { from: Date | null; to: Date | null }) {
     this.selectedFromDate = event.from;
     this.selectedToDate = event.to;

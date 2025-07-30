@@ -11,26 +11,33 @@
     border-bottom: none !important;
     box-shadow: none !important;
   }
+  @media (max-width: 768px) {
+  .mobile-wrapper {
+    padding-left: 12px !important;
+      padding-right: 12px !important;
+  }
+}
 </style>
 
-<div style="width:100%;max-width:950px; margin-top:0px; margin-left:0px; background:#212842; border-radius:5px; overflow-x:auto;">
+<div class="mobile-wrapper" style="max-width:950px; margin: 0 auto; background:#212842; overflow:hidden;">
 
-  
-<!-- TRANSACTIONS TRAKA SA SVIM DUGMIĆIMA -->
-<div style="
-  padding: 10px 24px;
-  background: #2C365A;
-  color: #FBF9E4;
-  font-weight: 600;
-  font-size: 14px;
-  border-top-left-radius: 16px;
-  border-top-right-radius: 16px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 12px;
-">
+  <!-- TRANSACTIONS TRAKA -->
+  <div style="
+    background: #2C365A;
+    color: #FBF9E4;
+    font-weight: 600;
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 10px 24px;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  ">
 
   <!-- Leva strana: naslov -->
   <span>Transactions</span>
@@ -117,14 +124,15 @@
 
     <!-- DESCRIPTION + CATEGORY + SPLIT + CHECKBOX -->
     <ng-container matColumnDef="description">
-  <th mat-header-cell *matHeaderCellDef>
-  </th>
-  <td mat-cell *matCellDef="let element" style="font-size: 13px; padding:10px 8px;">
-    <div style="display:flex; align-items:center; justify-content: space-between; gap:12px; min-height:38px;">
+  <th mat-header-cell *matHeaderCellDef></th>
+
+  <td mat-cell *matCellDef="let element" style="font-size: 13px; padding:10px 8px; position:relative;">
+    
+    <!-- DESKTOP PRIKAZ -->
+    <div *ngIf="!isMobileView" style="display:flex; align-items:center; justify-content: space-between; gap:12px; min-height:38px;">
       
-      <!-- Leva strana: checkbox + opis -->
+      <!-- Leva strana -->
       <div style="display:flex; align-items:center; gap:10px;">
-        <!-- Checkbox za multi-select -->
         <input
           *ngIf="multiSelectMode"
           type="checkbox"
@@ -132,72 +140,90 @@
           (change)="toggleTransactionSelection(element.id)"
           style="width:18px; height:18px; accent-color:#2C365A; background:#1c2c27;"
         />
-
-        <!-- Opis transakcije -->
         <div style="display:flex; flex-direction:column; min-width:120px;">
           <span style="color:#FBF9E4;">{{element.description}}</span>
           <span style="font-size:10px; color:#C4BCB0;">Kind: {{element.kind}}</span>
         </div>
       </div>
 
-      <!-- Desna strana: dugmad -->
-      <div style="padding:10px 24px 10px 16px;display:flex; align-items:center; gap:8px;">
-       <!-- Dugme za kategoriju -->
-<button mat-flat-button color="primary"
-        style="font-size:12px;
-               padding:4px 14px;
-               min-width:100px;
-               height:28px;
-               background:#5B88B2;
-               color:#FBF9E4;
-               border-radius:8px;
-               font-weight:500;
-               border:none;
-               white-space:nowrap;
-               text-align:center;
-               overflow:hidden;
-               text-overflow:ellipsis;"
+      <!-- Desna strana -->
+      <div style="padding:10px 24px 10px 16px; display:flex; align-items:center; gap:8px;">
+        <button mat-flat-button
         (click)="openCategoryModal(element)"
-        [disabled]="multiSelectMode">
-
-  <!-- Ako ima kategoriju, prikaži naziv -->
+        [disabled]="multiSelectMode"
+        [ngStyle]="element.categoryId ? {
+          'background': '#5B88B2',
+          'color': '#FBF9E4',
+          'border': 'none'
+        } : {
+          'background': '#2C365A',
+          'color': '#e5fff6',
+          'border': '1px solid #5B88B2'
+        }"
+        style="font-size:12px; padding:4px 14px; min-width:100px; height:28px;
+               border-radius:8px; font-weight:500; white-space:nowrap; text-align:center;">
   <ng-container *ngIf="element.categoryId; else addText">
     {{ getCategoryName(element.categoryId) }}
   </ng-container>
-
-  <!-- Inače prikaži 'Add category' -->
-  <ng-template #addText>
-    Add category
-  </ng-template>
-
+  <ng-template #addText>Add category</ng-template>
 </button>
 
-        <!-- Dugme za Split -->
         <button *ngIf="!element.isSplit"
-          mat-stroked-button
-          style="font-size:12px;
-                 padding:4px 14px;
-                 height:28px;
-                 min-width:70px;
-                 color:#e5fff6;
-                 border-radius:8px;
-                 background:#2C365A;
-                 border: 1px solid #5B88B2;"
-          (click)="onSplitTransaction(element)"
-          [disabled]="multiSelectMode">
+                mat-stroked-button
+                style="font-size:12px; padding:4px 14px; height:28px; min-width:70px;
+                       color:#e5fff6; border-radius:8px; background:#2C365A;
+                       border: 1px solid #5B88B2;"
+                (click)="onSplitTransaction(element)"
+                [disabled]="multiSelectMode">
           Split
         </button>
 
-        <!-- Ikonica ako je već split -->
-        <span *ngIf="element.isSplit"
-      style="font-size:11px; color:#8cb6ff;">
-  Split: {{ getSplitCategories(element.id).join(', ') }}
-</span>
-
+        <span *ngIf="element.isSplit" style="font-size:11px; color:#8cb6ff;">
+          Split: {{ getSplitCategories(element.id).join(', ') }}
+        </span>
       </div>
     </div>
+
+  <!-- MOBILNI prikaz: dugmad ispod u kružnom meniju -->
+<!-- MOBILNI prikaz: dugmad u kružnom meniju -->
+<div *ngIf="isMobileView" style="position: relative; width: 100%; min-height: 40px;">
+  <!-- Dugme sa tri tačke -->
+  <div style="position: relative; z-index: 10;">
+    <button (click)="toggleActionsFor(element.id)"
+            style="background: none; border: none; cursor: pointer; float: right;">
+      <span class="material-icons" style="color: #FBF9E4; font-size: 20px;">more_vert</span>
+    </button>
+  </div>
+
+  <!-- Meni koji se otvara ulevo -->
+  <div *ngIf="activeActionId === element.id"
+       style="position: fixed; top: auto; right: 80px;
+              background: #2C365A;
+              padding: 12px; border-radius: 12px; display: flex;
+              flex-direction: column; gap: 12px; z-index: 9999;
+              box-shadow: 0 4px 12px #0007; align-items: center;">
+
+    <!-- Add category -->
+    <button (click)="openCategoryModal(element)"
+            style="width: 42px; height: 42px; border-radius: 50%;
+                   background: #5B88B2; border: none; display: flex;
+                   align-items: center; justify-content: center; color: white;">
+      <span class="material-icons" style="font-size: 22px;">add</span>
+    </button>
+
+    <!-- Split -->
+    <button (click)="onSplitTransaction(element)"
+            style="width: 42px; height: 42px; border-radius: 50%;
+                   background: #2C365A; border: 1px solid #5B88B2;
+                   display: flex; align-items: center; justify-content: center; color: white;">
+      <span class="material-icons" style="font-size: 20px;">call_split</span>
+    </button>
+  </div>
+</div>
+
   </td>
 </ng-container>
+
 
 <!-- DATA REDOVI -->
 <tr mat-row *matRowDef="let row; columns: displayedColumns"

@@ -3,8 +3,9 @@
   autosize
   autoFocus
   dir="ltr"
-  style="background: #212842; min-height: 100vh; box-shadow: none; border: none;"
+  style="background: #212842; min-height: 100vh; box-shadow: none; border: none; overflow-x: hidden;"
 >
+
   <!-- Sidebar -->
   <mat-sidenav
     #leftsidenav
@@ -40,8 +41,8 @@
 
     <!-- Glavna stranica -->
     <main
-      class="pageWrapper"
-      [style.padding-left.px]="isMobile ? 0 : 80"
+  class="pageWrapper"
+  style="margin-left: 0; padding: 0;"
       style="
         background: #212842;
         min-height: 100vh;

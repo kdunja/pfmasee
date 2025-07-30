@@ -59,8 +59,10 @@ export class SpendingChartsComponent implements OnInit, OnChanges {
   }
 
   private checkMobile() {
-    this.isMobile = window.innerWidth <= 500;
-  }
+  this.isMobile = window.innerWidth <= 500;
+  this.view = this.isMobile ? [320, 300] : [730, 300];
+}
+
 
   buildChartData(): void {
     const filteredTx = this.filterByDate(this.transactions).filter(
@@ -190,4 +192,3 @@ export class SpendingChartsComponent implements OnInit, OnChanges {
     this.goBackToMainPie();
   }
 }
-

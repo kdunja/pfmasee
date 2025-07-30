@@ -27,9 +27,11 @@ export class TransactionFiltersComponent {
   }
 
   onClearClick() {
-    this.fromDate = null;
-    this.toDate = null;
-    this.dateRangeSelected.emit({ from: null, to: null });
-    this.clearSelections.emit();
-  }
+  this.fromDate = null;
+  this.toDate = null;
+  this.selectedKind = null; 
+  this.dateRangeSelected.emit({ from: null, to: null });
+  this.kindFilterChanged.emit(null); 
+  this.clearSelections.emit();
+}
 }
